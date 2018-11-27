@@ -1,0 +1,13 @@
+package: github.com/edgexfoundry/device-mqtt-go
+import:
+- package: github.com/edgexfoundry/device-sdk-go
+  version: delhi
+  subpackages:
+  - pkg/models
+- package: github.com/edgexfoundry/edgex-go
+  version: delhi
+  subpackages:
+  - /pkg/models
+  - /pkg/clients/logging
+- package: github.com/eclipse/paho.mqtt.golang
+  version: =1.1.1
