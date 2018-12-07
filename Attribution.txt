@@ -1,4 +1,0 @@
-The following open source projects are referenced by MQTT Device Service Go:
-
-eclipse/paho.mqtt.golang 1.1.1 (Eclipse 1.0) - https://github.com/eclipse/paho.mqtt.golang
-https://github.com/eclipse/paho.mqtt.golang/blob/master/LICENSE
