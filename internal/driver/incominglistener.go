@@ -48,8 +48,6 @@ func startIncomingListening() error {
 
 	driver.Logger.Info("[Incoming listener] Start incoming data listening. ")
 	select {}
-
-	return nil
 }
 
 func onIncomingDataReceived(client mqtt.Client, message mqtt.Message) {
