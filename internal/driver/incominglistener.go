@@ -55,7 +55,12 @@ func startIncomingListening() error {
 func onIncomingDataReceived(client mqtt.Client, message mqtt.Message) {
 	var response map[string]interface{}
 	json.Unmarshal(message.Payload(), &response)
-
+	// add check the data format by Geoffrey
+	if response == nil || response["name"] == nil || response["cmd"] == nil {
+		driver.Logger.Warn(fmt.Sprintf("[Incoming listener] Incoming reading ignored. Data Format Error, couldn't be converted to Map[String]interface{}  : topic=%v payload=%v", message.Topic(), string(message.Payload())))
+		return
+	}
+	
 	deviceName := response["name"].(string)
 	cmd := response["cmd"].(string)
 	reading := response[cmd]
