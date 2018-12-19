@@ -511,14 +511,14 @@ func checkValueInRange(profileValueType string, readingValueType string, reading
 			isValid = true
 		}
 	case "uint64":
-		var val uint
+		var val uint64
 		if readingValueType == "int" {
-			val = uint(reading.(int64))
+			val = uint64(reading.(int64))
 		} else {
-			val = uint(reading.(uint64))
+			val = uint64(reading.(uint64))
 		}
-
-		if val >= 0 && val <= math.MaxUint64 {
+		maxiMum := uint64(math.MaxUint64)
+		if val >= 0 && val <= maxiMum {
 			isValid = true
 		}
 	case "int8":
