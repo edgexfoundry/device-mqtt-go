@@ -303,23 +303,23 @@ func newResult(deviceObject models.DeviceObject, ro models.ResourceOperation, re
 	case "String":
 		result = sdkModel.NewStringValue(&ro, resTime, reading.(string))
 	case "Uint8":
-		result, err = sdkModel.NewUint8Value(&ro, resTime, reading.(uint8))
+		result, err = sdkModel.NewUint8Value(&ro, resTime, uint8(reading.(float64)))
 	case "Uint16":
-		result, err = sdkModel.NewUint16Value(&ro, resTime, reading.(uint16))
+		result, err = sdkModel.NewUint16Value(&ro, resTime, uint16(reading.(float64)))
 	case "Uint32":
-		result, err = sdkModel.NewUint32Value(&ro, resTime, reading.(uint32))
+		result, err = sdkModel.NewUint32Value(&ro, resTime, uint32(reading.(float64)))
 	case "Uint64":
-		result, err = sdkModel.NewUint64Value(&ro, resTime, reading.(uint64))
+		result, err = sdkModel.NewUint64Value(&ro, resTime, uint64(reading.(float64)))
 	case "Int8":
-		result, err = sdkModel.NewInt8Value(&ro, resTime, reading.(int8))
+		result, err = sdkModel.NewInt8Value(&ro, resTime, int8(reading.(float64)))
 	case "Int16":
-		result, err = sdkModel.NewInt16Value(&ro, resTime, reading.(int16))
+		result, err = sdkModel.NewInt16Value(&ro, resTime, int16(reading.(float64)))
 	case "Int32":
-		result, err = sdkModel.NewInt32Value(&ro, resTime, reading.(int32))
+		result, err = sdkModel.NewInt32Value(&ro, resTime, int32(reading.(float64)))
 	case "Int64":
-		result, err = sdkModel.NewInt64Value(&ro, resTime, reading.(int64))
+		result, err = sdkModel.NewInt64Value(&ro, resTime, int64(reading.(float64)))
 	case "Float32":
-		result, err = sdkModel.NewFloat32Value(&ro, resTime, reading.(float32))
+		result, err = sdkModel.NewFloat32Value(&ro, resTime, float32(reading.(float64)))
 	case "Float64":
 		result, err = sdkModel.NewFloat64Value(&ro, resTime, reading.(float64))
 	default:
