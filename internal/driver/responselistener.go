@@ -46,8 +46,6 @@ func startCommandResponseListening() error {
 
 	driver.Logger.Info("[Response listener] Start command response listening. ")
 	select {}
-
-	return nil
 }
 
 func onCommandResponseReceived(client mqtt.Client, message mqtt.Message) {

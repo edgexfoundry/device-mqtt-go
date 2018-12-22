@@ -48,17 +48,24 @@ func startIncomingListening() error {
 
 	driver.Logger.Info("[Incoming listener] Start incoming data listening. ")
 	select {}
-
-	return nil
 }
 
 func onIncomingDataReceived(client mqtt.Client, message mqtt.Message) {
-	var response map[string]interface{}
-	json.Unmarshal(message.Payload(), &response)
+	var data map[string]interface{}
+	json.Unmarshal(message.Payload(), &data)
 
-	deviceName := response["name"].(string)
-	cmd := response["cmd"].(string)
-	reading := response[cmd]
+	if !checkDataWithKey(data, "name") || !checkDataWithKey(data, "cmd") {
+		return
+	}
+
+	deviceName := data["name"].(string)
+	cmd := data["cmd"].(string)
+
+	reading, ok := data[cmd]
+	if !ok {
+		driver.Logger.Warn(fmt.Sprintf("[Incoming listener] Incoming reading ignored. No reading data found : topic=%v msg=%v", message.Topic(), string(message.Payload())))
+		return
+	}
 
 	service := sdk.RunningService()
 
@@ -90,4 +97,20 @@ func onIncomingDataReceived(client mqtt.Client, message mqtt.Message) {
 
 	driver.AsyncCh <- asyncValues
 
+}
+
+func checkDataWithKey(data map[string]interface{}, key string) bool {
+	val, ok := data[key]
+	if !ok {
+		driver.Logger.Warn(fmt.Sprintf("[Incoming listener] Incoming reading ignored. No %v found : msg=%v", key, data))
+		return false
+	}
+
+	switch val.(type) {
+	case string:
+		return true
+	default:
+		driver.Logger.Warn(fmt.Sprintf("[Incoming listener] Incoming reading ignored. %v should be string : msg=%v", key, data))
+		return false
+	}
 }
