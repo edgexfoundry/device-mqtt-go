@@ -1,5 +1,4 @@
-#
-# Copyright (C) 2018 IOTech Ltd
+opyright (C) 2018 IOTech Ltd
 #
 # SPDX-License-Identifier: Apache-2.0
 

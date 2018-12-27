@@ -19,3 +19,4 @@ Qos = 0
 KeepAlive = 3600
 MqttClientId = "CommandResponseSubscriber"
 Topic = "ResponseTopic"
+
