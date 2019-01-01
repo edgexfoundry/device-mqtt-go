@@ -300,7 +300,7 @@ func newResult(deviceObject models.DeviceObject, ro models.ResourceOperation, re
 	var err error
 	var resTime = time.Now().UnixNano() / int64(time.Millisecond)
 	var profileValueType = strings.ToLower(deviceObject.Properties.Value.Type)
-	var readingValueType = reflect.TypeOf(reading).String()
+	var readingValueType = strings.ToLower(reflect.TypeOf(reading).String())
 
 	if readingValueType == "int" {
 		reading = int64(reading.(int))
@@ -630,10 +630,48 @@ func convertReadingValueType(profileValueType string, readingValueType string, r
 		case "uint64":
 			reading = uint64(reading.(uint64))
 		}
-	} else if readingValueType == "float64" && profileValueType == "float32" {
-		reading = float32(reading.(float64))
-	} else if readingValueType == "float32" && profileValueType == "float64" {
-		reading = float64(reading.(float32))
+	} else if readingValueType == "float64" {
+		switch profileValueType {
+		case "int8":
+			reading = int8(reading.(float64))
+		case "int16":
+			reading = int16(reading.(float64))
+		case "int32":
+			reading = int32(reading.(float64))
+		case "int64":
+			reading = int64(reading.(float64))
+		case "uint8":
+			reading = uint8(reading.(float64))
+		case "uint16":
+			reading = uint16(reading.(float64))
+		case "uint32":
+			reading = uint32(reading.(float64))
+		case "uint64":
+			reading = uint64(reading.(float64))
+		case "float32":
+			reading = float32(reading.(float64))
+		}
+	} else if readingValueType == "float32" {
+		switch profileValueType {
+		case "int8":
+			reading = int8(reading.(float32))
+		case "int16":
+			reading = int16(reading.(float32))
+		case "int32":
+			reading = int32(reading.(float32))
+		case "int64":
+			reading = int64(reading.(float32))
+		case "uint8":
+			reading = uint8(reading.(float32))
+		case "uint16":
+			reading = uint16(reading.(float32))
+		case "uint32":
+			reading = uint32(reading.(float32))
+		case "uint64":
+			reading = uint64(reading.(float32))
+		case "float64":
+			reading = float64(reading.(float32))
+		}
 	}
 
 	return reading
