@@ -300,7 +300,7 @@ func newResult(deviceObject models.DeviceObject, ro models.ResourceOperation, re
 	var err error
 	var resTime = time.Now().UnixNano() / int64(time.Millisecond)
 	var profileValueType = strings.ToLower(deviceObject.Properties.Value.Type)
-	var readingValueType = reflect.TypeOf(reading).String()
+	var readingValueType = strings.ToLower(reflect.TypeOf(reading).String())
 
 	if readingValueType == "int" {
 		reading = int64(reading.(int))
@@ -490,72 +490,102 @@ func handleReadingStringValue(profileValueType string, readingValueType string, 
 func checkValueInRange(profileValueType string, readingValueType string, reading interface{}) bool {
 	isValid := false
 
-	switch profileValueType {
-	case "string":
-		isValid = true
-	case "bool":
-		isValid = true
-	case "uint8":
-		val := reading.(uint64)
-		if val >= 0 && val <= math.MaxUint8 {
-			isValid = true
-		}
-	case "uint16":
-		val := reading.(uint64)
-		if val >= 0 && val <= math.MaxUint16 {
-			isValid = true
-		}
-	case "uint32":
-		val := reading.(uint64)
-		if val >= 0 && val <= math.MaxUint32 {
-			isValid = true
-		}
-	case "uint64":
+	if profileValueType == "string" || profileValueType == "bool" {
+		return true
+	}
+
+	if strings.Contains(profileValueType, "uint") {
 		var val uint64
 		if readingValueType == "int" {
 			val = uint64(reading.(int64))
-		} else {
+		} else if readingValueType == "uint" {
 			val = uint64(reading.(uint64))
-		}
-		maxiMum := uint64(math.MaxUint64)
-		if val >= 0 && val <= maxiMum {
-			isValid = true
-		}
-	case "int8":
-		val := reading.(int64)
-		if val >= math.MinInt8 && val <= math.MaxInt8 {
-			isValid = true
-		}
-	case "int16":
-		val := reading.(int64)
-		if val >= math.MinInt16 && val <= math.MaxInt16 {
-			isValid = true
-		}
-	case "int32":
-		val := reading.(int64)
-		if val >= math.MinInt32 && val <= math.MaxInt32 {
-			isValid = true
-		}
-	case "int64":
-		val := reading.(int64)
-		if val >= math.MinInt64 && val <= math.MaxInt64 {
-			isValid = true
-		}
-	case "float32":
-		var val float64
-		if readingValueType == "float32" {
-			val = (float64)(reading.(float32))
+		} else if readingValueType == "float32" {
+			val = uint64(reading.(float32))
 		} else {
-			val = reading.(float64)
+			val = uint64(reading.(float64))
 		}
-		if val >= math.SmallestNonzeroFloat32 && val <= math.MaxFloat32 {
-			isValid = true
+
+		switch profileValueType {
+		case "uint8":
+			if val >= 0 && val <= math.MaxUint8 {
+				isValid = true
+			}
+		case "uint16":
+			if val >= 0 && val <= math.MaxUint16 {
+				isValid = true
+			}
+		case "uint32":
+			if val >= 0 && val <= math.MaxUint32 {
+				isValid = true
+			}
+		case "uint64":
+			maxiMum := uint64(math.MaxUint64)
+			if val >= 0 && val <= maxiMum {
+				isValid = true
+			}
 		}
-	case "float64":
-		val := reading.(float64)
-		if val >= math.SmallestNonzeroFloat64 && val <= math.MaxFloat64 {
-			isValid = true
+		return isValid
+	}
+
+	if strings.Contains(profileValueType, "int") {
+		var val int64
+		if readingValueType == "int" {
+			val = int64(reading.(int64))
+		} else if readingValueType == "uint" {
+			val = int64(reading.(uint64))
+		} else if readingValueType == "float32" {
+			val = int64(reading.(float32))
+		} else {
+			val = int64(reading.(float64))
 		}
+
+		switch profileValueType {
+		case "int8":
+			if val >= math.MinInt8 && val <= math.MaxInt8 {
+				isValid = true
+			}
+		case "int16":
+			if val >= math.MinInt16 && val <= math.MaxInt16 {
+				isValid = true
+			}
+		case "int32":
+			if val >= math.MinInt32 && val <= math.MaxInt32 {
+				isValid = true
+			}
+		case "int64":
+			if val >= math.MinInt64 && val <= math.MaxInt64 {
+				isValid = true
+			}
+		}
+		return isValid
+	}
+
+	if strings.Contains(profileValueType, "float") {
+		var val float64
+		if readingValueType == "int" {
+			val = float64(reading.(int64))
+		} else if readingValueType == "uint" {
+			val = float64(reading.(uint64))
+		} else if readingValueType == "float32" {
+			val = float64(reading.(float32))
+		} else {
+			val = float64(reading.(float64))
+		}
+
+		switch profileValueType {
+		case "float32":
+			if val >= math.SmallestNonzeroFloat32 && val <= math.MaxFloat32 {
+				isValid = true
+			}
+		case "float64":
+			val := reading.(float64)
+			if val >= math.SmallestNonzeroFloat64 && val <= math.MaxFloat64 {
+				isValid = true
+			}
+		}
+
+		return isValid
 	}
 
 	return isValid
@@ -600,10 +630,48 @@ func convertReadingValueType(profileValueType string, readingValueType string, r
 		case "uint64":
 			reading = uint64(reading.(uint64))
 		}
-	} else if readingValueType == "float64" && profileValueType == "float32" {
-		reading = float32(reading.(float64))
-	} else if readingValueType == "float32" && profileValueType == "float64" {
-		reading = float64(reading.(float32))
+	} else if readingValueType == "float64" {
+		switch profileValueType {
+		case "int8":
+			reading = int8(reading.(float64))
+		case "int16":
+			reading = int16(reading.(float64))
+		case "int32":
+			reading = int32(reading.(float64))
+		case "int64":
+			reading = int64(reading.(float64))
+		case "uint8":
+			reading = uint8(reading.(float64))
+		case "uint16":
+			reading = uint16(reading.(float64))
+		case "uint32":
+			reading = uint32(reading.(float64))
+		case "uint64":
+			reading = uint64(reading.(float64))
+		case "float32":
+			reading = float32(reading.(float64))
+		}
+	} else if readingValueType == "float32" {
+		switch profileValueType {
+		case "int8":
+			reading = int8(reading.(float32))
+		case "int16":
+			reading = int16(reading.(float32))
+		case "int32":
+			reading = int32(reading.(float32))
+		case "int64":
+			reading = int64(reading.(float32))
+		case "uint8":
+			reading = uint8(reading.(float32))
+		case "uint16":
+			reading = uint16(reading.(float32))
+		case "uint32":
+			reading = uint32(reading.(float32))
+		case "uint64":
+			reading = uint64(reading.(float32))
+		case "float64":
+			reading = float64(reading.(float32))
+		}
 	}
 
 	return reading
