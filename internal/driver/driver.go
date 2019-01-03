@@ -9,7 +9,6 @@ package driver
 import (
 	"encoding/json"
 	"fmt"
-	"math"
 	"net/url"
 	"reflect"
 	"strings"
@@ -317,7 +316,7 @@ func newResult(deviceObject models.DeviceObject, ro models.ResourceOperation, re
 		return result, err
 	}
 
-	// Check unknown value range
+	// Only check unknown value range
 	if readingValueType == "int" || readingValueType == "uint" || readingValueType == "float32" || readingValueType == "float64" {
 		if !checkValueInRange(profileValueType, readingValueType, reading) {
 			err = fmt.Errorf("parse reading fail. Reading(%v) is out of the value type(%v)'s range", readingValueType, profileValueType)
@@ -417,108 +416,4 @@ func fetchCommandResponse(commandResponses map[string]string, cmdUuid string) (s
 	}
 
 	return cmdResponse, ok
-}
-
-func checkValueInRange(profileValueType string, readingValueType string, reading interface{}) bool {
-	isValid := false
-
-	if profileValueType == "string" || profileValueType == "bool" {
-		return true
-	}
-
-	if strings.Contains(profileValueType, "uint") {
-		var val uint64
-		if readingValueType == "int" {
-			val = uint64(reading.(int64))
-		} else if readingValueType == "uint" {
-			val = uint64(reading.(uint64))
-		} else if readingValueType == "float32" {
-			val = uint64(reading.(float32))
-		} else {
-			val = uint64(reading.(float64))
-		}
-
-		switch profileValueType {
-		case "uint8":
-			if val >= 0 && val <= math.MaxUint8 {
-				isValid = true
-			}
-		case "uint16":
-			if val >= 0 && val <= math.MaxUint16 {
-				isValid = true
-			}
-		case "uint32":
-			if val >= 0 && val <= math.MaxUint32 {
-				isValid = true
-			}
-		case "uint64":
-			maxiMum := uint64(math.MaxUint64)
-			if val >= 0 && val <= maxiMum {
-				isValid = true
-			}
-		}
-		return isValid
-	}
-
-	if strings.Contains(profileValueType, "int") {
-		var val int64
-		if readingValueType == "int" {
-			val = int64(reading.(int64))
-		} else if readingValueType == "uint" {
-			val = int64(reading.(uint64))
-		} else if readingValueType == "float32" {
-			val = int64(reading.(float32))
-		} else {
-			val = int64(reading.(float64))
-		}
-
-		switch profileValueType {
-		case "int8":
-			if val >= math.MinInt8 && val <= math.MaxInt8 {
-				isValid = true
-			}
-		case "int16":
-			if val >= math.MinInt16 && val <= math.MaxInt16 {
-				isValid = true
-			}
-		case "int32":
-			if val >= math.MinInt32 && val <= math.MaxInt32 {
-				isValid = true
-			}
-		case "int64":
-			if val >= math.MinInt64 && val <= math.MaxInt64 {
-				isValid = true
-			}
-		}
-		return isValid
-	}
-
-	if strings.Contains(profileValueType, "float") {
-		var val float64
-		if readingValueType == "int" {
-			val = float64(reading.(int64))
-		} else if readingValueType == "uint" {
-			val = float64(reading.(uint64))
-		} else if readingValueType == "float32" {
-			val = float64(reading.(float32))
-		} else {
-			val = float64(reading.(float64))
-		}
-
-		switch profileValueType {
-		case "float32":
-			if val >= math.SmallestNonzeroFloat32 && val <= math.MaxFloat32 {
-				isValid = true
-			}
-		case "float64":
-			val := reading.(float64)
-			if val >= math.SmallestNonzeroFloat64 && val <= math.MaxFloat64 {
-				isValid = true
-			}
-		}
-
-		return isValid
-	}
-
-	return isValid
 }
