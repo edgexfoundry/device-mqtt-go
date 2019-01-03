@@ -12,7 +12,6 @@ import (
 	"math"
 	"net/url"
 	"reflect"
-	"strconv"
 	"strings"
 	"sync"
 	"time"
@@ -418,73 +417,6 @@ func fetchCommandResponse(commandResponses map[string]string, cmdUuid string) (s
 	}
 
 	return cmdResponse, ok
-}
-
-func handleReadingStringValue(profileValueType string, readingValueType string, reading interface{}) (interface{}, string, error) {
-	if profileValueType == "string" && readingValueType != "string" {
-		reading = fmt.Sprintf("%v", reading)
-		readingValueType = "string"
-		return reading, readingValueType, nil
-	}
-
-	if profileValueType == "bool" && readingValueType == "string" {
-		reading, err := strconv.ParseBool(reading.(string))
-		readingValueType = "bool"
-		if err != nil {
-			err = fmt.Errorf("parse result fail. Reading's value (%v) can't parse to bool ,err:%v", reading, err)
-			return reading, readingValueType, err
-		} else {
-			return reading, readingValueType, nil
-		}
-	}
-
-	if strings.Contains(profileValueType, "uint") && readingValueType == "string" {
-		reading, err := strconv.ParseUint(reading.(string), 10, 64)
-		readingValueType = "uint"
-		if err != nil {
-			err = fmt.Errorf("parse result fail. Reading's value (%v) can't parse to uint ,err:%v", reading, err)
-			return reading, readingValueType, err
-		} else {
-			return reading, readingValueType, nil
-		}
-	}
-
-	if strings.Contains(profileValueType, "int") && readingValueType == "string" {
-		reading, err := strconv.ParseInt(reading.(string), 10, 64)
-		readingValueType = "int"
-		if err != nil {
-			err = fmt.Errorf("parse result fail. Reading's value (%v) can't parse to int ,err:%v", reading, err)
-			return reading, readingValueType, err
-		} else {
-			return reading, readingValueType, nil
-		}
-	}
-
-	if (profileValueType == "float32" || profileValueType == "float") && readingValueType == "string" {
-		val, err := strconv.ParseFloat(reading.(string), 32)
-		readingValueType = "float32"
-		if err != nil {
-			err = fmt.Errorf("parse result fail. Reading's value (%v) can't parse to float32 ,err:%v", reading, err)
-			return reading, readingValueType, err
-		} else {
-			reading = float32(val)
-			return reading, readingValueType, nil
-		}
-	}
-
-	if profileValueType == "float64" && readingValueType == "string" {
-		reading, err := strconv.ParseFloat(reading.(string), 64)
-		readingValueType = "float64"
-		if err != nil {
-			err = fmt.Errorf("parse result fail. Reading's value (%v) can't parse to float64 ,err:%v", reading, err)
-			return reading, readingValueType, err
-		} else {
-			return reading, readingValueType, nil
-		}
-
-	} else {
-		return reading, readingValueType, nil
-	}
 }
 
 func checkValueInRange(profileValueType string, readingValueType string, reading interface{}) bool {
