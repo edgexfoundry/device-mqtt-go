@@ -17,7 +17,7 @@ func handleReadingStringValue(profileValueType string, readingValueType string, 
 		return reading, readingValueType, nil
 	}
 
-	// parse reading string according to profileValueType
+	// Parse reading string according to profileValueType. Number will be convert to int or unit and then check number's value range in the next function.
 	switch {
 	case profileValueType == "bool":
 		reading, err := strconv.ParseBool(reading.(string))
