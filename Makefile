@@ -1,6 +1,6 @@
 .PHONY: build test clean prepare update docker
 
-GO=CGO_ENABLED=0 go
+GO = CGO_ENABLED=0 GO111MODULE=on go
 
 MICROSERVICES=cmd/device-mqtt
 
@@ -16,22 +16,18 @@ GIT_SHA=$(shell git rev-parse HEAD)
 GOFLAGS=-ldflags "-X github.com/edgexfoundry/device-mqtt-go.Version=$(VERSION)"
 
 build: $(MICROSERVICES)
-	go build ./...
+	$(GO) build ./...
 
 cmd/device-mqtt:
 	$(GO) build $(GOFLAGS) -o $@ ./cmd
 
 test:
-	go test ./... -cover
+	$(GO) test ./... -cover
 
 clean:
 	rm -f $(MICROSERVICES)
 
 prepare:
-	glide install
-
-update:
-	glide update
 
 run:
 	cd bin && ./edgex-launch.sh

@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/edgexfoundry/edgex-go/pkg/clients/logging"
-	"github.com/edgexfoundry/edgex-go/pkg/models"
+	logger "github.com/edgexfoundry/go-mod-core-contracts/clients/logging"
+	"github.com/edgexfoundry/go-mod-core-contracts/models"
 )
 
 func init() {
@@ -15,7 +15,7 @@ func init() {
 
 func TestNewResult_bool(t *testing.T) {
 	var reading interface{} = true
-	deviceObject := models.DeviceObject{
+	deviceObject := models.DeviceResource{
 		Properties: models.ProfileProperty{
 			Value: models.PropertyValue{Type: "bool"},
 		},
@@ -31,7 +31,7 @@ func TestNewResult_bool(t *testing.T) {
 
 func TestNewResult_uint8(t *testing.T) {
 	var reading interface{} = uint8(123)
-	deviceObject := models.DeviceObject{
+	deviceObject := models.DeviceResource{
 		Properties: models.ProfileProperty{
 			Value: models.PropertyValue{Type: "uint8"},
 		},
@@ -47,7 +47,7 @@ func TestNewResult_uint8(t *testing.T) {
 
 func TestNewResult_int8(t *testing.T) {
 	var reading interface{} = int8(123)
-	deviceObject := models.DeviceObject{
+	deviceObject := models.DeviceResource{
 		Properties: models.ProfileProperty{
 			Value: models.PropertyValue{Type: "int8"},
 		},
@@ -63,7 +63,7 @@ func TestNewResult_int8(t *testing.T) {
 
 func TestNewResultFailed_int8(t *testing.T) {
 	var reading interface{} = int8(123)
-	deviceObject := models.DeviceObject{
+	deviceObject := models.DeviceResource{
 		Properties: models.ProfileProperty{
 			Value: models.PropertyValue{Type: "int16"},
 		},
@@ -78,7 +78,7 @@ func TestNewResultFailed_int8(t *testing.T) {
 
 func TestNewResult_uint16(t *testing.T) {
 	var reading interface{} = uint16(123)
-	deviceObject := models.DeviceObject{
+	deviceObject := models.DeviceResource{
 		Properties: models.ProfileProperty{
 			Value: models.PropertyValue{Type: "uint16"},
 		},
@@ -94,7 +94,7 @@ func TestNewResult_uint16(t *testing.T) {
 
 func TestNewResult_int16(t *testing.T) {
 	var reading interface{} = int16(123)
-	deviceObject := models.DeviceObject{
+	deviceObject := models.DeviceResource{
 		Properties: models.ProfileProperty{
 			Value: models.PropertyValue{Type: "int16"},
 		},
@@ -110,7 +110,7 @@ func TestNewResult_int16(t *testing.T) {
 
 func TestNewResult_uint32(t *testing.T) {
 	var reading interface{} = uint32(123)
-	deviceObject := models.DeviceObject{
+	deviceObject := models.DeviceResource{
 		Properties: models.ProfileProperty{
 			Value: models.PropertyValue{Type: "uint32"},
 		},
@@ -126,7 +126,7 @@ func TestNewResult_uint32(t *testing.T) {
 
 func TestNewResult_int32(t *testing.T) {
 	var reading interface{} = int32(123)
-	deviceObject := models.DeviceObject{
+	deviceObject := models.DeviceResource{
 		Properties: models.ProfileProperty{
 			Value: models.PropertyValue{Type: "int32"},
 		},
@@ -142,7 +142,7 @@ func TestNewResult_int32(t *testing.T) {
 
 func TestNewResult_uint64(t *testing.T) {
 	var reading interface{} = uint64(123)
-	deviceObject := models.DeviceObject{
+	deviceObject := models.DeviceResource{
 		Properties: models.ProfileProperty{
 			Value: models.PropertyValue{Type: "uint64"},
 		},
@@ -158,7 +158,7 @@ func TestNewResult_uint64(t *testing.T) {
 
 func TestNewResult_int64(t *testing.T) {
 	var reading interface{} = int64(123)
-	deviceObject := models.DeviceObject{
+	deviceObject := models.DeviceResource{
 		Properties: models.ProfileProperty{
 			Value: models.PropertyValue{Type: "int64"},
 		},
@@ -174,7 +174,7 @@ func TestNewResult_int64(t *testing.T) {
 
 func TestNewResult_float32(t *testing.T) {
 	var reading interface{} = float32(123)
-	deviceObject := models.DeviceObject{
+	deviceObject := models.DeviceResource{
 		Properties: models.ProfileProperty{
 			Value: models.PropertyValue{Type: "Float32"},
 		},
@@ -190,7 +190,7 @@ func TestNewResult_float32(t *testing.T) {
 
 func TestNewResult_float64(t *testing.T) {
 	var reading interface{} = float64(0.123)
-	deviceObject := models.DeviceObject{
+	deviceObject := models.DeviceResource{
 		Properties: models.ProfileProperty{
 			Value: models.PropertyValue{Type: "Float64"},
 		},
@@ -206,7 +206,7 @@ func TestNewResult_float64(t *testing.T) {
 
 func TestNewResult_float64ToInt8(t *testing.T) {
 	var reading interface{} = float64(123.11)
-	deviceObject := models.DeviceObject{
+	deviceObject := models.DeviceResource{
 		Properties: models.ProfileProperty{
 			Value: models.PropertyValue{Type: "int8"},
 		},
@@ -222,7 +222,7 @@ func TestNewResult_float64ToInt8(t *testing.T) {
 
 func TestNewResult_float64ToInt16(t *testing.T) {
 	var reading interface{} = float64(123.11)
-	deviceObject := models.DeviceObject{
+	deviceObject := models.DeviceResource{
 		Properties: models.ProfileProperty{
 			Value: models.PropertyValue{Type: "int16"},
 		},
@@ -238,7 +238,7 @@ func TestNewResult_float64ToInt16(t *testing.T) {
 
 func TestNewResult_float64ToInt32(t *testing.T) {
 	var reading interface{} = float64(123.11)
-	deviceObject := models.DeviceObject{
+	deviceObject := models.DeviceResource{
 		Properties: models.ProfileProperty{
 			Value: models.PropertyValue{Type: "int32"},
 		},
@@ -254,7 +254,7 @@ func TestNewResult_float64ToInt32(t *testing.T) {
 
 func TestNewResult_float64ToInt64(t *testing.T) {
 	var reading interface{} = float64(123.11)
-	deviceObject := models.DeviceObject{
+	deviceObject := models.DeviceResource{
 		Properties: models.ProfileProperty{
 			Value: models.PropertyValue{Type: "int32"},
 		},
@@ -270,7 +270,7 @@ func TestNewResult_float64ToInt64(t *testing.T) {
 
 func TestNewResult_float64ToUint8(t *testing.T) {
 	var reading interface{} = float64(123.11)
-	deviceObject := models.DeviceObject{
+	deviceObject := models.DeviceResource{
 		Properties: models.ProfileProperty{
 			Value: models.PropertyValue{Type: "uint8"},
 		},
@@ -286,7 +286,7 @@ func TestNewResult_float64ToUint8(t *testing.T) {
 
 func TestNewResult_float64ToUint16(t *testing.T) {
 	var reading interface{} = float64(123.11)
-	deviceObject := models.DeviceObject{
+	deviceObject := models.DeviceResource{
 		Properties: models.ProfileProperty{
 			Value: models.PropertyValue{Type: "uint16"},
 		},
@@ -302,7 +302,7 @@ func TestNewResult_float64ToUint16(t *testing.T) {
 
 func TestNewResult_float64ToUint32(t *testing.T) {
 	var reading interface{} = float64(123.11)
-	deviceObject := models.DeviceObject{
+	deviceObject := models.DeviceResource{
 		Properties: models.ProfileProperty{
 			Value: models.PropertyValue{Type: "uint32"},
 		},
@@ -318,7 +318,7 @@ func TestNewResult_float64ToUint32(t *testing.T) {
 
 func TestNewResult_float64ToUint64(t *testing.T) {
 	var reading interface{} = float64(123.11)
-	deviceObject := models.DeviceObject{
+	deviceObject := models.DeviceResource{
 		Properties: models.ProfileProperty{
 			Value: models.PropertyValue{Type: "uint64"},
 		},
@@ -334,7 +334,7 @@ func TestNewResult_float64ToUint64(t *testing.T) {
 
 func TestNewResult_float64ToFloat32(t *testing.T) {
 	var reading interface{} = float64(123.11)
-	deviceObject := models.DeviceObject{
+	deviceObject := models.DeviceResource{
 		Properties: models.ProfileProperty{
 			Value: models.PropertyValue{Type: "float32"},
 		},
@@ -350,7 +350,7 @@ func TestNewResult_float64ToFloat32(t *testing.T) {
 
 func TestNewResult_float64ToString(t *testing.T) {
 	var reading interface{} = float64(123.11)
-	deviceObject := models.DeviceObject{
+	deviceObject := models.DeviceResource{
 		Properties: models.ProfileProperty{
 			Value: models.PropertyValue{Type: "string"},
 		},
@@ -366,7 +366,7 @@ func TestNewResult_float64ToString(t *testing.T) {
 
 func TestNewResult_string(t *testing.T) {
 	var reading interface{} = "test string"
-	deviceObject := models.DeviceObject{
+	deviceObject := models.DeviceResource{
 		Properties: models.ProfileProperty{
 			Value: models.PropertyValue{Type: "string"},
 		},
@@ -382,7 +382,7 @@ func TestNewResult_string(t *testing.T) {
 
 func TestNewResult_stringToFloat32(t *testing.T) {
 	var reading interface{} = "123.0"
-	deviceObject := models.DeviceObject{
+	deviceObject := models.DeviceResource{
 		Properties: models.ProfileProperty{
 			Value: models.PropertyValue{Type: "float32"},
 		},
@@ -398,7 +398,7 @@ func TestNewResult_stringToFloat32(t *testing.T) {
 
 func TestNewResult_stringToFloat64(t *testing.T) {
 	var reading interface{} = "123.0"
-	deviceObject := models.DeviceObject{
+	deviceObject := models.DeviceResource{
 		Properties: models.ProfileProperty{
 			Value: models.PropertyValue{Type: "float64"},
 		},
@@ -414,7 +414,7 @@ func TestNewResult_stringToFloat64(t *testing.T) {
 
 func TestNewResult_stringToInt64(t *testing.T) {
 	var reading interface{} = "123"
-	deviceObject := models.DeviceObject{
+	deviceObject := models.DeviceResource{
 		Properties: models.ProfileProperty{
 			Value: models.PropertyValue{Type: "int64"},
 		},
@@ -430,7 +430,7 @@ func TestNewResult_stringToInt64(t *testing.T) {
 
 func TestNewResult_stringToInt8(t *testing.T) {
 	var reading interface{} = "123"
-	deviceObject := models.DeviceObject{
+	deviceObject := models.DeviceResource{
 		Properties: models.ProfileProperty{
 			Value: models.PropertyValue{Type: "int8"},
 		},
@@ -446,7 +446,7 @@ func TestNewResult_stringToInt8(t *testing.T) {
 
 func TestNewResult_stringToUint8(t *testing.T) {
 	var reading interface{} = "123"
-	deviceObject := models.DeviceObject{
+	deviceObject := models.DeviceResource{
 		Properties: models.ProfileProperty{
 			Value: models.PropertyValue{Type: "uint8"},
 		},
@@ -462,7 +462,7 @@ func TestNewResult_stringToUint8(t *testing.T) {
 
 func TestNewResult_stringToUint32(t *testing.T) {
 	var reading interface{} = "123"
-	deviceObject := models.DeviceObject{
+	deviceObject := models.DeviceResource{
 		Properties: models.ProfileProperty{
 			Value: models.PropertyValue{Type: "uint32"},
 		},
@@ -478,7 +478,7 @@ func TestNewResult_stringToUint32(t *testing.T) {
 
 func TestNewResult_stringToUint64(t *testing.T) {
 	var reading interface{} = "123"
-	deviceObject := models.DeviceObject{
+	deviceObject := models.DeviceResource{
 		Properties: models.ProfileProperty{
 			Value: models.PropertyValue{Type: "uint64"},
 		},
@@ -494,7 +494,7 @@ func TestNewResult_stringToUint64(t *testing.T) {
 
 func TestNewResult_stringToBool(t *testing.T) {
 	var reading interface{} = "true"
-	deviceObject := models.DeviceObject{
+	deviceObject := models.DeviceResource{
 		Properties: models.ProfileProperty{
 			Value: models.PropertyValue{Type: "bool"},
 		},
@@ -510,7 +510,7 @@ func TestNewResult_stringToBool(t *testing.T) {
 
 func TestNewResult_numberToUint64(t *testing.T) {
 	var reading interface{} = 123
-	deviceObject := models.DeviceObject{
+	deviceObject := models.DeviceResource{
 		Properties: models.ProfileProperty{
 			Value: models.PropertyValue{Type: "uint64"},
 		},
@@ -526,7 +526,7 @@ func TestNewResult_numberToUint64(t *testing.T) {
 
 func TestNewResult_floatNumberToFloat32(t *testing.T) {
 	var reading interface{} = 123.0
-	deviceObject := models.DeviceObject{
+	deviceObject := models.DeviceResource{
 		Properties: models.ProfileProperty{
 			Value: models.PropertyValue{Type: "float32"},
 		},
@@ -542,7 +542,7 @@ func TestNewResult_floatNumberToFloat32(t *testing.T) {
 
 func TestNewResult_numberToString(t *testing.T) {
 	var reading interface{} = 123
-	deviceObject := models.DeviceObject{
+	deviceObject := models.DeviceResource{
 		Properties: models.ProfileProperty{
 			Value: models.PropertyValue{Type: "string"},
 		},
