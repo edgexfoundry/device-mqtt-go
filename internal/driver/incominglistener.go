@@ -12,7 +12,7 @@ import (
 	"net/url"
 	"strings"
 
-	"github.com/eclipse/paho.mqtt.golang"
+	mqtt "github.com/eclipse/paho.mqtt.golang"
 	sdk "github.com/edgexfoundry/device-sdk-go"
 	sdkModel "github.com/edgexfoundry/device-sdk-go/pkg/models"
 )
@@ -74,7 +74,7 @@ func onIncomingDataReceived(client mqtt.Client, message mqtt.Message) {
 
 	service := sdk.RunningService()
 
-	deviceObject, ok := service.DeviceObject(deviceName, cmd, "get")
+	deviceObject, ok := service.DeviceResource(deviceName, cmd, "get")
 	if !ok {
 		driver.Logger.Warn(fmt.Sprintf("[Incoming listener] Incoming reading ignored. No DeviceObject found : topic=%v msg=%v", message.Topic(), string(message.Payload())))
 		return

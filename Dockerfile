@@ -3,26 +3,26 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-FROM golang:1.11.2-alpine3.7 AS builder
+ARG ALPINE=golang:1.11-alpine
+FROM ${ALPINE} AS builder
+ARG ALPINE_PKG_BASE="build-base git openssh-client"
+ARG ALPINE_PKG_EXTRA=""
 
-ENV GOPATH=/go
-ENV PATH=$GOPATH/bin:$PATH
+# Replicate the APK repository override.
+# If it is no longer necessary to avoid the CDN mirros we should consider dropping this as it is brittle.
+RUN sed -e 's/dl-cdn[.]alpinelinux.org/nl.alpinelinux.org/g' -i~ /etc/apk/repositories
+# Install our build time packages.
+RUN apk add --no-cache ${ALPINE_PKG_BASE} ${ALPINE_PKG_EXTRA}
 
-RUN echo http://nl.alpinelinux.org/alpine/v3.7/main > /etc/apk/repositories; \
-    echo http://nl.alpinelinux.org/alpine/v3.7/community >> /etc/apk/repositories
-
-RUN apk update && apk add make && apk add bash
-RUN apk add curl && apk add git && apk add openssh && apk add build-base
-
-ADD getglide.sh .
-RUN sh ./getglide.sh
-# set the working directory
 WORKDIR $GOPATH/src/github.com/edgexfoundry/device-mqtt-go
 
 COPY . .
 
-RUN make prepare
-RUN make build
+# To run tests in the build container:
+#   docker build --build-arg 'MAKE=build test' .
+# This is handy of you do your Docker business on a Mac
+ARG MAKE=build
+RUN make $MAKE
 
 
 FROM scratch

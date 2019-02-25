@@ -17,8 +17,8 @@ import (
 
 	MQTT "github.com/eclipse/paho.mqtt.golang"
 	sdkModel "github.com/edgexfoundry/device-sdk-go/pkg/models"
-	"github.com/edgexfoundry/edgex-go/pkg/clients/logging"
-	"github.com/edgexfoundry/edgex-go/pkg/models"
+	logger "github.com/edgexfoundry/go-mod-core-contracts/clients/logging"
+	"github.com/edgexfoundry/go-mod-core-contracts/models"
 	"gopkg.in/mgo.v2/bson"
 )
 
@@ -132,7 +132,7 @@ func (d *Driver) handleReadCommandRequest(deviceClient MQTT.Client, req sdkModel
 
 	var method = "get"
 	var cmdUuid = bson.NewObjectId().Hex()
-	var cmd = req.DeviceObject.Name
+	var cmd = req.DeviceResource.Name
 
 	data := make(map[string]interface{})
 	data["uuid"] = cmdUuid
@@ -159,13 +159,13 @@ func (d *Driver) handleReadCommandRequest(deviceClient MQTT.Client, req sdkModel
 
 	var response map[string]interface{}
 	json.Unmarshal([]byte(cmdResponse), &response)
-	reading, ok := response[req.DeviceObject.Name]
+	reading, ok := response[req.DeviceResource.Name]
 	if !ok {
 		err = fmt.Errorf("can not fetch command reading: method=%v cmd=%v", method, cmd)
 		return result, err
 	}
 
-	result, err = newResult(req.DeviceObject, req.RO, reading)
+	result, err = newResult(req.DeviceResource, req.RO, reading)
 	if err != nil {
 		return result, err
 	} else {
@@ -215,14 +215,14 @@ func (d *Driver) handleWriteCommandRequest(deviceClient MQTT.Client, req sdkMode
 
 	var method = "set"
 	var cmdUuid = bson.NewObjectId().Hex()
-	var cmd = req.DeviceObject.Name
+	var cmd = req.DeviceResource.Name
 
 	data := make(map[string]interface{})
 	data["uuid"] = cmdUuid
 	data["method"] = method
 	data["cmd"] = cmd
 
-	commandValue, err := newCommandValue(req.DeviceObject, param)
+	commandValue, err := newCommandValue(req.DeviceResource, param)
 	if err != nil {
 		return err
 	} else {
@@ -293,7 +293,7 @@ func createClient(clientID string, uri *url.URL, keepAlive int) (MQTT.Client, er
 	return client, nil
 }
 
-func newResult(deviceObject models.DeviceObject, ro models.ResourceOperation, reading interface{}) (*sdkModel.CommandValue, error) {
+func newResult(deviceObject models.DeviceResource, ro models.ResourceOperation, reading interface{}) (*sdkModel.CommandValue, error) {
 	var result = &sdkModel.CommandValue{}
 	var err error
 	var resTime = time.Now().UnixNano() / int64(time.Millisecond)
@@ -367,7 +367,7 @@ func newResult(deviceObject models.DeviceObject, ro models.ResourceOperation, re
 	return result, err
 }
 
-func newCommandValue(deviceObject models.DeviceObject, param *sdkModel.CommandValue) (interface{}, error) {
+func newCommandValue(deviceObject models.DeviceResource, param *sdkModel.CommandValue) (interface{}, error) {
 	var commandValue interface{}
 	var err error
 	switch strings.ToLower(deviceObject.Properties.Value.Type) {
