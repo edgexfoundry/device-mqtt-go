@@ -15,6 +15,14 @@ Port = 8500
 CheckInterval = "10s"
 FailLimit = 3
 FailWaitTime = 10
+Type = "consul"
+
+[Logging]
+EnableRemote = false
+File = "./device-mqtt.log"
+
+[Writable]
+LogLevel = "INFO"
 
 [Clients]
   [Clients.Data]
@@ -47,7 +55,3 @@ FailWaitTime = 10
   RemoveCmdArgs = ""
   ProfilesDir = ""
 
-[Logging]
-EnableRemote = false
-File = "./device-mqtt.log"
-Level = "DEBUG"
