@@ -58,24 +58,13 @@ Level = "DEBUG"
   Profile = "Test.Device.MQTT.Profile"
   Description = "MQTT device is created for test purpose"
   Labels = [ "MQTT", "test"]
-  [DeviceList.Addressable]
-    name = "Gateway address"
-    Protocol = "TCP"
-    Address = "0.0.0.0"
-    Port = 1883
-    Publisher = "CommandPublisher"
-    user = "admin"
-    password = "public"
-    topic = "CommandTopic"
+  [DeviceList.Protocols]
+    [DeviceList.Protocols.mqtt]
+       Schema = "tcp"
+       Host = "0.0.0.0"
+       Port = "1883"
+       ClientId = "CommandPublisher"
+       User = "admin"
+       Password = "public"
+       Topic = "CommandTopic"
 
-# Pre-define Schedule Configuration
-[[Schedules]]
-Name = "mqtt-30sec-schedule"
-Frequency = "PT30S"
-
-[[ScheduleEvents]]
-Name = "readRandnum"
-Schedule = "mqtt-30sec-schedule"
-  [ScheduleEvents.Addressable]
-  HTTPMethod = "GET"
-  Path = "/api/v1/device/name/MQTT test device/testrandnum"
