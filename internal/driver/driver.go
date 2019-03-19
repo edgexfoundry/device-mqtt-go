@@ -70,14 +70,14 @@ func (d *Driver) Initialize(lc logger.LoggingClient, asyncCh chan<- *sdkModel.As
 	go func() {
 		err := startCommandResponseListening()
 		if err != nil {
-			panic(fmt.Errorf("start command response Listener failed: %v", err))
+			panic(fmt.Errorf("start command response Listener failed, please check MQTT broker settings are correct, %v", err))
 		}
 	}()
 
 	go func() {
 		err := startIncomingListening()
 		if err != nil {
-			panic(fmt.Errorf("start incoming data Listener failed: %v", err))
+			panic(fmt.Errorf("start incoming data Listener failed, please check MQTT broker settings are correct, %v", err))
 		}
 	}()
 
@@ -109,7 +109,12 @@ func (d *Driver) HandleReadCommands(deviceName string, protocols map[string]mode
 	if err != nil {
 		return responses, err
 	}
-	defer client.Disconnect(5000)
+
+	defer func() {
+		if client.IsConnected() {
+			client.Disconnect(5000)
+		}
+	}()
 
 	for i, req := range reqs {
 		res, err := d.handleReadCommandRequest(client, req, connectionInfo.Topic)
@@ -194,7 +199,11 @@ func (d *Driver) HandleWriteCommands(deviceName string, protocols map[string]mod
 	if err != nil {
 		return err
 	}
-	defer client.Disconnect(5000)
+	defer func() {
+		if client.IsConnected() {
+			client.Disconnect(5000)
+		}
+	}()
 
 	for i, req := range reqs {
 		err = d.handleWriteCommandRequest(client, req, connectionInfo.Topic, params[i])
