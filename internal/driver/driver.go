@@ -1,6 +1,6 @@
 // -*- Mode: Go; indent-tabs-mode: t -*-
 //
-// Copyright (C) 2018 IOTech Ltd
+// Copyright (C) 2019 IOTech Ltd
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -84,35 +84,35 @@ func (d *Driver) Initialize(lc logger.LoggingClient, asyncCh chan<- *sdkModel.As
 	return nil
 }
 
-func (d *Driver) DisconnectDevice(address *models.Addressable) error {
-	panic("implement me")
+func (d *Driver) DisconnectDevice(deviceName string, protocols map[string]models.ProtocolProperties) error {
+	d.Logger.Warn("Driver's DisconnectDevice function didn't implement")
+	return nil
 }
 
-func (d *Driver) HandleReadCommands(addr *models.Addressable, reqs []sdkModel.CommandRequest) ([]*sdkModel.CommandValue, error) {
+func (d *Driver) HandleReadCommands(deviceName string, protocols map[string]models.ProtocolProperties, reqs []sdkModel.CommandRequest) ([]*sdkModel.CommandValue, error) {
 	var responses = make([]*sdkModel.CommandValue, len(reqs))
 	var err error
 
 	// create device client and open connection
-	var brokerUrl = addr.Address
-	var brokerPort = addr.Port
-	var username = addr.User
-	var password = addr.Password
-	var mqttClientId = addr.Publisher
-
-	uri := &url.URL{
-		Scheme: strings.ToLower(addr.Protocol),
-		Host:   fmt.Sprintf("%s:%d", brokerUrl, brokerPort),
-		User:   url.UserPassword(username, password),
+	connectionInfo, err := CreateConnectionInfo(protocols)
+	if err != nil {
+		return responses, err
 	}
 
-	client, err := createClient(mqttClientId, uri, 30)
+	uri := &url.URL{
+		Scheme: strings.ToLower(connectionInfo.Schema),
+		Host:   fmt.Sprintf("%s:%s", connectionInfo.Host, connectionInfo.Port),
+		User:   url.UserPassword(connectionInfo.User, connectionInfo.Password),
+	}
+
+	client, err := createClient(connectionInfo.ClientId, uri, 30)
 	if err != nil {
 		return responses, err
 	}
 	defer client.Disconnect(5000)
 
 	for i, req := range reqs {
-		res, err := d.handleReadCommandRequest(client, req, addr.Topic)
+		res, err := d.handleReadCommandRequest(client, req, connectionInfo.Topic)
 		if err != nil {
 			driver.Logger.Info(fmt.Sprintf("Handle read commands failed: %v", err))
 			return responses, err
@@ -175,30 +175,29 @@ func (d *Driver) handleReadCommandRequest(deviceClient MQTT.Client, req sdkModel
 	return result, err
 }
 
-func (d *Driver) HandleWriteCommands(addr *models.Addressable, reqs []sdkModel.CommandRequest, params []*sdkModel.CommandValue) error {
+func (d *Driver) HandleWriteCommands(deviceName string, protocols map[string]models.ProtocolProperties, reqs []sdkModel.CommandRequest, params []*sdkModel.CommandValue) error {
 	var err error
 
 	// create device client and open connection
-	var brokerUrl = addr.Address
-	var brokerPort = addr.Port
-	var username = addr.User
-	var password = addr.Password
-	var mqttClientId = addr.Publisher
-
-	uri := &url.URL{
-		Scheme: strings.ToLower(addr.Protocol),
-		Host:   fmt.Sprintf("%s:%d", brokerUrl, brokerPort),
-		User:   url.UserPassword(username, password),
+	connectionInfo, err := CreateConnectionInfo(protocols)
+	if err != nil {
+		return err
 	}
 
-	client, err := createClient(mqttClientId, uri, 30)
+	uri := &url.URL{
+		Scheme: strings.ToLower(connectionInfo.Schema),
+		Host:   fmt.Sprintf("%s:%s", connectionInfo.Host, connectionInfo.Port),
+		User:   url.UserPassword(connectionInfo.User, connectionInfo.Password),
+	}
+
+	client, err := createClient(connectionInfo.ClientId, uri, 30)
 	if err != nil {
 		return err
 	}
 	defer client.Disconnect(5000)
 
 	for i, req := range reqs {
-		err = d.handleWriteCommandRequest(client, req, addr.Topic, params[i])
+		err = d.handleWriteCommandRequest(client, req, connectionInfo.Topic, params[i])
 		if err != nil {
 			driver.Logger.Info(fmt.Sprintf("Handle write commands failed: %v", err))
 			return err
@@ -260,8 +259,9 @@ func (d *Driver) handleWriteCommandRequest(deviceClient MQTT.Client, req sdkMode
 	return nil
 }
 
-func (*Driver) Stop(force bool) error {
-	panic("implement me")
+func (d *Driver) Stop(force bool) error {
+	d.Logger.Warn("Driver's Stop function didn't implement")
+	return nil
 }
 
 // Create a MQTT client
