@@ -16,6 +16,7 @@ import (
 	"time"
 
 	MQTT "github.com/eclipse/paho.mqtt.golang"
+	"github.com/edgexfoundry/device-sdk-go"
 	sdkModel "github.com/edgexfoundry/device-sdk-go/pkg/models"
 	logger "github.com/edgexfoundry/go-mod-core-contracts/clients/logging"
 	"github.com/edgexfoundry/go-mod-core-contracts/models"
@@ -61,7 +62,7 @@ func (d *Driver) Initialize(lc logger.LoggingClient, asyncCh chan<- *sdkModel.As
 	d.Logger = lc
 	d.AsyncCh = asyncCh
 
-	config, err := LoadConfigFromFile()
+	config, err := CreateDriverConfig(device.DriverConfigs())
 	if err != nil {
 		panic(fmt.Errorf("read MQTT driver configuration failed: %v", err))
 	}
