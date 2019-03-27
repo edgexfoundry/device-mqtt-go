@@ -17,7 +17,7 @@ import (
 
 	MQTT "github.com/eclipse/paho.mqtt.golang"
 	sdkModel "github.com/edgexfoundry/device-sdk-go/pkg/models"
-	logger "github.com/edgexfoundry/go-mod-core-contracts/clients/logging"
+	logger "github.com/edgexfoundry/go-mod-core-contracts/clients/logger"
 	"github.com/edgexfoundry/go-mod-core-contracts/models"
 	"gopkg.in/mgo.v2/bson"
 )
