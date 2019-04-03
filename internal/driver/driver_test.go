@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"testing"
 
-	logger "github.com/edgexfoundry/go-mod-core-contracts/clients/logging"
+	logger "github.com/edgexfoundry/go-mod-core-contracts/clients/logger"
 	"github.com/edgexfoundry/go-mod-core-contracts/models"
 )
 
