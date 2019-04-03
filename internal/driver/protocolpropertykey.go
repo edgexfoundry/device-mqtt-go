@@ -16,4 +16,25 @@ const (
 	Password = "Password"
 	ClientId = "ClientId"
 	Topic    = "Topic"
+
+	// Driver config
+	IncomingSchema    = "IncomingSchema"
+	IncomingHost      = "IncomingHost"
+	IncomingPort      = "IncomingPort"
+	IncomingUser      = "IncomingUser"
+	IncomingPassword  = "IncomingPassword"
+	IncomingQos       = "IncomingQos"
+	IncomingKeepAlive = "IncomingKeepAlive"
+	IncomingClientId  = "IncomingClientId"
+	IncomingTopic     = "IncomingTopic"
+
+	ResponseSchema    = "ResponseSchema"
+	ResponseHost      = "ResponseHost"
+	ResponsePort      = "ResponsePort"
+	ResponseUser      = "ResponseUser"
+	ResponsePassword  = "ResponsePassword"
+	ResponseQos       = "ResponseQos"
+	ResponseKeepAlive = "ResponseKeepAlive"
+	ResponseClientId  = "ResponseClientId"
+	ResponseTopic     = "ResponseTopic"
 )

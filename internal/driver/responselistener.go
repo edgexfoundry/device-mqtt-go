@@ -1,6 +1,6 @@
 // -*- Mode: Go; indent-tabs-mode: t -*-
 //
-// Copyright (C) 2018 IOTech Ltd
+// Copyright (C) 2018-2019 IOTech Ltd
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -16,15 +16,15 @@ import (
 )
 
 func startCommandResponseListening() error {
-	var scheme = driver.Config.Response.Protocol
-	var brokerUrl = driver.Config.Response.Host
-	var brokerPort = driver.Config.Response.Port
-	var username = driver.Config.Response.Username
-	var password = driver.Config.Response.Password
-	var mqttClientId = driver.Config.Response.MqttClientId
-	var qos = byte(driver.Config.Response.Qos)
-	var keepAlive = driver.Config.Response.KeepAlive
-	var topic = driver.Config.Response.Topic
+	var scheme = driver.Config.ResponseSchema
+	var brokerUrl = driver.Config.ResponseHost
+	var brokerPort = driver.Config.ResponsePort
+	var username = driver.Config.ResponseUser
+	var password = driver.Config.ResponsePassword
+	var mqttClientId = driver.Config.ResponseClientId
+	var qos = byte(driver.Config.ResponseQos)
+	var keepAlive = driver.Config.ResponseKeepAlive
+	var topic = driver.Config.ResponseTopic
 
 	uri := &url.URL{
 		Scheme: strings.ToLower(scheme),

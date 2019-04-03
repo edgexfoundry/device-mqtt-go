@@ -1,6 +1,6 @@
 // -*- Mode: Go; indent-tabs-mode: t -*-
 //
-// Copyright (C) 2018 IOTech Ltd
+// Copyright (C) 2018-2019 IOTech Ltd
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -18,15 +18,15 @@ import (
 )
 
 func startIncomingListening() error {
-	var scheme = driver.Config.Incoming.Protocol
-	var brokerUrl = driver.Config.Incoming.Host
-	var brokerPort = driver.Config.Incoming.Port
-	var username = driver.Config.Incoming.Username
-	var password = driver.Config.Incoming.Password
-	var mqttClientId = driver.Config.Incoming.MqttClientId
-	var qos = byte(driver.Config.Incoming.Qos)
-	var keepAlive = driver.Config.Incoming.KeepAlive
-	var topic = driver.Config.Incoming.Topic
+	var scheme = driver.Config.IncomingSchema
+	var brokerUrl = driver.Config.IncomingHost
+	var brokerPort = driver.Config.IncomingPort
+	var username = driver.Config.IncomingUser
+	var password = driver.Config.IncomingPassword
+	var mqttClientId = driver.Config.IncomingClientId
+	var qos = byte(driver.Config.IncomingQos)
+	var keepAlive = driver.Config.IncomingKeepAlive
+	var topic = driver.Config.IncomingTopic
 
 	uri := &url.URL{
 		Scheme: strings.ToLower(scheme),
