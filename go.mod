@@ -3,8 +3,8 @@ module github.com/edgexfoundry/device-mqtt-go
 require (
 	github.com/BurntSushi/toml v0.3.1
 	github.com/eclipse/paho.mqtt.golang v1.1.1
-	github.com/edgexfoundry/device-sdk-go v0.0.0-20190327093245-36880143888a
-	github.com/edgexfoundry/go-mod-core-contracts v0.0.0-20190326164454-587b69238c54
+	github.com/edgexfoundry/device-sdk-go v0.0.0-20190415234449-132c5ec382ca
+	github.com/edgexfoundry/go-mod-core-contracts v0.0.0-20190408185438-838c1e45fef1
 	github.com/go-stack/stack v1.8.0 // indirect
 	github.com/google/uuid v1.1.1 // indirect
 	github.com/gorilla/mux v1.7.0 // indirect
