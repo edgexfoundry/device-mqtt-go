@@ -67,6 +67,10 @@ Level = "DEBUG"
        User = "admin"
        Password = "public"
        Topic = "CommandTopic"
+  [[DeviceList.AutoEvents]]
+    Frequency = "20s"
+    OnChange = false
+    Resource = "testrandnum"
 
 # Driver configs
 [Driver]

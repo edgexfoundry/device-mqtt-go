@@ -36,7 +36,7 @@ deviceResources:
     units:
       { type: "String", readWrite: "R", defaultValue: "" }
 
-resources:
+deviceCommands:
 -
   name: testrandnum
   get:
@@ -52,7 +52,7 @@ resources:
   set:
   - { index: "1", operation: "set", object: "message", parameter: "message", property: "value" }
 
-commands:
+coreCommands:
 -
   name: testrandnum
   get:
