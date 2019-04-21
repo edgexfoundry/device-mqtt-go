@@ -40,17 +40,17 @@ deviceCommands:
 -
   name: testrandnum
   get:
-  - { index: "1", operation: "get", object: "randnum", parameter: "randnum", property: "value" }
+  - { index: "1", operation: "get", object: "randnum", parameter: "randnum" }
 -
   name: testping
   get:
-  - { index: "1", operation: "get", object: "ping", parameter: "ping", property: "value" }
+  - { index: "1", operation: "get", object: "ping", parameter: "ping" }
 -
   name: testmessage
   get:
-  - { index: "1", operation: "get", object: "message", parameter: "message", property: "value" }
+  - { index: "1", operation: "get", object: "message", parameter: "message" }
   set:
-  - { index: "1", operation: "set", object: "message", parameter: "message", property: "value" }
+  - { index: "1", operation: "set", object: "message", parameter: "message" }
 
 coreCommands:
 -
