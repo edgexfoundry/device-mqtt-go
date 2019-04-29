@@ -1,5 +1,5 @@
 # Device MQTT Go
-MQTT device service go version. The design is base on [ document](https://github.com/edgexfoundry/edgex-go/blob/master/docs/examples/Ch-ExamplesMQTTDeviceService.rst) .
+MQTT device service go version. The design is base on [ document](https://wiki.edgexfoundry.org/display/FA/MQTT+Device+Service+-+How+to+use%2C+configure%2C+and+where+to+customize) .
 
 ## Requisite
 * core-data
