@@ -27,8 +27,6 @@ test:
 clean:
 	rm -f $(MICROSERVICES)
 
-prepare:
-
 run:
 	cd bin && ./edgex-launch.sh
 
