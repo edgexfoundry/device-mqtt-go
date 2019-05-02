@@ -1,78 +1,62 @@
+// -*- Mode: Go; indent-tabs-mode: t -*-
+//
+// Copyright (C) 2019 IOTech Ltd
+//
+// SPDX-License-Identifier: Apache-2.0
+
 package driver
 
 import (
 	"math"
-	"strings"
+
+	sdkModel "github.com/edgexfoundry/device-sdk-go/pkg/models"
+	"github.com/spf13/cast"
 )
 
 // checkValueInRange checks value range is valid
-func checkValueInRange(profileValueType string, readingValueType string, reading interface{}) bool {
+func checkValueInRange(valueType sdkModel.ValueType, reading interface{}) bool {
 	isValid := false
 
-	if profileValueType == "string" || profileValueType == "bool" {
+	if valueType == sdkModel.String || valueType == sdkModel.Bool {
 		return true
 	}
 
-	switch {
-	case strings.Contains(profileValueType, "uint"):
-		var val uint64
-		if readingValueType == "int" {
-			val = uint64(reading.(int64))
-		} else if readingValueType == "uint" {
-			val = uint64(reading.(uint64))
-		} else if readingValueType == "float32" {
-			val = uint64(reading.(float32))
-		} else {
-			val = uint64(reading.(float64))
-		}
-		isValid = checkUintValueRange(profileValueType, val)
+	if valueType == sdkModel.Int8 || valueType == sdkModel.Int16 ||
+		valueType == sdkModel.Int32 || valueType == sdkModel.Int64 {
+		val := cast.ToInt64(reading)
+		isValid = checkIntValueRange(valueType, val)
+	}
 
-	case strings.Contains(profileValueType, "int"):
-		var val int64
-		if readingValueType == "int" {
-			val = int64(reading.(int64))
-		} else if readingValueType == "uint" {
-			val = int64(reading.(uint64))
-		} else if readingValueType == "float32" {
-			val = int64(reading.(float32))
-		} else {
-			val = int64(reading.(float64))
-		}
-		isValid = checkIntValueRange(profileValueType, val)
+	if valueType == sdkModel.Uint8 || valueType == sdkModel.Uint16 ||
+		valueType == sdkModel.Uint32 || valueType == sdkModel.Uint64 {
+		val := cast.ToUint64(reading)
+		isValid = checkUintValueRange(valueType, val)
+	}
 
-	case strings.Contains(profileValueType, "float"):
-		var val float64
-		if readingValueType == "int" {
-			val = float64(reading.(int64))
-		} else if readingValueType == "uint" {
-			val = float64(reading.(uint64))
-		} else if readingValueType == "float32" {
-			val = float64(reading.(float32))
-		} else {
-			val = float64(reading.(float64))
-		}
-		isValid = checkFloatValueRange(profileValueType, val)
+	if valueType == sdkModel.Float32 || valueType == sdkModel.Float64 {
+		val := cast.ToFloat64(reading)
+		isValid = checkFloatValueRange(valueType, val)
 	}
 
 	return isValid
 }
 
-func checkUintValueRange(profileValueType string, val uint64) bool {
+func checkUintValueRange(valueType sdkModel.ValueType, val uint64) bool {
 	var isValid = false
-	switch profileValueType {
-	case "uint8":
+	switch valueType {
+	case sdkModel.Uint8:
 		if val >= 0 && val <= math.MaxUint8 {
 			isValid = true
 		}
-	case "uint16":
+	case sdkModel.Uint16:
 		if val >= 0 && val <= math.MaxUint16 {
 			isValid = true
 		}
-	case "uint32":
+	case sdkModel.Uint32:
 		if val >= 0 && val <= math.MaxUint32 {
 			isValid = true
 		}
-	case "uint64":
+	case sdkModel.Uint64:
 		maxiMum := uint64(math.MaxUint64)
 		if val >= 0 && val <= maxiMum {
 			isValid = true
@@ -81,22 +65,22 @@ func checkUintValueRange(profileValueType string, val uint64) bool {
 	return isValid
 }
 
-func checkIntValueRange(profileValueType string, val int64) bool {
+func checkIntValueRange(valueType sdkModel.ValueType, val int64) bool {
 	var isValid = false
-	switch profileValueType {
-	case "int8":
+	switch valueType {
+	case sdkModel.Int8:
 		if val >= math.MinInt8 && val <= math.MaxInt8 {
 			isValid = true
 		}
-	case "int16":
+	case sdkModel.Int16:
 		if val >= math.MinInt16 && val <= math.MaxInt16 {
 			isValid = true
 		}
-	case "int32":
+	case sdkModel.Int32:
 		if val >= math.MinInt32 && val <= math.MaxInt32 {
 			isValid = true
 		}
-	case "int64":
+	case sdkModel.Int64:
 		if val >= math.MinInt64 && val <= math.MaxInt64 {
 			isValid = true
 		}
@@ -104,15 +88,15 @@ func checkIntValueRange(profileValueType string, val int64) bool {
 	return isValid
 }
 
-func checkFloatValueRange(profileValueType string, val float64) bool {
+func checkFloatValueRange(valueType sdkModel.ValueType, val float64) bool {
 	var isValid = false
-	switch profileValueType {
-	case "float32":
-		if val >= math.SmallestNonzeroFloat32 && val <= math.MaxFloat32 {
+	switch valueType {
+	case sdkModel.Float32:
+		if math.Abs(val) >= math.SmallestNonzeroFloat32 && math.Abs(val) <= math.MaxFloat32 {
 			isValid = true
 		}
-	case "float64":
-		if val >= math.SmallestNonzeroFloat64 && val <= math.MaxFloat64 {
+	case sdkModel.Float64:
+		if math.Abs(val) >= math.SmallestNonzeroFloat64 && math.Abs(val) <= math.MaxFloat64 {
 			isValid = true
 		}
 	}

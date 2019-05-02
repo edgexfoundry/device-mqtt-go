@@ -80,13 +80,12 @@ func onIncomingDataReceived(client mqtt.Client, message mqtt.Message) {
 		return
 	}
 
-	ro, ok := service.ResourceOperation(deviceName, cmd, "get")
-	if !ok {
-		driver.Logger.Warn(fmt.Sprintf("[Incoming listener] Incoming reading ignored. No ResourceOperation found : topic=%v msg=%v", message.Topic(), string(message.Payload())))
-		return
+	req := sdkModel.CommandRequest{
+		DeviceResourceName: cmd,
+		Type:               sdkModel.ParseValueType(deviceObject.Properties.Value.Type),
 	}
 
-	result, err := newResult(deviceObject, ro, reading)
+	result, err := newResult(req, reading)
 
 	if err != nil {
 		driver.Logger.Warn(fmt.Sprintf("[Incoming listener] Incoming reading ignored.   topic=%v msg=%v error=%v", message.Topic(), string(message.Payload()), err))

@@ -10,7 +10,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/url"
-	"reflect"
 	"strings"
 	"sync"
 	"time"
@@ -18,8 +17,9 @@ import (
 	MQTT "github.com/eclipse/paho.mqtt.golang"
 	"github.com/edgexfoundry/device-sdk-go"
 	sdkModel "github.com/edgexfoundry/device-sdk-go/pkg/models"
-	logger "github.com/edgexfoundry/go-mod-core-contracts/clients/logger"
+	"github.com/edgexfoundry/go-mod-core-contracts/clients/logger"
 	"github.com/edgexfoundry/go-mod-core-contracts/models"
+	"github.com/spf13/cast"
 	"gopkg.in/mgo.v2/bson"
 )
 
@@ -138,7 +138,7 @@ func (d *Driver) handleReadCommandRequest(deviceClient MQTT.Client, req sdkModel
 
 	var method = "get"
 	var cmdUuid = bson.NewObjectId().Hex()
-	var cmd = req.DeviceResource.Name
+	var cmd = req.DeviceResourceName
 
 	data := make(map[string]interface{})
 	data["uuid"] = cmdUuid
@@ -165,13 +165,13 @@ func (d *Driver) handleReadCommandRequest(deviceClient MQTT.Client, req sdkModel
 
 	var response map[string]interface{}
 	json.Unmarshal([]byte(cmdResponse), &response)
-	reading, ok := response[req.DeviceResource.Name]
+	reading, ok := response[cmd]
 	if !ok {
 		err = fmt.Errorf("can not fetch command reading: method=%v cmd=%v", method, cmd)
 		return result, err
 	}
 
-	result, err = newResult(req.DeviceResource, req.RO, reading)
+	result, err = newResult(req, reading)
 	if err != nil {
 		return result, err
 	} else {
@@ -224,14 +224,14 @@ func (d *Driver) handleWriteCommandRequest(deviceClient MQTT.Client, req sdkMode
 
 	var method = "set"
 	var cmdUuid = bson.NewObjectId().Hex()
-	var cmd = req.DeviceResource.Name
+	var cmd = req.DeviceResourceName
 
 	data := make(map[string]interface{})
 	data["uuid"] = cmdUuid
 	data["method"] = method
 	data["cmd"] = cmd
 
-	commandValue, err := newCommandValue(req.DeviceResource, param)
+	commandValue, err := newCommandValue(req.Type, param)
 	if err != nil {
 		return err
 	} else {
@@ -303,110 +303,128 @@ func createClient(clientID string, uri *url.URL, keepAlive int) (MQTT.Client, er
 	return client, nil
 }
 
-func newResult(deviceObject models.DeviceResource, ro models.ResourceOperation, reading interface{}) (*sdkModel.CommandValue, error) {
+func newResult(req sdkModel.CommandRequest, reading interface{}) (*sdkModel.CommandValue, error) {
 	var result = &sdkModel.CommandValue{}
 	var err error
 	var resTime = time.Now().UnixNano() / int64(time.Millisecond)
-	var profileValueType = strings.ToLower(deviceObject.Properties.Value.Type)
-	var readingValueType = strings.ToLower(reflect.TypeOf(reading).String())
+	castError := "fail to parse %v reading, %v"
 
-	if readingValueType == "int" {
-		reading = int64(reading.(int))
-	}
-
-	if readingValueType == "uint" {
-		reading = uint64(reading.(uint))
-	}
-
-	// Check and convert reading when it is string type
-	reading, readingValueType, err = handleReadingStringValue(profileValueType, readingValueType, reading)
-	if err != nil {
-		err = fmt.Errorf("parse reading fail. Error: %v", err)
+	if !checkValueInRange(req.Type, reading) {
+		err = fmt.Errorf("parse reading fail. Reading %v is out of the value type(%v)'s range", reading, req.Type)
 		driver.Logger.Error(err.Error())
 		return result, err
 	}
 
-	// Only check unknown value range
-	if readingValueType == "int" || readingValueType == "uint" || readingValueType == "float32" || readingValueType == "float64" {
-		if !checkValueInRange(profileValueType, readingValueType, reading) {
-			err = fmt.Errorf("parse reading fail. Reading(%v) is out of the value type(%v)'s range", readingValueType, profileValueType)
-			driver.Logger.Error(err.Error())
-			return result, err
+	switch req.Type {
+	case sdkModel.Bool:
+		val, err := cast.ToBoolE(reading)
+		if err != nil {
+			return nil, fmt.Errorf(castError, req.DeviceResourceName, err)
 		}
-	} else {
-		// Throw error when value type no need to convert but not matched
-		if profileValueType != readingValueType {
-			err = fmt.Errorf("parse reading fail. Value type not matched. Reading - (%v) , profile - (%v)", readingValueType, profileValueType)
-			driver.Logger.Error(err.Error())
-			return result, err
+		result, err = sdkModel.NewBoolValue(req.DeviceResourceName, resTime, val)
+	case sdkModel.String:
+		val, err := cast.ToStringE(reading)
+		if err != nil {
+			return nil, fmt.Errorf(castError, req.DeviceResourceName, err)
 		}
-	}
-
-	// Convert int, uint, float to correct value type
-	reading = convertReadingValueType(profileValueType, readingValueType, reading)
-
-	switch profileValueType {
-	case "bool":
-		result, err = sdkModel.NewBoolValue(&ro, resTime, reading.(bool))
-	case "string":
-		result = sdkModel.NewStringValue(&ro, resTime, reading.(string))
-	case "uint8":
-		result, err = sdkModel.NewUint8Value(&ro, resTime, reading.(uint8))
-	case "uint16":
-		result, err = sdkModel.NewUint16Value(&ro, resTime, reading.(uint16))
-	case "uint32":
-		result, err = sdkModel.NewUint32Value(&ro, resTime, reading.(uint32))
-	case "uint64":
-		result, err = sdkModel.NewUint64Value(&ro, resTime, reading.(uint64))
-	case "int8":
-		result, err = sdkModel.NewInt8Value(&ro, resTime, reading.(int8))
-	case "int16":
-		result, err = sdkModel.NewInt16Value(&ro, resTime, reading.(int16))
-	case "int32":
-		result, err = sdkModel.NewInt32Value(&ro, resTime, reading.(int32))
-	case "int64":
-		result, err = sdkModel.NewInt64Value(&ro, resTime, reading.(int64))
-	case "float32":
-		result, err = sdkModel.NewFloat32Value(&ro, resTime, reading.(float32))
-	case "float64":
-		result, err = sdkModel.NewFloat64Value(&ro, resTime, reading.(float64))
+		result = sdkModel.NewStringValue(req.DeviceResourceName, resTime, val)
+	case sdkModel.Uint8:
+		val, err := cast.ToUint8E(reading)
+		if err != nil {
+			return nil, fmt.Errorf(castError, req.DeviceResourceName, err)
+		}
+		result, err = sdkModel.NewUint8Value(req.DeviceResourceName, resTime, val)
+	case sdkModel.Uint16:
+		val, err := cast.ToUint16E(reading)
+		if err != nil {
+			return nil, fmt.Errorf(castError, req.DeviceResourceName, err)
+		}
+		result, err = sdkModel.NewUint16Value(req.DeviceResourceName, resTime, val)
+	case sdkModel.Uint32:
+		val, err := cast.ToUint32E(reading)
+		if err != nil {
+			return nil, fmt.Errorf(castError, req.DeviceResourceName, err)
+		}
+		result, err = sdkModel.NewUint32Value(req.DeviceResourceName, resTime, val)
+	case sdkModel.Uint64:
+		val, err := cast.ToUint64E(reading)
+		if err != nil {
+			return nil, fmt.Errorf(castError, req.DeviceResourceName, err)
+		}
+		result, err = sdkModel.NewUint64Value(req.DeviceResourceName, resTime, val)
+	case sdkModel.Int8:
+		val, err := cast.ToInt8E(reading)
+		if err != nil {
+			return nil, fmt.Errorf(castError, req.DeviceResourceName, err)
+		}
+		result, err = sdkModel.NewInt8Value(req.DeviceResourceName, resTime, val)
+	case sdkModel.Int16:
+		val, err := cast.ToInt16E(reading)
+		if err != nil {
+			return nil, fmt.Errorf(castError, req.DeviceResourceName, err)
+		}
+		result, err = sdkModel.NewInt16Value(req.DeviceResourceName, resTime, val)
+	case sdkModel.Int32:
+		val, err := cast.ToInt32E(reading)
+		if err != nil {
+			return nil, fmt.Errorf(castError, req.DeviceResourceName, err)
+		}
+		result, err = sdkModel.NewInt32Value(req.DeviceResourceName, resTime, val)
+	case sdkModel.Int64:
+		val, err := cast.ToInt64E(reading)
+		if err != nil {
+			return nil, fmt.Errorf(castError, req.DeviceResourceName, err)
+		}
+		result, err = sdkModel.NewInt64Value(req.DeviceResourceName, resTime, val)
+	case sdkModel.Float32:
+		val, err := cast.ToFloat32E(reading)
+		if err != nil {
+			return nil, fmt.Errorf(castError, req.DeviceResourceName, err)
+		}
+		result, err = sdkModel.NewFloat32Value(req.DeviceResourceName, resTime, val)
+	case sdkModel.Float64:
+		val, err := cast.ToFloat64E(reading)
+		if err != nil {
+			return nil, fmt.Errorf(castError, req.DeviceResourceName, err)
+		}
+		result, err = sdkModel.NewFloat64Value(req.DeviceResourceName, resTime, val)
 	default:
-		err = fmt.Errorf("return result fail, none supported value type: %v", deviceObject.Properties.Value.Type)
+		err = fmt.Errorf("return result fail, none supported value type: %v", req.Type)
 	}
 
 	return result, err
 }
 
-func newCommandValue(deviceObject models.DeviceResource, param *sdkModel.CommandValue) (interface{}, error) {
+func newCommandValue(valueType sdkModel.ValueType, param *sdkModel.CommandValue) (interface{}, error) {
 	var commandValue interface{}
 	var err error
-	switch strings.ToLower(deviceObject.Properties.Value.Type) {
-	case "bool":
+	switch valueType {
+	case sdkModel.Bool:
 		commandValue, err = param.BoolValue()
-	case "string":
+	case sdkModel.String:
 		commandValue, err = param.StringValue()
-	case "uint8":
+	case sdkModel.Uint8:
 		commandValue, err = param.Uint8Value()
-	case "uint16":
+	case sdkModel.Uint16:
 		commandValue, err = param.Uint16Value()
-	case "uint32":
+	case sdkModel.Uint32:
 		commandValue, err = param.Uint32Value()
-	case "uint64":
+	case sdkModel.Uint64:
 		commandValue, err = param.Uint64Value()
-	case "int8":
+	case sdkModel.Int8:
 		commandValue, err = param.Int8Value()
-	case "int16":
+	case sdkModel.Int16:
 		commandValue, err = param.Int16Value()
-	case "int32":
+	case sdkModel.Int32:
 		commandValue, err = param.Int32Value()
-	case "int64":
+	case sdkModel.Int64:
 		commandValue, err = param.Int64Value()
-	case "float32":
+	case sdkModel.Float32:
 		commandValue, err = param.Float32Value()
-	case "float64":
+	case sdkModel.Float64:
 		commandValue, err = param.Float64Value()
 	default:
-		err = fmt.Errorf("fail to convert param, none supported value type: %v", deviceObject.Properties.Value.Type)
+		err = fmt.Errorf("fail to convert param, none supported value type: %v", valueType)
 	}
 
 	return commandValue, err
