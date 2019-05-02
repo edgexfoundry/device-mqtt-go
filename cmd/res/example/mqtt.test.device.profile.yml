@@ -5,21 +5,24 @@ labels:
 - "test"
 description: "Test device profile"
 deviceResources:
--
-  name: randnum
-  description: "device random number"
-  attributes:
-    { name: "randnum" }
+
+- name: randfloat32
+  description: "device random number with Base64 encoding"
   properties:
     value:
-      { type: "Float64", size: "4", readWrite: "R", defaultValue: "0.00", minimum: "100.00", maximum: "0.00"  }
+      { type: "Float32", size: "4", readWrite: "R", defaultValue: "0.00", minimum: "100.00", maximum: "0.00", floatEncoding: "Base64" }
+    units:
+      { type: "String", readWrite: "R", defaultValue: "" }
+- name: randfloat64
+  description: "device random number with e notion"
+  properties:
+    value:
+      { type: "Float64", size: "4", readWrite: "R", defaultValue: "0.00", minimum: "100.00", maximum: "0.00", floatEncoding: "eNotation" }
     units:
       { type: "String", readWrite: "R", defaultValue: "" }
 -
   name: ping
   description: "device awake"
-  attributes:
-    { name: "ping" }
   properties:
     value:
       { type: "String", size: "0", readWrite: "R", defaultValue: "oops" }
@@ -28,8 +31,6 @@ deviceResources:
 -
   name: message
   description: "device notification message"
-  attributes:
-    { name: "message" }
   properties:
     value:
       { type: "String", size: "0", readWrite: "W" ,scale: "", offset: "", base: ""  }
@@ -37,10 +38,12 @@ deviceResources:
       { type: "String", readWrite: "R", defaultValue: "" }
 
 deviceCommands:
--
-  name: testrandnum
+- name: testrandfloat32
   get:
-  - { index: "1", operation: "get", object: "randnum", parameter: "randnum" }
+    - { index: "1", operation: "get", object: "randfloat32", parameter: "randfloat32" }
+- name: testrandfloat64
+  get:
+    - { index: "1", operation: "get", object: "randfloat64", parameter: "randfloat64" }
 -
   name: testping
   get:
@@ -53,19 +56,28 @@ deviceCommands:
   - { index: "1", operation: "set", object: "message", parameter: "message" }
 
 coreCommands:
--
-  name: testrandnum
+- name: testrandfloat32
   get:
-    path: "/api/v1/device/{deviceId}/testrandnum"
+    path: "/api/v1/device/{deviceId}/testrandfloat32"
     responses:
     -
       code: "200"
-      description: "get the random value"
-      expectedValues: ["randnum"]
+      description: "get the random float32 value"
+      expectedValues: ["randfloat32"]
     -
       code: "503"
       description: "service unavailable"
       expectedValues: []
+- name: testrandfloat64
+  get:
+    path: "/api/v1/device/{deviceId}/testrandfloat64"
+    responses:
+      - code: "200"
+        description: "get the random float64 value"
+        expectedValues: ["randfloat64"]
+      - code: "503"
+        description: "service unavailable"
+        expectedValues: []
 -
   name: testping
   get:
