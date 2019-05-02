@@ -70,7 +70,7 @@ Level = "DEBUG"
   [[DeviceList.AutoEvents]]
     Frequency = "20s"
     OnChange = false
-    Resource = "testrandnum"
+    Resource = "testrandfloat32"
 
 # Driver configs
 [Driver]

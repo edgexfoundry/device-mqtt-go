@@ -119,8 +119,11 @@ func onCommandReceivedFromBroker(client mqtt.Client, message mqtt.Message) {
 			case "ping":
 				request["ping"] = "pong"
 				sendTestData(request)
-			case "randnum":
-				request["randnum"] = rand.Float64()
+			case "randfloat32":
+				request["randfloat32"] = rand.Float32()
+				sendTestData(request)
+			case "randfloat64":
+				request["randfloat64"] = rand.Float64()
 				sendTestData(request)
 			case "message":
 				request["message"] = "test-message"
