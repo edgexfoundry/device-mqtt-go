@@ -13,11 +13,10 @@ import (
 )
 
 const (
-	version     string = device_mqtt.Version
 	serviceName string = "edgex-device-mqtt"
 )
 
 func main() {
 	sd := driver.NewProtocolDriver()
-	startup.Bootstrap(serviceName, version, sd)
+	startup.Bootstrap(serviceName, device_mqtt.Version, sd)
 }
