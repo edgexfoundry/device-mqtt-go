@@ -32,4 +32,4 @@ EXPOSE $APP_PORT
 
 COPY --from=builder /go/src/github.com/edgexfoundry/device-mqtt-go/cmd /
 
-ENTRYPOINT ["/device-mqtt","--registry","--profile=docker","--confdir=/res"]
+ENTRYPOINT ["/device-mqtt","--profile=docker","--confdir=/res"]
