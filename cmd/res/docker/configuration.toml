@@ -49,8 +49,29 @@ Type = "consul"
   ProfilesDir = ""
 
 [Logging]
-EnableRemote = false
+EnableRemote = true
 File = "./device-mqtt.log"
 
 [Writable]
 LogLevel = "INFO"
+
+# Driver configs
+[Driver]
+IncomingSchema = "tcp"
+IncomingHost = "0.0.0.0"
+IncomingPort = "1883"
+IncomingUser = "admin"
+IncomingPassword = "public"
+IncomingQos = "0"
+IncomingKeepAlive = "3600"
+IncomingClientId = "IncomingDataSubscriber"
+IncomingTopic = "DataTopic"
+ResponseSchema = "tcp"
+ResponseHost = "0.0.0.0"
+ResponsePort = "1883"
+ResponseUser = "admin"
+ResponsePassword = "public"
+ResponseQos = "0"
+ResponseKeepAlive = "3600"
+ResponseClientId = "CommandResponseSubscriber"
+ResponseTopic = "ResponseTopic"
