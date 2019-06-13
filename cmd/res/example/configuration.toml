@@ -4,7 +4,6 @@ Port = 49982
 ConnectRetries = 3
 Labels = []
 OpenMsg = "device mqtt started"
-ReadMaxLimit = 256
 Timeout = 5000
 EnableAsyncReadings = true
 AsyncBufferSize = 16
@@ -15,6 +14,7 @@ Port = 8500
 CheckInterval = "10s"
 FailLimit = 3
 FailWaitTime = 10
+Type = "consul"
 
 [Clients]
   [Clients.Data]
@@ -50,7 +50,9 @@ FailWaitTime = 10
 [Logging]
 EnableRemote = false
 File = "./device-mqtt.log"
-Level = "DEBUG"
+
+[Writable]
+LogLevel = "DEBUG"
 
 # Pre-define Devices
 [[DeviceList]]
