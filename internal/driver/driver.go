@@ -306,7 +306,7 @@ func createClient(clientID string, uri *url.URL, keepAlive int) (MQTT.Client, er
 func newResult(req sdkModel.CommandRequest, reading interface{}) (*sdkModel.CommandValue, error) {
 	var result = &sdkModel.CommandValue{}
 	var err error
-	var resTime = time.Now().UnixNano() / int64(time.Millisecond)
+	var resTime = time.Now().UnixNano()
 	castError := "fail to parse %v reading, %v"
 
 	if !checkValueInRange(req.Type, reading) {
