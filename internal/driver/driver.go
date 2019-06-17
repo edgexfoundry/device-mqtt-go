@@ -46,14 +46,13 @@ type connectionInfo struct {
 type Driver struct {
 	Logger           logger.LoggingClient
 	AsyncCh          chan<- *sdkModel.AsyncValues
-	CommandResponses map[string]string
+	CommandResponses sync.Map
 	Config           *configuration
 }
 
 func NewProtocolDriver() sdkModel.ProtocolDriver {
 	once.Do(func() {
 		driver = new(Driver)
-		driver.CommandResponses = make(map[string]string)
 	})
 	return driver
 }
@@ -155,7 +154,7 @@ func (d *Driver) handleReadCommandRequest(deviceClient MQTT.Client, req sdkModel
 	driver.Logger.Info(fmt.Sprintf("Publish command: %v", string(jsonData)))
 
 	// fetch response from MQTT broker after publish command successful
-	cmdResponse, ok := fetchCommandResponse(d.CommandResponses, cmdUuid)
+	cmdResponse, ok := d.fetchCommandResponse(cmdUuid)
 	if !ok {
 		err = fmt.Errorf("can not fetch command response: method=%v cmd=%v", method, cmd)
 		return result, err
@@ -248,11 +247,12 @@ func (d *Driver) handleWriteCommandRequest(deviceClient MQTT.Client, req sdkMode
 	driver.Logger.Info(fmt.Sprintf("Publish command: %v", string(jsonData)))
 
 	//wait and fetch response from CommandResponses map
-	var cmdResponse string
+	var cmdResponse interface{}
 	var ok bool
 	for i := 0; i < 5; i++ {
-		cmdResponse, ok = d.CommandResponses[cmdUuid]
+		cmdResponse, ok = d.CommandResponses.Load(cmdUuid)
 		if ok {
+			d.CommandResponses.Delete(cmdUuid)
 			break
 		} else {
 			time.Sleep(time.Second * time.Duration(1))
@@ -431,17 +431,18 @@ func newCommandValue(valueType sdkModel.ValueType, param *sdkModel.CommandValue)
 }
 
 // fetchCommandResponse use to wait and fetch response from CommandResponses map
-func fetchCommandResponse(commandResponses map[string]string, cmdUuid string) (string, bool) {
-	var cmdResponse string
+func (d *Driver) fetchCommandResponse(cmdUuid string) (string, bool) {
+	var cmdResponse interface{}
 	var ok bool
 	for i := 0; i < 5; i++ {
-		cmdResponse, ok = commandResponses[cmdUuid]
+		cmdResponse, ok = d.CommandResponses.Load(cmdUuid)
 		if ok {
+			d.CommandResponses.Delete(cmdUuid)
 			break
 		} else {
 			time.Sleep(time.Second * time.Duration(1))
 		}
 	}
 
-	return cmdResponse, ok
+	return fmt.Sprintf("%v", cmdResponse), ok
 }
