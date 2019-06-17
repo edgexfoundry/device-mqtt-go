@@ -59,7 +59,7 @@ func onCommandResponseReceived(client mqtt.Client, message mqtt.Message) {
 	json.Unmarshal(message.Payload(), &response)
 	uuid, ok := response["uuid"].(string)
 	if ok {
-		driver.CommandResponses[uuid] = string(message.Payload())
+		driver.CommandResponses.Store(uuid, string(message.Payload()))
 		driver.Logger.Info(fmt.Sprintf("[Response listener] Command response received: topic=%v uuid=%v msg=%v", message.Topic(), uuid, string(message.Payload())))
 	} else {
 		driver.Logger.Warn(fmt.Sprintf("[Response listener] Command response ignored. No UUID found in the message: topic=%v msg=%v", message.Topic(), string(message.Payload())))
