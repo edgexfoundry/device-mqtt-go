@@ -10,7 +10,9 @@ import (
 	"fmt"
 	"reflect"
 	"strconv"
+	"strings"
 
+	sdk "github.com/edgexfoundry/device-sdk-go"
 	"github.com/edgexfoundry/go-mod-core-contracts/models"
 )
 
@@ -24,6 +26,12 @@ type ConnectionInfo struct {
 	Topic    string
 }
 
+type topicInfo struct {
+	Topic      string
+	DeviceName string
+	Command    string
+}
+
 type configuration struct {
 	IncomingSchema    string
 	IncomingHost      string
@@ -33,7 +41,7 @@ type configuration struct {
 	IncomingQos       int
 	IncomingKeepAlive int
 	IncomingClientId  string
-	IncomingTopic     string
+	IncomingTopics    []topicInfo
 
 	ResponseSchema    string
 	ResponseHost      string
@@ -79,22 +87,42 @@ func load(config map[string]string, des interface{}) error {
 		typeField := val.Type().Field(i)
 		valueField := val.Field(i)
 
-		val, ok := config[typeField.Name]
+		configVal, ok := config[typeField.Name]
 		if !ok {
 			return fmt.Errorf(errorMessage, typeField.Name)
 		}
 
-		switch valueField.Kind() {
-		case reflect.Int:
-			intVal, err := strconv.Atoi(val)
+		switch valueField.Interface().(type) {
+		case int:
+			intVal, err := strconv.Atoi(configVal)
 			if err != nil {
 				return err
 			}
 			valueField.SetInt(int64(intVal))
-		case reflect.String:
-			valueField.SetString(val)
+		case string:
+			valueField.SetString(configVal)
+		case []topicInfo:
+			cmdTopicPairs := strings.Split(configVal, ",")
+			for _, cmdTopicPair := range cmdTopicPairs {
+				values := strings.Split(cmdTopicPair, ":")
+
+				if len(values) != 3 {
+					fmt.Errorf("wrong number of elements in %v expecting 3 received %v", cmdTopicPair, len(values))
+				}
+
+				topic := topicInfo{Topic: strings.TrimSpace(values[0]), Command: strings.TrimSpace(values[1]), DeviceName: strings.TrimSpace(values[2])}
+
+				service := sdk.RunningService()
+
+				_, ok := service.DeviceResource(topic.DeviceName, topic.Command, "get")
+				if !ok {
+					return fmt.Errorf("no DeviceObject found with deviceName %v and cmd %v", topic.DeviceName, topic.Command)
+				}
+
+				valueField.Set(reflect.Append(valueField, reflect.ValueOf(topic)))
+			}
 		default:
-			return fmt.Errorf("none supported value type %v ,%v", valueField.Kind(), typeField.Name)
+			return fmt.Errorf("non supported value type %v ,%v", valueField.Kind(), typeField.Name)
 		}
 	}
 	return nil

@@ -26,7 +26,7 @@ const (
 	IncomingQos       = "IncomingQos"
 	IncomingKeepAlive = "IncomingKeepAlive"
 	IncomingClientId  = "IncomingClientId"
-	IncomingTopic     = "IncomingTopic"
+	IncomingTopics    = "IncomingTopics"
 
 	ResponseSchema    = "ResponseSchema"
 	ResponseHost      = "ResponseHost"

@@ -1,0 +1,37 @@
+name: "MQTT-POS-2"
+manufacturer: "Intel"
+model: "MQTT-POS"
+labels:
+- "test"
+description: "POS MQTT Profile"
+deviceResources:
+- name: testcommand
+  description: "JSON message containing the testcommand details"
+  properties:
+    value:
+      { type: "String", size: "0", readWrite: "W" ,scale: "", offset: "", base: ""  }
+    units:
+      { type: "String", readWrite: "R", defaultValue: "" }
+
+deviceCommands:
+- name: testcommand
+  get:
+  - { index: "1", operation: "get", object: "testcommand", parameter: "testcommand" }
+
+coreCommands:
+  - name: "testcommand"
+    get:
+        path: "/api/v1/device/{deviceId}/testcommand"
+        responses:
+          - code: "200"
+            description: "not a float"
+            expectedValues: 
+              - "testcommand"
+    put:
+        path: "/api/v1/device/{deviceId}/testcommand" 
+        parameterNames: ["testcommand"]
+        responses:
+          - code: "200"
+            description: "not a float"
+            expectedValues: 
+              - "testcommand"

@@ -16,6 +16,7 @@
 .idea/
 vendor/
 cmd/device-mqtt
+cmd/cmd
 glide.lock
 go.sum
 

@@ -44,6 +44,22 @@ LogLevel = "INFO"
   Host = "localhost"
   Port = 48061
 
+# Pre-define Devices
+[[DeviceList]]
+  Name = "testMqttDevice"
+  Profile = "MQTT-POS-2"
+  Description = "MQTT device for POS"
+  Labels = [ "MQTT", "POS"]
+  [DeviceList.Protocols]
+    [DeviceList.Protocols.mqtt]
+       Schema = "tcp"
+       Host = "0.0.0.0"
+       Port = "1883"
+       ClientId = "CommandPublisher"
+       User = ""
+       Password = ""
+       Topic = "NoUsed"
+
 [Device]
   DataTransform = true
   InitCmd = ""
@@ -52,7 +68,7 @@ LogLevel = "INFO"
   MaxCmdValueLen = 256
   RemoveCmd = ""
   RemoveCmdArgs = ""
-  ProfilesDir = ""
+  ProfilesDir = "./res"
 
 # Driver configs
 [Driver]
@@ -64,7 +80,7 @@ IncomingPassword = "public"
 IncomingQos = "0"
 IncomingKeepAlive = "3600"
 IncomingClientId = "IncomingDataSubscriber"
-IncomingTopic = "DataTopic"
+IncomingTopics = "IncomingTopic1:testcommand:testMqttDevice,IncomingTopic2:testcommand:testMqttDevice"
 ResponseSchema = "tcp"
 ResponseHost = "0.0.0.0"
 ResponsePort = "1883"
