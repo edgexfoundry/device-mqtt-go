@@ -44,12 +44,13 @@ func startIncomingListening() error {
 		}
 	}()
 
-	for _, topic := range topics {
-		token := client.Subscribe(topic.Topic, qos, onIncomingDataReceived)
+	for topic := range topics {
+		token := client.Subscribe(topic, qos, onIncomingDataReceived)
 		if token.Wait() && token.Error() != nil {
 			driver.Logger.Info(fmt.Sprintf("[Incoming listener] Stop incoming data listening. Cause:%v", token.Error()))
 			return token.Error()
 		}
+		driver.Logger.Info(fmt.Sprintf("[Incoming listener] Subscribed to topic: %v", topic))
 	}
 
 	driver.Logger.Info("[Incoming listener] Start incoming data listening. ")
@@ -58,25 +59,28 @@ func startIncomingListening() error {
 
 func onIncomingDataReceived(client mqtt.Client, message mqtt.Message) {
 
-	topicInfo := lookupTopicInfo(message.Topic())
+	topicInfo, ok := driver.Config.IncomingTopics[message.Topic()]
+	if !ok {
+		driver.Logger.Error(fmt.Sprintf("[Incoming listener] Topic %s not in IncomingTopics configuration", message.Topic()))
+		return
+	}
 
 	service := sdk.RunningService()
 
-	deviceObject, ok := service.DeviceResource(topicInfo.DeviceName, topicInfo.Command, "get")
+	deviceObject, ok := service.DeviceResource(topicInfo.DeviceName, topicInfo.Resource, "get")
 	if !ok {
-		driver.Logger.Warn(fmt.Sprintf("[Incoming listener] Incoming reading ignored. No DeviceObject found : topic=%v msg=%v", message.Topic(), string(message.Payload())))
+		driver.Logger.Warn(fmt.Sprintf("[Incoming listener] Incoming reading ignored. No DeviceObject found for topic=%v, deviceName=%s and resource=%s", message.Topic(), topicInfo.DeviceName, topicInfo.Resource))
 		return
 	}
 
 	req := sdkModel.CommandRequest{
-		DeviceResourceName: topicInfo.Command,
+		DeviceResourceName: topicInfo.Resource,
 		Type:               sdkModel.ParseValueType(deviceObject.Properties.Value.Type),
 	}
 
 	result, err := newResult(req, string(message.Payload()))
-
 	if err != nil {
-		driver.Logger.Warn(fmt.Sprintf("[Incoming listener] Incoming reading ignored.   topic=%v msg=%v error=%v", message.Topic(), string(message.Payload()), err))
+		driver.Logger.Warn(fmt.Sprintf("[Incoming listener] Incoming reading ignored. Failed to parse reading to a CommandValue for topic=%v msg=%v error=%v", message.Topic(), string(message.Payload()), err))
 		return
 	}
 
@@ -88,16 +92,4 @@ func onIncomingDataReceived(client mqtt.Client, message mqtt.Message) {
 	driver.Logger.Info(fmt.Sprintf("[Incoming listener] Incoming reading received: topic=%v msg=%v", message.Topic(), string(message.Payload())))
 
 	driver.AsyncCh <- asyncValues
-}
-
-func lookupTopicInfo(topic string) topicInfo {
-	var topicInfos = driver.Config.IncomingTopics
-	var topicInfo topicInfo
-
-	for _, tInfo := range topicInfos {
-		if tInfo.Topic == topic {
-			return tInfo
-		}
-	}
-	return topicInfo
 }

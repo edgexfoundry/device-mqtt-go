@@ -27,9 +27,8 @@ type ConnectionInfo struct {
 }
 
 type topicInfo struct {
-	Topic      string
+	Resource   string
 	DeviceName string
-	Command    string
 }
 
 type configuration struct {
@@ -41,7 +40,7 @@ type configuration struct {
 	IncomingQos       int
 	IncomingKeepAlive int
 	IncomingClientId  string
-	IncomingTopics    []topicInfo
+	IncomingTopics    map[string]topicInfo // topic is the key
 
 	ResponseSchema    string
 	ResponseHost      string
@@ -101,8 +100,11 @@ func load(config map[string]string, des interface{}) error {
 			valueField.SetInt(int64(intVal))
 		case string:
 			valueField.SetString(configVal)
-		case []topicInfo:
+		case map[string]topicInfo:
 			cmdTopicPairs := strings.Split(configVal, ",")
+
+			topics := make(map[string]topicInfo)
+
 			for _, cmdTopicPair := range cmdTopicPairs {
 				values := strings.Split(cmdTopicPair, ":")
 
@@ -110,17 +112,21 @@ func load(config map[string]string, des interface{}) error {
 					fmt.Errorf("wrong number of elements in %v expecting 3 received %v", cmdTopicPair, len(values))
 				}
 
-				topic := topicInfo{Topic: strings.TrimSpace(values[0]), Command: strings.TrimSpace(values[1]), DeviceName: strings.TrimSpace(values[2])}
+				topic := strings.TrimSpace(values[0])
+
+				topics[topic] = topicInfo{
+					Resource:   strings.TrimSpace(values[1]),
+					DeviceName: strings.TrimSpace(values[2]),
+				}
 
 				service := sdk.RunningService()
 
-				_, ok := service.DeviceResource(topic.DeviceName, topic.Command, "get")
+				_, ok := service.DeviceResource(topics[topic].DeviceName, topics[topic].Resource, "get")
 				if !ok {
-					return fmt.Errorf("no DeviceObject found with deviceName %v and cmd %v", topic.DeviceName, topic.Command)
+					return fmt.Errorf("no DeviceObject found with deviceName %v and cmd %v", topics[topic].DeviceName, topics[topic].Resource)
 				}
-
-				valueField.Set(reflect.Append(valueField, reflect.ValueOf(topic)))
 			}
+			valueField.Set(reflect.ValueOf(topics))
 		default:
 			return fmt.Errorf("non supported value type %v ,%v", valueField.Kind(), typeField.Name)
 		}
