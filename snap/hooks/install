@@ -19,6 +19,12 @@ if [ ! -f "$SNAP_DATA/config/device-mqtt/res/configuration.toml" ]; then
         "$SNAP_DATA/config/device-mqtt/res/configuration.toml"
 fi
 
+# also copy the device profile into $SNAP_DATA
+if [ ! -f "$SNAP_DATA/config/device-mqtt/res/mqtt.test.device.profile.yml" ]; then
+    cp "$SNAP/config/device-mqtt/res/mqtt.test.device.profile.yml" \
+        "$SNAP_DATA/config/device-mqtt/res/mqtt.test.device.profile.yml"
+fi
+
 # disable device-mqtt initially because it specific requires configuration 
 # with a device profile that will be specific to each installation
 snapctl stop --disable "$SNAP_NAME.device-mqtt"
