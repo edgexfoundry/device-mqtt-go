@@ -82,10 +82,13 @@ parts:
       # Override 'LogFile' and 'LoggingRemoteURL'
       install -d "$SNAPCRAFT_PART_INSTALL/config/device-mqtt/res/"
 
-      cat "./cmd/res/configuration.toml" | \
+      cat "./cmd/res/example/configuration.toml" | \
         sed -e s:\"./device-mqtt.log\":\'\$SNAP_COMMON/device-mqtt.log\': \
-          -e s:'ProfilesDir = \"./res\"':'ProfilesDir = \"\$SNAP_DATA/config/device-mqtt/res\"': > \
+          -e s:'ProfilesDir = \"./res/example\"':'ProfilesDir = \"\$SNAP_DATA/config/device-mqtt/res\"': > \
         "$SNAPCRAFT_PART_INSTALL/config/device-mqtt/res/configuration.toml"
+
+      install -DT "./cmd/res/example/mqtt.test.device.profile.yml" \
+        "$SNAPCRAFT_PART_INSTALL/config/device-mqtt/res/mqtt.test.device.profile.yml"
 
       install -DT "./cmd/Attribution.txt" \
          "$SNAPCRAFT_PART_INSTALL/usr/share/doc/device-mqtt/Attribution.txt"
