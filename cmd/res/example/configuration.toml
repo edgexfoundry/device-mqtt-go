@@ -56,7 +56,7 @@ LogLevel = "DEBUG"
 
 # Pre-define Devices
 [[DeviceList]]
-  Name = "MQTT test device"
+  Name = "MQTT-test-device"
   Profile = "Test.Device.MQTT.Profile"
   Description = "MQTT device is created for test purpose"
   Labels = [ "MQTT", "test"]
