@@ -69,6 +69,10 @@ LogLevel = "DEBUG"
        User = "admin"
        Password = "public"
        Topic = "CommandTopic"
+  [[DeviceList.AutoEvents]]
+    Frequency = "20s"
+    OnChange = false
+    Resource = "testrandfloat32"
 
 # Driver configs
 [Driver]
