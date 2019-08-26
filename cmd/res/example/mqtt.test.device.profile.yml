@@ -64,8 +64,7 @@ coreCommands:
       code: "200"
       description: "get the random float32 value"
       expectedValues: ["randfloat32"]
-    -
-      code: "503"
+    - code: "500"
       description: "service unavailable"
       expectedValues: []
 - name: testrandfloat64
@@ -75,7 +74,7 @@ coreCommands:
       - code: "200"
         description: "get the random float64 value"
         expectedValues: ["randfloat64"]
-      - code: "503"
+      - code: "500"
         description: "service unavailable"
         expectedValues: []
 -
@@ -87,8 +86,7 @@ coreCommands:
       code: "200"
       description: "ping the device"
       expectedValues: ["ping"]
-    -
-      code: "503"
+    - code: "500"
       description: "service unavailable"
       expectedValues: []
 -
@@ -100,8 +98,7 @@ coreCommands:
       code: "200"
       description: "get the message"
       expectedValues: ["message"]
-    -
-      code: "503"
+    - code: "500"
       description: "service unavailable"
       expectedValues: []
   put:
@@ -112,7 +109,6 @@ coreCommands:
       code: "204"
       description: "set the message."
       expectedValues: []
-    -
-      code: "503"
+    - code: "500"
       description: "service unavailable"
       expectedValues: []
