@@ -65,7 +65,7 @@ coreCommands:
       description: "get the random float32 value"
       expectedValues: ["randfloat32"]
     - code: "500"
-      description: "service unavailable"
+      description: "internal server error"
       expectedValues: []
 - name: testrandfloat64
   get:
@@ -75,7 +75,7 @@ coreCommands:
         description: "get the random float64 value"
         expectedValues: ["randfloat64"]
       - code: "500"
-        description: "service unavailable"
+        description: "internal server error"
         expectedValues: []
 -
   name: testping
@@ -87,7 +87,7 @@ coreCommands:
       description: "ping the device"
       expectedValues: ["ping"]
     - code: "500"
-      description: "service unavailable"
+      description: "internal server error"
       expectedValues: []
 -
   name: testmessage
@@ -99,7 +99,7 @@ coreCommands:
       description: "get the message"
       expectedValues: ["message"]
     - code: "500"
-      description: "service unavailable"
+      description: "internal server error"
       expectedValues: []
   put:
     path: "/api/v1/device/{deviceId}/testmessage"
@@ -110,5 +110,5 @@ coreCommands:
       description: "set the message."
       expectedValues: []
     - code: "500"
-      description: "service unavailable"
+      description: "internal server error"
       expectedValues: []
