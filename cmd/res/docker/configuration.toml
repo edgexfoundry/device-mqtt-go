@@ -45,7 +45,7 @@ Type = "consul"
   MaxCmdValueLen = 256
   RemoveCmd = ""
   RemoveCmdArgs = ""
-  ProfilesDir = ""
+  ProfilesDir = "./res"
 
 [Logging]
 EnableRemote = true
