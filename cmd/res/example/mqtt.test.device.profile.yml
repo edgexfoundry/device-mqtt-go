@@ -40,20 +40,20 @@ deviceResources:
 deviceCommands:
 - name: testrandfloat32
   get:
-    - { index: "1", operation: "get", object: "randfloat32", parameter: "randfloat32" }
+    - { index: "1", operation: "get", deviceResource: "randfloat32"}
 - name: testrandfloat64
   get:
-    - { index: "1", operation: "get", object: "randfloat64", parameter: "randfloat64" }
+    - { index: "1", operation: "get", deviceResource: "randfloat64"}
 -
   name: testping
   get:
-  - { index: "1", operation: "get", object: "ping", parameter: "ping" }
+    - { index: "1", operation: "get", deviceResource: "ping"}
 -
   name: testmessage
   get:
-  - { index: "1", operation: "get", object: "message", parameter: "message" }
+    - { index: "1", operation: "get", deviceResource: "message"}
   set:
-  - { index: "1", operation: "set", object: "message", parameter: "message" }
+    - { index: "1", operation: "set", deviceResource: "message"}
 
 coreCommands:
 - name: testrandfloat32
