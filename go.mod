@@ -2,7 +2,7 @@ module github.com/edgexfoundry/device-mqtt-go
 
 require (
 	github.com/eclipse/paho.mqtt.golang v1.1.1
-	github.com/edgexfoundry/device-sdk-go v0.0.0-20191023092354-4a3b48e27207
+	github.com/edgexfoundry/device-sdk-go v0.0.0-20191023171807-49a95f741ef7
 	github.com/edgexfoundry/go-mod-core-contracts v0.1.31
 	github.com/google/uuid v1.1.1 // indirect
 	github.com/gorilla/mux v1.7.0 // indirect
