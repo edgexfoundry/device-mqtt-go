@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-ARG BASE=golang:1.11-alpine
+ARG BASE=golang:1.13-alpine
 FROM ${BASE} AS builder
 
 ARG ALPINE_PKG_BASE="build-base git openssh-client"
@@ -39,7 +39,7 @@ FROM alpine
 ENV APP_PORT=49982
 EXPOSE $APP_PORT
 
-COPY --from=builder /device-mqtt-go/cmd /
+COPY --from=builder /go/src/github.com/edgexfoundry/device-mqtt-go/cmd /
 
 LABEL license='SPDX-License-Identifier: Apache-2.0' \
       copyright='Copyright (c) 2019: IoTech Ltd'
