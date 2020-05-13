@@ -1,6 +1,6 @@
 // -*- Mode: Go; indent-tabs-mode: t -*-
 //
-// Copyright (C) 2019 IOTech Ltd
+// Copyright (C) 2019-2020 IOTech Ltd
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -79,7 +79,7 @@ func TestNewResultFailed_int8(t *testing.T) {
 	}
 
 	_, err := newResult(req, reading)
-	if err == nil || !strings.Contains(err.Error(), "Reading 256 is out of the value type(6)'s range") {
+	if err == nil || !strings.Contains(err.Error(), "Reading 256 is out of the value type(11)'s range") {
 		t.Errorf("Convert new result should be failed")
 	}
 }

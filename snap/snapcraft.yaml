@@ -90,7 +90,7 @@ parts:
       install -DT "./cmd/res/example/mqtt.test.device.profile.yml" \
         "$SNAPCRAFT_PART_INSTALL/config/device-mqtt/res/mqtt.test.device.profile.yml"
 
-      install -DT "./cmd/Attribution.txt" \
+      install -DT "./Attribution.txt" \
          "$SNAPCRAFT_PART_INSTALL/usr/share/doc/device-mqtt/Attribution.txt"
       install -DT "./LICENSE" \
          "$SNAPCRAFT_PART_INSTALL/usr/share/doc/device-mqtt/LICENSE"

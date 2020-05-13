@@ -40,6 +40,8 @@ ENV APP_PORT=49982
 EXPOSE $APP_PORT
 
 COPY --from=builder /go/src/github.com/edgexfoundry/device-mqtt-go/cmd /
+COPY --from=builder /go/src/github.com/edgexfoundry/device-mqtt-go/LICENSE /
+COPY --from=builder /go/src/github.com/edgexfoundry/device-mqtt-go/Attribution.txt /
 
 LABEL license='SPDX-License-Identifier: Apache-2.0' \
       copyright='Copyright (c) 2020: IoTech Ltd'
