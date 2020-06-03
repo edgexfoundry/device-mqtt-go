@@ -30,6 +30,8 @@ apps:
     command: bin/device-mqtt -confdir $SNAP_DATA/config/device-mqtt -profile res --registry $CONSUL_ADDR
     environment:
       CONSUL_ADDR: "consul://localhost:8500"
+      DEVICE_PROFILESDIR: $SNAP_DATA/config/device-mqtt/res
+      WRITABLE_LOGLEVEL: 'INFO'
     daemon: simple
     plugs: [network, network-bind]
 
@@ -78,14 +80,8 @@ parts:
 
       install -DT "./cmd/device-mqtt" "$SNAPCRAFT_PART_INSTALL/bin/device-mqtt"
 
-      # FIXME: settings can't be overridden from the cmd-line!
-      # Override 'LogFile' and 'LoggingRemoteURL'
-      install -d "$SNAPCRAFT_PART_INSTALL/config/device-mqtt/res/"
-
-      cat "./cmd/res/example/configuration.toml" | \
-        sed -e s:\"./device-mqtt.log\":\'\$SNAP_COMMON/device-mqtt.log\': \
-          -e s:'ProfilesDir = \"./res/example\"':'ProfilesDir = \"\$SNAP_DATA/config/device-mqtt/res\"': > \
-        "$SNAPCRAFT_PART_INSTALL/config/device-mqtt/res/configuration.toml"
+      # cp configuration.toml from example, as it includes a pre-defined device
+      install -DT "./cmd/res/example/configuration.toml" "$SNAPCRAFT_PART_INSTALL/config/device-mqtt/res/configuration.toml"
 
       install -DT "./cmd/res/example/mqtt.test.device.profile.yml" \
         "$SNAPCRAFT_PART_INSTALL/config/device-mqtt/res/mqtt.test.device.profile.yml"
