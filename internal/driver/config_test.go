@@ -65,6 +65,8 @@ func TestCreateDriverConfig(t *testing.T) {
 		ResponseSchema: "tcp", ResponseHost: "0.0.0.0", ResponsePort: "1883",
 		ResponseUser: "admin", ResponsePassword: "public", ResponseQos: "0",
 		ResponseKeepAlive: "3600", ResponseClientId: "CommandResponseSubscriber", ResponseTopic: "ResponseTopic",
+
+		ConnEstablishingRetry: "10", ConnRetryWaitTime: "5",
 	}
 	diverConfig, err := CreateDriverConfig(configs)
 	if err != nil {
@@ -79,7 +81,8 @@ func TestCreateDriverConfig(t *testing.T) {
 		diverConfig.ResponsePort != 1883 || diverConfig.ResponseUser != configs[ResponseUser] ||
 		diverConfig.ResponsePassword != configs[ResponsePassword] || diverConfig.ResponseQos != 0 ||
 		diverConfig.ResponseKeepAlive != 3600 || diverConfig.ResponseClientId != configs[ResponseClientId] ||
-		diverConfig.ResponseTopic != configs[ResponseTopic] {
+		diverConfig.ResponseTopic != configs[ResponseTopic] ||
+		diverConfig.ConnEstablishingRetry != 10 || diverConfig.ConnRetryWaitTime != 5 {
 
 		t.Fatalf("Unexpect test result, driver config doesn't correct load")
 	}

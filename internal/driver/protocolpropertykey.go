@@ -37,4 +37,7 @@ const (
 	ResponseKeepAlive = "ResponseKeepAlive"
 	ResponseClientId  = "ResponseClientId"
 	ResponseTopic     = "ResponseTopic"
+
+	ConnEstablishingRetry = "ConnEstablishingRetry"
+	ConnRetryWaitTime     = "ConnRetryWaitTime"
 )
