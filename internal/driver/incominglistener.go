@@ -11,6 +11,7 @@ import (
 	"fmt"
 	"net/url"
 	"strings"
+	"time"
 
 	mqtt "github.com/eclipse/paho.mqtt.golang"
 	sdkModel "github.com/edgexfoundry/device-sdk-go/pkg/models"
@@ -34,9 +35,19 @@ func startIncomingListening() error {
 		User:   url.UserPassword(username, password),
 	}
 
-	client, err := createClient(mqttClientId, uri, keepAlive)
-	if err != nil {
-		return err
+	var client mqtt.Client
+	var err error
+	for i := 1; i <= driver.Config.ConnEstablishingRetry; i++ {
+		client, err = createClient(mqttClientId, uri, keepAlive)
+		if err != nil && i == driver.Config.ConnEstablishingRetry {
+			return err
+		} else if err != nil {
+			driver.Logger.Error(fmt.Sprintf("Fail to initial conn for incoming data, %v ", err))
+			time.Sleep(time.Duration(driver.Config.ConnEstablishingRetry) * time.Second)
+			driver.Logger.Warn("Retry to initial conn for incoming data")
+			continue
+		}
+		break
 	}
 
 	defer func() {

@@ -10,6 +10,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/url"
+	"os"
 	"strings"
 	"sync"
 	"time"
@@ -70,14 +71,16 @@ func (d *Driver) Initialize(lc logger.LoggingClient, asyncCh chan<- *sdkModel.As
 	go func() {
 		err := startCommandResponseListening()
 		if err != nil {
-			panic(fmt.Errorf("start command response Listener failed, please check MQTT broker settings are correct, %v", err))
+			d.Logger.Error(fmt.Sprintf("start command response Listener failed, please check MQTT broker settings are correct, %v", err))
+			os.Exit(1)
 		}
 	}()
 
 	go func() {
 		err := startIncomingListening()
 		if err != nil {
-			panic(fmt.Errorf("start incoming data Listener failed, please check MQTT broker settings are correct, %v", err))
+			d.Logger.Error(fmt.Sprintf("start incoming data Listener failed, please check MQTT broker settings are correct, %v", err))
+			os.Exit(1)
 		}
 	}()
 

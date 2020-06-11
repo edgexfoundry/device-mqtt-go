@@ -44,6 +44,9 @@ type configuration struct {
 	ResponseKeepAlive int
 	ResponseClientId  string
 	ResponseTopic     string
+
+	ConnEstablishingRetry int
+	ConnRetryWaitTime     int
 }
 
 // CreateDriverConfig use to load driver config for incoming listener and response listener
