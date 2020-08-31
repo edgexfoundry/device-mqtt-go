@@ -46,4 +46,5 @@ COPY --from=builder /go/src/github.com/edgexfoundry/device-mqtt-go/Attribution.t
 LABEL license='SPDX-License-Identifier: Apache-2.0' \
       copyright='Copyright (c) 2020: IoTech Ltd'
 
-ENTRYPOINT ["/device-mqtt","--cp=consul://edgex-core-consul:8500","--registry","--confdir=/res"]
+ENTRYPOINT ["/device-mqtt"]
+CMD ["--cp=consul://edgex-core-consul:8500", "--registry", "--confdir=/res"]
