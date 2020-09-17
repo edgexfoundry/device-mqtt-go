@@ -104,3 +104,9 @@ https://github.com/fxamacker/cbor/blob/master/LICENSE
 
 x448/float16 (MIT) https://github.com/x448/float16
 https://github.com/x448/float16/blob/master/LICENSE
+
+kr/pretty (MIT) https://github.com/kr/pretty
+https://github.com/kr/pretty/blob/main/License
+
+gopkg.in/check.v1 (Unspecified) https://github.com/go-check/check/tree/v1
+https://github.com/go-check/check/blob/v1/LICENSE
