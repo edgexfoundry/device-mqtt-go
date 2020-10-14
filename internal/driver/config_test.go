@@ -7,7 +7,7 @@
 package driver
 
 import (
-	"strings"
+	"fmt"
 	"testing"
 
 	"github.com/edgexfoundry/go-mod-core-contracts/models"
@@ -38,21 +38,10 @@ func TestCreateConnectionInfo(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Fail to create connectionIfo. Error: %v", err)
 	}
-	if connectionInfo.Schema != schema || connectionInfo.Host != host || connectionInfo.Port != port ||
+	if connectionInfo.Schema != schema || connectionInfo.Host != host || fmt.Sprintf("%d", connectionInfo.Port) != port ||
 		connectionInfo.User != user || connectionInfo.Password != password || connectionInfo.ClientId != clientId ||
 		connectionInfo.Topic != topic {
 		t.Fatalf("Unexpect test result. %v should match to %v ", connectionInfo, protocols)
-	}
-}
-
-func TestCreateConnectionInfo_fail(t *testing.T) {
-	protocols := map[string]models.ProtocolProperties{
-		Protocol: {},
-	}
-
-	_, err := CreateConnectionInfo(protocols)
-	if err == nil || !strings.Contains(err.Error(), "unable to load config") {
-		t.Fatalf("Unexpect test result, config should be fail to load")
 	}
 }
 
@@ -85,13 +74,5 @@ func TestCreateDriverConfig(t *testing.T) {
 		diverConfig.ConnEstablishingRetry != 10 || diverConfig.ConnRetryWaitTime != 5 {
 
 		t.Fatalf("Unexpect test result, driver config doesn't correct load")
-	}
-}
-
-func TestCreateDriverConfig_fail(t *testing.T) {
-	configs := map[string]string{}
-	_, err := CreateDriverConfig(configs)
-	if err == nil || !strings.Contains(err.Error(), "unable to load config") {
-		t.Fatalf("Unexpect test result, config should be fail to load")
 	}
 }

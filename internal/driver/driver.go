@@ -104,7 +104,7 @@ func (d *Driver) HandleReadCommands(deviceName string, protocols map[string]mode
 
 	uri := &url.URL{
 		Scheme: strings.ToLower(connectionInfo.Schema),
-		Host:   fmt.Sprintf("%s:%s", connectionInfo.Host, connectionInfo.Port),
+		Host:   fmt.Sprintf("%s:%d", connectionInfo.Host, connectionInfo.Port),
 		User:   url.UserPassword(connectionInfo.User, connectionInfo.Password),
 	}
 
@@ -194,7 +194,7 @@ func (d *Driver) HandleWriteCommands(deviceName string, protocols map[string]mod
 
 	uri := &url.URL{
 		Scheme: strings.ToLower(connectionInfo.Schema),
-		Host:   fmt.Sprintf("%s:%s", connectionInfo.Host, connectionInfo.Port),
+		Host:   fmt.Sprintf("%s:%d", connectionInfo.Host, connectionInfo.Port),
 		User:   url.UserPassword(connectionInfo.User, connectionInfo.Password),
 	}
 

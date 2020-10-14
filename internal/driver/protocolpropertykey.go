@@ -40,4 +40,20 @@ const (
 
 	ConnEstablishingRetry = "ConnEstablishingRetry"
 	ConnRetryWaitTime     = "ConnRetryWaitTime"
+
+	DefaultSchema                = "tcp"
+	DefaultHost                  = "0.0.0.0"
+	DefaultPort                  = 1883
+	DefaultUser                  = ""
+	DefaultPassword              = ""
+	DefaultQos                   = 0
+	DefaultKeepAlive             = 3600
+	DefaultIncomingClientId      = "IncomingDataSubscriber"
+	DefaultIncomingTopic         = "DataTopic"
+	DefaultResponseClientId      = "CommandResponseSubscriber"
+	DefaultResponseTopic         = "ResponseTopic"
+	DefaultCommandClientId       = "CommandPublisher"
+	DefaultCommandTopic          = "CommandTopic"
+	DefaultConnEstablishingRetry = 10
+	DefaultConnRetryWaitTime     = 5
 )

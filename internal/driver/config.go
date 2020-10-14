@@ -17,7 +17,7 @@ import (
 type ConnectionInfo struct {
 	Schema   string
 	Host     string
-	Port     string
+	Port     int
 	User     string
 	Password string
 	ClientId string
@@ -51,7 +51,29 @@ type configuration struct {
 
 // CreateDriverConfig use to load driver config for incoming listener and response listener
 func CreateDriverConfig(configMap map[string]string) (*configuration, error) {
-	config := new(configuration)
+	// Set default value before loading new configuration
+	config := &configuration{
+		IncomingSchema:        DefaultSchema,
+		IncomingHost:          DefaultHost,
+		IncomingPort:          DefaultPort,
+		IncomingUser:          DefaultUser,
+		IncomingPassword:      DefaultPassword,
+		IncomingQos:           DefaultQos,
+		IncomingKeepAlive:     DefaultKeepAlive,
+		IncomingClientId:      DefaultIncomingClientId,
+		IncomingTopic:         DefaultIncomingTopic,
+		ResponseSchema:        DefaultSchema,
+		ResponseHost:          DefaultHost,
+		ResponsePort:          DefaultPort,
+		ResponseUser:          DefaultUser,
+		ResponsePassword:      DefaultPassword,
+		ResponseQos:           DefaultQos,
+		ResponseKeepAlive:     DefaultKeepAlive,
+		ResponseClientId:      DefaultResponseClientId,
+		ResponseTopic:         DefaultResponseTopic,
+		ConnEstablishingRetry: DefaultConnEstablishingRetry,
+		ConnRetryWaitTime:     DefaultConnRetryWaitTime,
+	}
 	err := load(configMap, config)
 	if err != nil {
 		return config, err
@@ -61,7 +83,16 @@ func CreateDriverConfig(configMap map[string]string) (*configuration, error) {
 
 // CreateConnectionInfo use to load MQTT connectionInfo for read and write command
 func CreateConnectionInfo(protocols map[string]models.ProtocolProperties) (*ConnectionInfo, error) {
-	info := new(ConnectionInfo)
+	// Set default value before loading new ConnectionInfo
+	info := &ConnectionInfo{
+		Schema:   DefaultSchema,
+		Host:     DefaultHost,
+		Port:     DefaultPort,
+		User:     DefaultUser,
+		Password: DefaultPassword,
+		ClientId: DefaultCommandClientId,
+		Topic:    DefaultCommandTopic,
+	}
 	protocol, ok := protocols[Protocol]
 	if !ok {
 		return info, fmt.Errorf("unable to load config, '%s' not exist", Protocol)
@@ -76,15 +107,14 @@ func CreateConnectionInfo(protocols map[string]models.ProtocolProperties) (*Conn
 
 // load by reflect to check map key and then fetch the value
 func load(config map[string]string, des interface{}) error {
-	errorMessage := "unable to load config, '%s' not exist"
-	val := reflect.ValueOf(des).Elem()
-	for i := 0; i < val.NumField(); i++ {
-		typeField := val.Type().Field(i)
-		valueField := val.Field(i)
+	vals := reflect.ValueOf(des).Elem()
+	for i := 0; i < vals.NumField(); i++ {
+		typeField := vals.Type().Field(i)
+		valueField := vals.Field(i)
 
 		val, ok := config[typeField.Name]
 		if !ok {
-			return fmt.Errorf(errorMessage, typeField.Name)
+			continue
 		}
 
 		switch valueField.Kind() {
