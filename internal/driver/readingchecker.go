@@ -92,11 +92,11 @@ func checkFloatValueRange(valueType sdkModel.ValueType, val float64) bool {
 	var isValid = false
 	switch valueType {
 	case sdkModel.Float32:
-		if math.Abs(val) >= math.SmallestNonzeroFloat32 && math.Abs(val) <= math.MaxFloat32 {
+		if !math.IsNaN(val) && math.Abs(val) <= math.MaxFloat32 {
 			isValid = true
 		}
 	case sdkModel.Float64:
-		if math.Abs(val) >= math.SmallestNonzeroFloat64 && math.Abs(val) <= math.MaxFloat64 {
+		if !math.IsNaN(val) && !math.IsInf(val, 0) {
 			isValid = true
 		}
 	}
