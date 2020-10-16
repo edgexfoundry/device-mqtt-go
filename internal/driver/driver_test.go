@@ -13,6 +13,9 @@ import (
 
 	sdkModel "github.com/edgexfoundry/device-sdk-go/pkg/models"
 	"github.com/edgexfoundry/go-mod-core-contracts/clients/logger"
+
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func init() {
@@ -187,36 +190,60 @@ func TestNewResult_int64(t *testing.T) {
 }
 
 func TestNewResult_float32(t *testing.T) {
-	var reading interface{} = float32(123)
 	req := sdkModel.CommandRequest{
 		DeviceResourceName: "temperature",
 		Type:               sdkModel.Float32,
 	}
 
-	cmdVal, err := newResult(req, reading)
-	if err != nil {
-		t.Fatalf("Fail to create new ReadCommand result, %v", err)
+	tests := []struct {
+		name     string
+		req      sdkModel.CommandRequest
+		reading  interface{}
+		expected interface{}
+	}{
+		{"Valid string 0", req, "0", float32(0)},
+		{"Valid string 123.32", req, "123.32", float32(123.32)},
+		{"Valid float32 0", req, 0, float32(0)},
+		{"Valid float32 123.32", req, 123.32, float32(123.32)},
 	}
-	val, err := cmdVal.Float32Value()
-	if val != float32(123) || err != nil {
-		t.Errorf("Convert new result(%v) failed, error: %v", val, err)
+	for _, testCase := range tests {
+		t.Run(testCase.name, func(t *testing.T) {
+			cmdVal, err := newResult(req, testCase.reading)
+			require.NoError(t, err)
+			result, err := cmdVal.Float32Value()
+			require.NoError(t, err)
+
+			assert.Equal(t, testCase.expected, result)
+		})
 	}
 }
 
 func TestNewResult_float64(t *testing.T) {
-	var reading interface{} = float64(0.123)
 	req := sdkModel.CommandRequest{
 		DeviceResourceName: "temperature",
 		Type:               sdkModel.Float64,
 	}
 
-	cmdVal, err := newResult(req, reading)
-	if err != nil {
-		t.Fatalf("Fail to create new ReadCommand result, %v", err)
+	tests := []struct {
+		name     string
+		req      sdkModel.CommandRequest
+		reading  interface{}
+		expected interface{}
+	}{
+		{"Valid string 0", req, "0", float64(0)},
+		{"Valid string 0.123", req, "0.123", 0.123},
+		{"Valid float64 0", req, 0, float64(0)},
+		{"Valid float64 0.123", req, 0.123, 0.123},
 	}
-	val, err := cmdVal.Float64Value()
-	if val != float64(0.123) || err != nil {
-		t.Errorf("Convert new result(%v) failed, error: %v", val, err)
+	for _, testCase := range tests {
+		t.Run(testCase.name, func(t *testing.T) {
+			cmdVal, err := newResult(req, testCase.reading)
+			require.NoError(t, err)
+			result, err := cmdVal.Float64Value()
+			require.NoError(t, err)
+
+			assert.Equal(t, testCase.expected, result)
+		})
 	}
 }
 
@@ -403,40 +430,6 @@ func TestNewResult_string(t *testing.T) {
 	}
 	val, err := cmdVal.StringValue()
 	if val != "test string" || err != nil {
-		t.Errorf("Convert new result(%v) failed, error: %v", val, err)
-	}
-}
-
-func TestNewResult_stringToFloat32(t *testing.T) {
-	var reading interface{} = "123.0"
-	req := sdkModel.CommandRequest{
-		DeviceResourceName: "temperature",
-		Type:               sdkModel.Float32,
-	}
-
-	cmdVal, err := newResult(req, reading)
-	if err != nil {
-		t.Fatalf("Fail to create new ReadCommand result, %v", err)
-	}
-	val, err := cmdVal.Float32Value()
-	if val != float32(123) || err != nil {
-		t.Errorf("Convert new result(%v) failed, error: %v", val, err)
-	}
-}
-
-func TestNewResult_stringToFloat64(t *testing.T) {
-	var reading interface{} = "123.0"
-	req := sdkModel.CommandRequest{
-		DeviceResourceName: "temperature",
-		Type:               sdkModel.Float64,
-	}
-
-	cmdVal, err := newResult(req, reading)
-	if err != nil {
-		t.Fatalf("Fail to create new ReadCommand result, %v", err)
-	}
-	val, err := cmdVal.Float64Value()
-	if val != float64(123) || err != nil {
 		t.Errorf("Convert new result(%v) failed, error: %v", val, err)
 	}
 }

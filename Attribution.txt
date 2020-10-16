@@ -110,3 +110,12 @@ https://github.com/kr/pretty/blob/main/License
 
 gopkg.in/check.v1 (Unspecified) https://github.com/go-check/check/tree/v1
 https://github.com/go-check/check/blob/v1/LICENSE
+
+stretchr/testify (MIT) https://github.com/stretchr/testify
+https://github.com/stretchr/testify/blob/master/LICENSE
+
+pmezard/go-difflib (Unspecified) https://github.com/pmezard/go-difflib
+https://github.com/pmezard/go-difflib/blob/master/LICENSE
+
+davecgh/go-spew (ISC) https://github.com/davecgh/go-spew
+https://github.com/davecgh/go-spew/blob/master/LICENSE
