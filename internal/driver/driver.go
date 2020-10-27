@@ -64,7 +64,7 @@ func (d *Driver) Initialize(lc logger.LoggingClient, asyncCh chan<- *sdkModel.As
 
 	config, err := CreateDriverConfig(device.DriverConfigs())
 	if err != nil {
-		panic(fmt.Errorf("read MQTT driver configuration failed: %v", err))
+		return fmt.Errorf("read MQTT driver configuration failed: %w", err)
 	}
 	d.Config = config
 

@@ -83,7 +83,9 @@ func load(config map[string]string, des interface{}) error {
 		valueField := val.Field(i)
 
 		val, ok := config[typeField.Name]
-		if !ok {
+		if !ok &&
+			typeField.Name != IncomingUser && typeField.Name != IncomingPassword &&
+			typeField.Name != ResponseUser && typeField.Name != ResponsePassword {
 			return fmt.Errorf(errorMessage, typeField.Name)
 		}
 
