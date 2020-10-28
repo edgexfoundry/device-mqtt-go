@@ -5,7 +5,7 @@ require (
 	github.com/edgexfoundry/device-sdk-go v1.2.4-dev.34
 	github.com/edgexfoundry/go-mod-core-contracts v0.1.97
 	github.com/kr/pretty v0.1.0 // indirect
-	github.com/spf13/cast v1.3.0
+	github.com/spf13/cast v1.3.1
 	github.com/stretchr/testify v1.5.1
 	golang.org/x/net v0.0.0-20190213061140-3a22650c66bd // indirect
 	gopkg.in/check.v1 v1.0.0-20180628173108-788fd7840127 // indirect
