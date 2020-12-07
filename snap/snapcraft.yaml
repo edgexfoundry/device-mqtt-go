@@ -33,6 +33,8 @@ apps:
   device-mqtt:
     adapter: none
     command: bin/device-mqtt -confdir $SNAP_DATA/config/device-mqtt -profile res --registry $CONSUL_ADDR
+    command-chain:
+      - bin/startup-env-var.sh
     environment:
       CONSUL_ADDR: "consul://localhost:8500"
       DEVICE_PROFILESDIR: $SNAP_DATA/config/device-mqtt/res
@@ -95,3 +97,7 @@ parts:
          "$SNAPCRAFT_PART_INSTALL/usr/share/doc/device-mqtt/Attribution.txt"
       install -DT "./LICENSE" \
          "$SNAPCRAFT_PART_INSTALL/usr/share/doc/device-mqtt/LICENSE"
+
+  config-common:
+    plugin: dump
+    source: snap/local/runtime-helpers
