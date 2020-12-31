@@ -17,24 +17,30 @@ import (
 )
 
 func startCommandResponseListening() error {
+
 	var scheme = driver.Config.ResponseSchema
 	var brokerUrl = driver.Config.ResponseHost
 	var brokerPort = driver.Config.ResponsePort
-	var username = driver.Config.ResponseUser
-	var password = driver.Config.ResponsePassword
+	var secretPath = driver.Config.ResponseCredentialsPath
 	var mqttClientId = driver.Config.ResponseClientId
 	var qos = byte(driver.Config.ResponseQos)
 	var keepAlive = driver.Config.ResponseKeepAlive
 	var topic = driver.Config.ResponseTopic
 
+	credentials, err := GetCredentials(secretPath)
+	if err != nil {
+		return fmt.Errorf("Unable to get incoming MQTT credentials for secret path '%s': %s", secretPath, err.Error())
+	}
+
+	driver.Logger.Info("Response MQTT credentials loaded")
+
 	uri := &url.URL{
 		Scheme: strings.ToLower(scheme),
 		Host:   fmt.Sprintf("%s:%d", brokerUrl, brokerPort),
-		User:   url.UserPassword(username, password),
+		User:   url.UserPassword(credentials.Username, credentials.Password),
 	}
 
 	var client mqtt.Client
-	var err error
 	for i := 1; i <= driver.Config.ConnEstablishingRetry; i++ {
 		client, err = createClient(mqttClientId, uri, keepAlive)
 		if err != nil && i == driver.Config.ConnEstablishingRetry {

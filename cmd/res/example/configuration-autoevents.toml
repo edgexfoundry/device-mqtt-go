@@ -1,5 +1,11 @@
 [Writable]
-LogLevel = 'DEBUG'
+LogLevel = 'INFO'
+    [Writable.InsecureSecrets]
+        [Writable.InsecureSecrets.MQTT]
+        path = "credentials"
+            [Writable.InsecureSecrets.MQTT.Secrets]
+            username = ""
+            password = ""
 
 [Service]
 BootTimeout = 30000
@@ -40,6 +46,19 @@ File = ''
   Host = 'localhost'
   Port = 48061
 
+[SecretStore]
+Host = 'localhost'
+Port = 8200
+Path = '/v1/secret/edgex/device-mqtt/'
+Protocol = 'http'
+RootCaCertPath = ''
+ServerName = ''
+TokenFile = '/tmp/edgex/secrets/device-mqtt/secrets-token.json'
+AdditionalRetryAttempts = 10
+RetryWaitPeriod = "1s"
+    [SecretStore.Authentication]
+    AuthType = 'X-Vault-Token'
+
 [Device]
   DataTransform = true
   InitCmd = ''
@@ -63,9 +82,8 @@ File = ''
        Host = '0.0.0.0'
        Port = '1883'
        ClientId = 'CommandPublisher'
-       User = 'admin'
-       Password = 'public'
        Topic = 'CommandTopic'
+       CredentialsPath = 'credentials'
     [[DeviceList.AutoEvents]]
        Frequency = '20s'
        OnChange = false
@@ -76,20 +94,20 @@ File = ''
 IncomingSchema = 'tcp'
 IncomingHost = '0.0.0.0'
 IncomingPort = '1883'
-IncomingUser = 'admin'
-IncomingPassword = 'public'
 IncomingQos = '0'
 IncomingKeepAlive = '3600'
 IncomingClientId = 'IncomingDataSubscriber'
 IncomingTopic = 'DataTopic'
+IncomingCredentialsPath = 'credentials'
 ResponseSchema = 'tcp'
 ResponseHost = '0.0.0.0'
 ResponsePort = '1883'
-ResponseUser = 'admin'
-ResponsePassword = 'public'
 ResponseQos = '0'
 ResponseKeepAlive = '3600'
 ResponseClientId = 'CommandResponseSubscriber'
 ResponseTopic = 'ResponseTopic'
+ResponseCredentialsPath = 'credentials'
+CredentialsRetryTime = '60' # Seconds
+CredentialsRetryWait = '1' # Seconds
 ConnEstablishingRetry = '10'
 ConnRetryWaitTime = '5'
