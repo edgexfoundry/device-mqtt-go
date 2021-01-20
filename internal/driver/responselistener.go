@@ -29,7 +29,7 @@ func startCommandResponseListening() error {
 
 	credentials, err := GetCredentials(secretPath)
 	if err != nil {
-		return fmt.Errorf("Unable to get incoming MQTT credentials for secret path '%s': %s", secretPath, err.Error())
+		return fmt.Errorf("Unable to get response MQTT credentials for secret path '%s': %s", secretPath, err.Error())
 	}
 
 	driver.Logger.Info("Response MQTT credentials loaded")
