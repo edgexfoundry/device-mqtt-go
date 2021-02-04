@@ -21,6 +21,9 @@ https://github.com/edgexfoundry/device-sdk-go/blob/master/LICENSE
 gorilla/mux 1.6.2 (BSD-3) https://github.com/gorilla/mux
 https://github.com/gorilla/mux/blob/master/LICENSE
 
+gorilla/websocket (BSD-2) https://github.com/gorilla/websocket
+https://github.com/gorilla/websocket/blob/master/LICENSE
+
 go-kit/kit (MIT) github.com/go-kit/kit
 https://github.com/go-kit/kit/blob/master/LICENSE
 
