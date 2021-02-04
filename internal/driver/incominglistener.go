@@ -13,30 +13,36 @@ import (
 	"strings"
 	"time"
 
-	mqtt "github.com/eclipse/paho.mqtt.golang"
 	sdkModel "github.com/edgexfoundry/device-sdk-go/pkg/models"
 	sdk "github.com/edgexfoundry/device-sdk-go/pkg/service"
+
+	mqtt "github.com/eclipse/paho.mqtt.golang"
 )
 
 func startIncomingListening() error {
 	var scheme = driver.Config.IncomingSchema
 	var brokerUrl = driver.Config.IncomingHost
 	var brokerPort = driver.Config.IncomingPort
-	var username = driver.Config.IncomingUser
-	var password = driver.Config.IncomingPassword
+	var secretPath = driver.Config.IncomingCredentialsPath
 	var mqttClientId = driver.Config.IncomingClientId
 	var qos = byte(driver.Config.IncomingQos)
 	var keepAlive = driver.Config.IncomingKeepAlive
 	var topic = driver.Config.IncomingTopic
 
+	credentials, err := GetCredentials(secretPath)
+	if err != nil {
+		return fmt.Errorf("Unable to get incoming MQTT credentials for secret path '%s': %s", secretPath, err.Error())
+	}
+
+	driver.Logger.Info("Incoming MQTT credentials loaded")
+
 	uri := &url.URL{
 		Scheme: strings.ToLower(scheme),
 		Host:   fmt.Sprintf("%s:%d", brokerUrl, brokerPort),
-		User:   url.UserPassword(username, password),
+		User:   url.UserPassword(credentials.Username, credentials.Password),
 	}
 
 	var client mqtt.Client
-	var err error
 	for i := 1; i <= driver.Config.ConnEstablishingRetry; i++ {
 		client, err = createClient(mqttClientId, uri, keepAlive)
 		if err != nil && i == driver.Config.ConnEstablishingRetry {
