@@ -20,7 +20,7 @@ import (
 
 func init() {
 	driver = new(Driver)
-	driver.Logger = logger.NewClient("test", false, "", "DEBUG")
+	driver.Logger = logger.NewMockClient()
 }
 
 func TestNewResult_bool(t *testing.T) {

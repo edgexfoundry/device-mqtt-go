@@ -36,6 +36,9 @@ RUN $MAKE
 
 FROM alpine:3.12
 
+# dumb-init needed for injected secure bootstrapping entrypoint script when run in secure mode.
+RUN apk add --update --no-cache dumb-init
+
 ENV APP_PORT=49982
 EXPOSE $APP_PORT
 
