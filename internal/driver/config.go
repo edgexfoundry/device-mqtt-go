@@ -11,39 +11,45 @@ import (
 	"reflect"
 	"strconv"
 
+	"github.com/edgexfoundry/device-sdk-go/pkg/service"
+
+	"github.com/edgexfoundry/go-mod-bootstrap/bootstrap/secret"
+	"github.com/edgexfoundry/go-mod-bootstrap/bootstrap/startup"
+	"github.com/edgexfoundry/go-mod-bootstrap/config"
+
 	"github.com/edgexfoundry/go-mod-core-contracts/models"
 )
 
 type ConnectionInfo struct {
-	Schema   string
-	Host     string
-	Port     string
-	User     string
-	Password string
-	ClientId string
-	Topic    string
+	Schema          string
+	Host            string
+	Port            string
+	ClientId        string
+	Topic           string
+	CredentialsPath string
 }
 
 type configuration struct {
-	IncomingSchema    string
-	IncomingHost      string
-	IncomingPort      int
-	IncomingUser      string
-	IncomingPassword  string
-	IncomingQos       int
-	IncomingKeepAlive int
-	IncomingClientId  string
-	IncomingTopic     string
+	IncomingSchema          string
+	IncomingHost            string
+	IncomingPort            int
+	IncomingQos             int
+	IncomingKeepAlive       int
+	IncomingClientId        string
+	IncomingTopic           string
+	IncomingCredentialsPath string
 
-	ResponseSchema    string
-	ResponseHost      string
-	ResponsePort      int
-	ResponseUser      string
-	ResponsePassword  string
-	ResponseQos       int
-	ResponseKeepAlive int
-	ResponseClientId  string
-	ResponseTopic     string
+	ResponseSchema          string
+	ResponseHost            string
+	ResponsePort            int
+	ResponseQos             int
+	ResponseKeepAlive       int
+	ResponseClientId        string
+	ResponseTopic           string
+	ResponseCredentialsPath string
+
+	CredentialsRetryTime int
+	CredentialsRetryWait int
 
 	ConnEstablishingRetry int
 	ConnRetryWaitTime     int
@@ -83,9 +89,7 @@ func load(config map[string]string, des interface{}) error {
 		valueField := val.Field(i)
 
 		val, ok := config[typeField.Name]
-		if !ok &&
-			typeField.Name != IncomingUser && typeField.Name != IncomingPassword &&
-			typeField.Name != ResponseUser && typeField.Name != ResponsePassword {
+		if !ok {
 			return fmt.Errorf(errorMessage, typeField.Name)
 		}
 
@@ -103,4 +107,36 @@ func load(config map[string]string, des interface{}) error {
 		}
 	}
 	return nil
+}
+
+func GetCredentials(secretPath string) (config.Credentials, error) {
+	credentials := config.Credentials{}
+	deviceService := service.RunningService()
+
+	timer := startup.NewTimer(driver.Config.CredentialsRetryTime, driver.Config.CredentialsRetryWait)
+
+	var secretData map[string]string
+	var err error
+	for timer.HasNotElapsed() {
+		secretData, err = deviceService.SecretProvider.GetSecrets(secretPath, secret.UsernameKey, secret.PasswordKey)
+		if err == nil {
+			break
+		}
+
+		driver.Logger.Warnf(
+			"Unable to retrieve MQTT credentials from SecretProvider at path '%s': %s. Retrying for %s",
+			secretPath,
+			err.Error(),
+			timer.RemainingAsString())
+		timer.SleepForInterval()
+	}
+
+	if err != nil {
+		return credentials, err
+	}
+
+	credentials.Username = secretData[secret.UsernameKey]
+	credentials.Password = secretData[secret.PasswordKey]
+
+	return credentials, nil
 }
