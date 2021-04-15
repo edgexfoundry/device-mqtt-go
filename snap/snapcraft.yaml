@@ -79,19 +79,22 @@ parts:
   device-mqtt:
     source: .
     plugin: make
-    build-packages: [git]
+    build-packages: [git, libzmq3-dev, zip, pkg-config]
+    stage-packages: [libzmq5]
     after: [go]
     override-build: |
       cd $SNAPCRAFT_PART_SRC
       make build
 
       install -DT "./cmd/device-mqtt" "$SNAPCRAFT_PART_INSTALL/bin/device-mqtt"
+      install -DT "./cmd/res/configuration.toml" "$SNAPCRAFT_PART_INSTALL/config/device-mqtt/res/configuration.toml"
 
-      # cp configuration.toml from example, as it includes a pre-defined device
-      install -DT "./cmd/res/example/configuration.toml" "$SNAPCRAFT_PART_INSTALL/config/device-mqtt/res/configuration.toml"
-
-      install -DT "./cmd/res/example/mqtt.test.device.profile.yml" \
-        "$SNAPCRAFT_PART_INSTALL/config/device-mqtt/res/mqtt.test.device.profile.yml"
+      install -DT "./cmd/res/devices/mqtt.test.device.toml" \
+        "$SNAPCRAFT_PART_INSTALL/config/device-mqtt/devices/mqtt.test.device.toml"
+      install -DT "./cmd/res/devices/mqtt.test.device-autoevents.toml" \
+        "$SNAPCRAFT_PART_INSTALL/config/device-mqtt/devices/mqtt.test.device-autoevents.toml"
+      install -DT "./cmd/res/profiles/mqtt.test.device.profile.yml" \
+        "$SNAPCRAFT_PART_INSTALL/config/device-mqtt/profiles/mqtt.test.device.profile.yml"
 
       install -DT "./Attribution.txt" \
          "$SNAPCRAFT_PART_INSTALL/usr/share/doc/device-mqtt/Attribution.txt"
