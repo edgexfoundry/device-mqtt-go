@@ -1,0 +1,71 @@
+name: "Test.Device.MQTT.Profile"
+manufacturer: "Dell"
+model: "MQTT-2"
+labels:
+- "test"
+description: "Test device profile"
+deviceResources:
+-
+  name: randfloat32
+  isHidden: true
+  description: "device random number with Base64 encoding"
+  properties:
+    valueType: "Float32"
+    readWrite: "R"
+    defaultValue: "0.00"
+    minimum: "0.00"
+    maximum: "100.00"
+-
+  name: randfloat64
+  isHidden: true
+  description: "device random number with e notion"
+  properties:
+    valueType: "Float64"
+    readWrite: "R"
+    defaultValue: "0.00"
+    minimum: "0.00"
+    maximum: "100.00"
+-
+  name: ping
+  isHidden: true
+  description: "device awake"
+  properties:
+    valueType: "String"
+    readWrite: "R"
+    defaultValue: "oops"
+-
+  name: message
+  isHidden: true
+  description: "device notification message"
+  properties:
+    valueType: "String"
+    readWrite: "W"
+    scale: ""
+    offset: ""
+    base: ""
+
+deviceCommands:
+-
+  name: testrandfloat32
+  readWrite: "R"
+  isHidden: false
+  resourceOperations:
+    - { deviceResource: "randfloat32" }
+-
+  name: testrandfloat64
+  readWrite: "R"
+  isHidden: false
+  resourceOperations:
+    - { deviceResource: "randfloat64" }
+-
+  name: testping
+  readWrite: "R"
+  isHidden: false
+  resourceOperations:
+    - { deviceResource: "ping" }
+-
+  name: testmessage
+  readWrite: "W"
+  isHidden: false
+  resourceOperations:
+    - { deviceResource: "message" }

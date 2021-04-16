@@ -11,13 +11,11 @@ import (
 	"reflect"
 	"strconv"
 
-	"github.com/edgexfoundry/device-sdk-go/pkg/service"
-
-	"github.com/edgexfoundry/go-mod-bootstrap/bootstrap/secret"
-	"github.com/edgexfoundry/go-mod-bootstrap/bootstrap/startup"
-	"github.com/edgexfoundry/go-mod-bootstrap/config"
-
-	"github.com/edgexfoundry/go-mod-core-contracts/models"
+	"github.com/edgexfoundry/device-sdk-go/v2/pkg/service"
+	"github.com/edgexfoundry/go-mod-bootstrap/v2/bootstrap/secret"
+	"github.com/edgexfoundry/go-mod-bootstrap/v2/bootstrap/startup"
+	"github.com/edgexfoundry/go-mod-bootstrap/v2/config"
+	"github.com/edgexfoundry/go-mod-core-contracts/v2/v2/models"
 )
 
 type ConnectionInfo struct {

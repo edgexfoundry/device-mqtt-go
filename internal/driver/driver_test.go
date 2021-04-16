@@ -1,6 +1,6 @@
 // -*- Mode: Go; indent-tabs-mode: t -*-
 //
-// Copyright (C) 2019-2020 IOTech Ltd
+// Copyright (C) 2019-2021 IOTech Ltd
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -11,9 +11,9 @@ import (
 	"strings"
 	"testing"
 
-	sdkModel "github.com/edgexfoundry/device-sdk-go/pkg/models"
-	"github.com/edgexfoundry/go-mod-core-contracts/clients/logger"
-
+	"github.com/edgexfoundry/device-sdk-go/v2/pkg/models"
+	"github.com/edgexfoundry/go-mod-core-contracts/v2/clients/logger"
+	"github.com/edgexfoundry/go-mod-core-contracts/v2/v2"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -25,9 +25,9 @@ func init() {
 
 func TestNewResult_bool(t *testing.T) {
 	var reading interface{} = true
-	req := sdkModel.CommandRequest{
+	req := models.CommandRequest{
 		DeviceResourceName: "light",
-		Type:               sdkModel.Bool,
+		Type:               v2.ValueTypeBool,
 	}
 
 	cmdVal, err := newResult(req, reading)
@@ -42,9 +42,9 @@ func TestNewResult_bool(t *testing.T) {
 
 func TestNewResult_uint8(t *testing.T) {
 	var reading interface{} = uint8(123)
-	req := sdkModel.CommandRequest{
+	req := models.CommandRequest{
 		DeviceResourceName: "temperature",
-		Type:               sdkModel.Uint8,
+		Type:               v2.ValueTypeUint8,
 	}
 
 	cmdVal, err := newResult(req, reading)
@@ -59,9 +59,9 @@ func TestNewResult_uint8(t *testing.T) {
 
 func TestNewResult_int8(t *testing.T) {
 	var reading interface{} = int8(123)
-	req := sdkModel.CommandRequest{
+	req := models.CommandRequest{
 		DeviceResourceName: "temperature",
-		Type:               sdkModel.Int8,
+		Type:               v2.ValueTypeInt8,
 	}
 
 	cmdVal, err := newResult(req, reading)
@@ -76,22 +76,23 @@ func TestNewResult_int8(t *testing.T) {
 
 func TestNewResultFailed_int8(t *testing.T) {
 	var reading interface{} = int16(256)
-	req := sdkModel.CommandRequest{
+	req := models.CommandRequest{
 		DeviceResourceName: "temperature",
-		Type:               sdkModel.Int8,
+		Type:               v2.ValueTypeInt8,
 	}
 
 	_, err := newResult(req, reading)
-	if err == nil || !strings.Contains(err.Error(), "Reading 256 is out of the value type(11)'s range") {
+	fmt.Println(err)
+	if err == nil || !strings.Contains(err.Error(), "Reading 256 is out of the value type(Int8)'s range") {
 		t.Errorf("Convert new result should be failed")
 	}
 }
 
 func TestNewResult_uint16(t *testing.T) {
 	var reading interface{} = uint16(123)
-	req := sdkModel.CommandRequest{
+	req := models.CommandRequest{
 		DeviceResourceName: "temperature",
-		Type:               sdkModel.Uint16,
+		Type:               v2.ValueTypeUint16,
 	}
 
 	cmdVal, err := newResult(req, reading)
@@ -106,9 +107,9 @@ func TestNewResult_uint16(t *testing.T) {
 
 func TestNewResult_int16(t *testing.T) {
 	var reading interface{} = int16(123)
-	req := sdkModel.CommandRequest{
+	req := models.CommandRequest{
 		DeviceResourceName: "temperature",
-		Type:               sdkModel.Int16,
+		Type:               v2.ValueTypeInt16,
 	}
 
 	cmdVal, err := newResult(req, reading)
@@ -123,9 +124,9 @@ func TestNewResult_int16(t *testing.T) {
 
 func TestNewResult_uint32(t *testing.T) {
 	var reading interface{} = uint32(123)
-	req := sdkModel.CommandRequest{
+	req := models.CommandRequest{
 		DeviceResourceName: "temperature",
-		Type:               sdkModel.Uint32,
+		Type:               v2.ValueTypeUint32,
 	}
 
 	cmdVal, err := newResult(req, reading)
@@ -140,9 +141,9 @@ func TestNewResult_uint32(t *testing.T) {
 
 func TestNewResult_int32(t *testing.T) {
 	var reading interface{} = int32(123)
-	req := sdkModel.CommandRequest{
+	req := models.CommandRequest{
 		DeviceResourceName: "temperature",
-		Type:               sdkModel.Int32,
+		Type:               v2.ValueTypeInt32,
 	}
 
 	cmdVal, err := newResult(req, reading)
@@ -157,9 +158,9 @@ func TestNewResult_int32(t *testing.T) {
 
 func TestNewResult_uint64(t *testing.T) {
 	var reading interface{} = uint64(123)
-	req := sdkModel.CommandRequest{
+	req := models.CommandRequest{
 		DeviceResourceName: "temperature",
-		Type:               sdkModel.Uint64,
+		Type:               v2.ValueTypeUint64,
 	}
 
 	cmdVal, err := newResult(req, reading)
@@ -174,9 +175,9 @@ func TestNewResult_uint64(t *testing.T) {
 
 func TestNewResult_int64(t *testing.T) {
 	var reading interface{} = int64(123)
-	req := sdkModel.CommandRequest{
+	req := models.CommandRequest{
 		DeviceResourceName: "temperature",
-		Type:               sdkModel.Int64,
+		Type:               v2.ValueTypeInt64,
 	}
 
 	cmdVal, err := newResult(req, reading)
@@ -190,14 +191,14 @@ func TestNewResult_int64(t *testing.T) {
 }
 
 func TestNewResult_float32(t *testing.T) {
-	req := sdkModel.CommandRequest{
+	req := models.CommandRequest{
 		DeviceResourceName: "temperature",
-		Type:               sdkModel.Float32,
+		Type:               v2.ValueTypeFloat32,
 	}
 
 	tests := []struct {
 		name     string
-		req      sdkModel.CommandRequest
+		req      models.CommandRequest
 		reading  interface{}
 		expected interface{}
 	}{
@@ -219,14 +220,14 @@ func TestNewResult_float32(t *testing.T) {
 }
 
 func TestNewResult_float64(t *testing.T) {
-	req := sdkModel.CommandRequest{
+	req := models.CommandRequest{
 		DeviceResourceName: "temperature",
-		Type:               sdkModel.Float64,
+		Type:               v2.ValueTypeFloat64,
 	}
 
 	tests := []struct {
 		name     string
-		req      sdkModel.CommandRequest
+		req      models.CommandRequest
 		reading  interface{}
 		expected interface{}
 	}{
@@ -249,9 +250,9 @@ func TestNewResult_float64(t *testing.T) {
 
 func TestNewResult_float64ToInt8(t *testing.T) {
 	var reading interface{} = float64(123.11)
-	req := sdkModel.CommandRequest{
+	req := models.CommandRequest{
 		DeviceResourceName: "temperature",
-		Type:               sdkModel.Int8,
+		Type:               v2.ValueTypeInt8,
 	}
 
 	cmdVal, err := newResult(req, reading)
@@ -266,9 +267,9 @@ func TestNewResult_float64ToInt8(t *testing.T) {
 
 func TestNewResult_float64ToInt16(t *testing.T) {
 	var reading interface{} = float64(123.11)
-	req := sdkModel.CommandRequest{
+	req := models.CommandRequest{
 		DeviceResourceName: "temperature",
-		Type:               sdkModel.Int16,
+		Type:               v2.ValueTypeInt16,
 	}
 
 	cmdVal, err := newResult(req, reading)
@@ -283,9 +284,9 @@ func TestNewResult_float64ToInt16(t *testing.T) {
 
 func TestNewResult_float64ToInt32(t *testing.T) {
 	var reading interface{} = float64(123.11)
-	req := sdkModel.CommandRequest{
+	req := models.CommandRequest{
 		DeviceResourceName: "temperature",
-		Type:               sdkModel.Int32,
+		Type:               v2.ValueTypeInt32,
 	}
 
 	cmdVal, err := newResult(req, reading)
@@ -300,9 +301,9 @@ func TestNewResult_float64ToInt32(t *testing.T) {
 
 func TestNewResult_float64ToInt64(t *testing.T) {
 	var reading interface{} = float64(123.11)
-	req := sdkModel.CommandRequest{
+	req := models.CommandRequest{
 		DeviceResourceName: "temperature",
-		Type:               sdkModel.Int64,
+		Type:               v2.ValueTypeInt64,
 	}
 
 	cmdVal, err := newResult(req, reading)
@@ -317,9 +318,9 @@ func TestNewResult_float64ToInt64(t *testing.T) {
 
 func TestNewResult_float64ToUint8(t *testing.T) {
 	var reading interface{} = float64(123.11)
-	req := sdkModel.CommandRequest{
+	req := models.CommandRequest{
 		DeviceResourceName: "temperature",
-		Type:               sdkModel.Uint8,
+		Type:               v2.ValueTypeUint8,
 	}
 
 	cmdVal, err := newResult(req, reading)
@@ -334,9 +335,9 @@ func TestNewResult_float64ToUint8(t *testing.T) {
 
 func TestNewResult_float64ToUint16(t *testing.T) {
 	var reading interface{} = float64(123.11)
-	req := sdkModel.CommandRequest{
+	req := models.CommandRequest{
 		DeviceResourceName: "temperature",
-		Type:               sdkModel.Uint16,
+		Type:               v2.ValueTypeUint16,
 	}
 
 	cmdVal, err := newResult(req, reading)
@@ -351,9 +352,9 @@ func TestNewResult_float64ToUint16(t *testing.T) {
 
 func TestNewResult_float64ToUint32(t *testing.T) {
 	var reading interface{} = float64(123.11)
-	req := sdkModel.CommandRequest{
+	req := models.CommandRequest{
 		DeviceResourceName: "temperature",
-		Type:               sdkModel.Uint32,
+		Type:               v2.ValueTypeUint32,
 	}
 
 	cmdVal, err := newResult(req, reading)
@@ -368,9 +369,9 @@ func TestNewResult_float64ToUint32(t *testing.T) {
 
 func TestNewResult_float64ToUint64(t *testing.T) {
 	var reading interface{} = float64(123.11)
-	req := sdkModel.CommandRequest{
+	req := models.CommandRequest{
 		DeviceResourceName: "temperature",
-		Type:               sdkModel.Uint64,
+		Type:               v2.ValueTypeUint64,
 	}
 
 	cmdVal, err := newResult(req, reading)
@@ -385,9 +386,9 @@ func TestNewResult_float64ToUint64(t *testing.T) {
 
 func TestNewResult_float64ToFloat32(t *testing.T) {
 	var reading interface{} = float64(123.11)
-	req := sdkModel.CommandRequest{
+	req := models.CommandRequest{
 		DeviceResourceName: "temperature",
-		Type:               sdkModel.Float32,
+		Type:               v2.ValueTypeFloat32,
 	}
 
 	cmdVal, err := newResult(req, reading)
@@ -402,9 +403,9 @@ func TestNewResult_float64ToFloat32(t *testing.T) {
 
 func TestNewResult_float64ToString(t *testing.T) {
 	var reading interface{} = float64(123.11)
-	req := sdkModel.CommandRequest{
+	req := models.CommandRequest{
 		DeviceResourceName: "temperature",
-		Type:               sdkModel.String,
+		Type:               v2.ValueTypeString,
 	}
 
 	cmdVal, err := newResult(req, reading)
@@ -419,9 +420,9 @@ func TestNewResult_float64ToString(t *testing.T) {
 
 func TestNewResult_string(t *testing.T) {
 	var reading interface{} = "test string"
-	req := sdkModel.CommandRequest{
+	req := models.CommandRequest{
 		DeviceResourceName: "temperature",
-		Type:               sdkModel.String,
+		Type:               v2.ValueTypeString,
 	}
 
 	cmdVal, err := newResult(req, reading)
@@ -436,9 +437,9 @@ func TestNewResult_string(t *testing.T) {
 
 func TestNewResult_stringToInt64(t *testing.T) {
 	var reading interface{} = "123"
-	req := sdkModel.CommandRequest{
+	req := models.CommandRequest{
 		DeviceResourceName: "temperature",
-		Type:               sdkModel.Int64,
+		Type:               v2.ValueTypeInt64,
 	}
 
 	cmdVal, err := newResult(req, reading)
@@ -453,9 +454,9 @@ func TestNewResult_stringToInt64(t *testing.T) {
 
 func TestNewResult_stringToInt8(t *testing.T) {
 	var reading interface{} = "123"
-	req := sdkModel.CommandRequest{
+	req := models.CommandRequest{
 		DeviceResourceName: "temperature",
-		Type:               sdkModel.Int8,
+		Type:               v2.ValueTypeInt8,
 	}
 
 	cmdVal, err := newResult(req, reading)
@@ -470,9 +471,9 @@ func TestNewResult_stringToInt8(t *testing.T) {
 
 func TestNewResult_stringToUint8(t *testing.T) {
 	var reading interface{} = "123"
-	req := sdkModel.CommandRequest{
+	req := models.CommandRequest{
 		DeviceResourceName: "temperature",
-		Type:               sdkModel.Uint8,
+		Type:               v2.ValueTypeUint8,
 	}
 
 	cmdVal, err := newResult(req, reading)
@@ -487,9 +488,9 @@ func TestNewResult_stringToUint8(t *testing.T) {
 
 func TestNewResult_stringToUint32(t *testing.T) {
 	var reading interface{} = "123"
-	req := sdkModel.CommandRequest{
+	req := models.CommandRequest{
 		DeviceResourceName: "temperature",
-		Type:               sdkModel.Uint32,
+		Type:               v2.ValueTypeUint32,
 	}
 
 	cmdVal, err := newResult(req, reading)
@@ -504,9 +505,9 @@ func TestNewResult_stringToUint32(t *testing.T) {
 
 func TestNewResult_stringToUint64(t *testing.T) {
 	var reading interface{} = "123"
-	req := sdkModel.CommandRequest{
+	req := models.CommandRequest{
 		DeviceResourceName: "temperature",
-		Type:               sdkModel.Uint64,
+		Type:               v2.ValueTypeUint64,
 	}
 
 	cmdVal, err := newResult(req, reading)
@@ -521,9 +522,9 @@ func TestNewResult_stringToUint64(t *testing.T) {
 
 func TestNewResult_stringToBool(t *testing.T) {
 	var reading interface{} = "true"
-	req := sdkModel.CommandRequest{
+	req := models.CommandRequest{
 		DeviceResourceName: "temperature",
-		Type:               sdkModel.Bool,
+		Type:               v2.ValueTypeBool,
 	}
 
 	cmdVal, err := newResult(req, reading)
@@ -538,9 +539,9 @@ func TestNewResult_stringToBool(t *testing.T) {
 
 func TestNewResult_numberToUint64(t *testing.T) {
 	var reading interface{} = 123
-	req := sdkModel.CommandRequest{
+	req := models.CommandRequest{
 		DeviceResourceName: "temperature",
-		Type:               sdkModel.Uint64,
+		Type:               v2.ValueTypeUint64,
 	}
 
 	cmdVal, err := newResult(req, reading)
@@ -555,9 +556,9 @@ func TestNewResult_numberToUint64(t *testing.T) {
 
 func TestNewResult_floatNumberToFloat32(t *testing.T) {
 	var reading interface{} = 123.0
-	req := sdkModel.CommandRequest{
+	req := models.CommandRequest{
 		DeviceResourceName: "temperature",
-		Type:               sdkModel.Float32,
+		Type:               v2.ValueTypeFloat32,
 	}
 
 	cmdVal, err := newResult(req, reading)
@@ -572,9 +573,9 @@ func TestNewResult_floatNumberToFloat32(t *testing.T) {
 
 func TestNewResult_numberToString(t *testing.T) {
 	var reading interface{} = 123
-	req := sdkModel.CommandRequest{
+	req := models.CommandRequest{
 		DeviceResourceName: "temperature",
-		Type:               sdkModel.String,
+		Type:               v2.ValueTypeString,
 	}
 
 	cmdVal, err := newResult(req, reading)

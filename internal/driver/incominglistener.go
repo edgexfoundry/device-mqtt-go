@@ -1,6 +1,6 @@
 // -*- Mode: Go; indent-tabs-mode: t -*-
 //
-// Copyright (C) 2018-2019 IOTech Ltd
+// Copyright (C) 2018-2021 IOTech Ltd
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -13,10 +13,9 @@ import (
 	"strings"
 	"time"
 
-	sdkModel "github.com/edgexfoundry/device-sdk-go/pkg/models"
-	sdk "github.com/edgexfoundry/device-sdk-go/pkg/service"
-
 	mqtt "github.com/eclipse/paho.mqtt.golang"
+	"github.com/edgexfoundry/device-sdk-go/v2/pkg/models"
+	"github.com/edgexfoundry/device-sdk-go/v2/pkg/service"
 )
 
 func startIncomingListening() error {
@@ -89,17 +88,17 @@ func onIncomingDataReceived(client mqtt.Client, message mqtt.Message) {
 		return
 	}
 
-	service := sdk.RunningService()
+	service := service.RunningService()
 
-	deviceObject, ok := service.DeviceResource(deviceName, cmd, "get")
+	deviceObject, ok := service.DeviceResource(deviceName, cmd)
 	if !ok {
 		driver.Logger.Warn(fmt.Sprintf("[Incoming listener] Incoming reading ignored. No DeviceObject found : topic=%v msg=%v", message.Topic(), string(message.Payload())))
 		return
 	}
 
-	req := sdkModel.CommandRequest{
+	req := models.CommandRequest{
 		DeviceResourceName: cmd,
-		Type:               sdkModel.ParseValueType(deviceObject.Properties.Value.Type),
+		Type:               deviceObject.Properties.ValueType,
 	}
 
 	result, err := newResult(req, reading)
@@ -109,9 +108,9 @@ func onIncomingDataReceived(client mqtt.Client, message mqtt.Message) {
 		return
 	}
 
-	asyncValues := &sdkModel.AsyncValues{
+	asyncValues := &models.AsyncValues{
 		DeviceName:    deviceName,
-		CommandValues: []*sdkModel.CommandValue{result},
+		CommandValues: []*models.CommandValue{result},
 	}
 
 	driver.Logger.Info(fmt.Sprintf("[Incoming listener] Incoming reading received: topic=%v msg=%v", message.Topic(), string(message.Payload())))
