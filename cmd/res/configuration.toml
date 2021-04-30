@@ -59,6 +59,7 @@ PublishTopicPrefix = 'edgex/events' # /<device-profile-name>/<device-name>/<sour
   Secretpath = "messagebus"  # Path in secret store used if ClientAuth not `none`
 
 [SecretStore]
+Type = 'vault'
 Host = 'localhost'
 Port = 8200
 Path = '/v1/secret/edgex/device-mqtt/'
