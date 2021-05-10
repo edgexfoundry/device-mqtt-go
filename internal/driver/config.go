@@ -116,7 +116,7 @@ func GetCredentials(secretPath string) (config.Credentials, error) {
 	var secretData map[string]string
 	var err error
 	for timer.HasNotElapsed() {
-		secretData, err = deviceService.SecretProvider.GetSecrets(secretPath, secret.UsernameKey, secret.PasswordKey)
+		secretData, err = deviceService.SecretProvider.GetSecret(secretPath, secret.UsernameKey, secret.PasswordKey)
 		if err == nil {
 			break
 		}
