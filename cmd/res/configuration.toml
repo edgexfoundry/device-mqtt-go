@@ -1,11 +1,17 @@
 [Writable]
 LogLevel = 'INFO'
-    [Writable.InsecureSecrets]
-        [Writable.InsecureSecrets.MQTT]
-        path = "credentials"
-            [Writable.InsecureSecrets.MQTT.Secrets]
-            username = ""
-            password = ""
+  # InsecureSecrets are required for when Redis is used for message bus
+  [Writable.InsecureSecrets]
+    [Writable.InsecureSecrets.DB]
+    path = "redisdb"
+      [Writable.InsecureSecrets.DB.Secrets]
+      username = ""
+      password = ""
+    [Writable.InsecureSecrets.MQTT]
+    path = "credentials"
+      [Writable.InsecureSecrets.MQTT.Secrets]
+      username = ""
+      password = ""
 
 [Service]
 BootTimeout = 30000
@@ -20,6 +26,7 @@ ConnectRetries = 10
 Labels = []
 EnableAsyncReadings = true
 AsyncBufferSize = 16
+UseMessageBus = false
 
 [Registry]
 Host = 'localhost'
