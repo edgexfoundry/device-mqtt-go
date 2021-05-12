@@ -14,7 +14,7 @@ import (
 )
 
 const (
-	serviceName string = "edgex-device-mqtt"
+	serviceName string = "device-mqtt"
 )
 
 func main() {
