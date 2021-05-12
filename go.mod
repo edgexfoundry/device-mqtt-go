@@ -1,7 +1,7 @@
 module github.com/edgexfoundry/device-mqtt-go
 
 require (
-	github.com/eclipse/paho.mqtt.golang v1.3.3
+	github.com/eclipse/paho.mqtt.golang v1.3.4
 	github.com/edgexfoundry/device-sdk-go/v2 v2.0.0-dev.45
 	github.com/edgexfoundry/go-mod-bootstrap/v2 v2.0.0-dev.34
 	github.com/edgexfoundry/go-mod-core-contracts/v2 v2.0.0-dev.67
