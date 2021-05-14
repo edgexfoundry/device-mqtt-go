@@ -17,9 +17,9 @@ GIT_SHA=$(shell git rev-parse HEAD)
 GOFLAGS=-ldflags "-X github.com/edgexfoundry/device-mqtt-go.Version=$(VERSION)"
 
 build: $(MICROSERVICES)
-	$(GOCGO) build ./...
 
 cmd/device-mqtt:
+	go mod tidy
 	$(GOCGO) build $(GOFLAGS) -o $@ ./cmd
 
 test:

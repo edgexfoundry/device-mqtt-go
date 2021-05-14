@@ -1,11 +1,17 @@
 [Writable]
 LogLevel = 'INFO'
-    [Writable.InsecureSecrets]
-        [Writable.InsecureSecrets.MQTT]
-        path = "credentials"
-            [Writable.InsecureSecrets.MQTT.Secrets]
-            username = ""
-            password = ""
+  # InsecureSecrets are required for when Redis is used for message bus
+  [Writable.InsecureSecrets]
+    [Writable.InsecureSecrets.DB]
+    path = "redisdb"
+      [Writable.InsecureSecrets.DB.Secrets]
+      username = ""
+      password = ""
+    [Writable.InsecureSecrets.MQTT]
+    path = "credentials"
+      [Writable.InsecureSecrets.MQTT.Secrets]
+      username = ""
+      password = ""
 
 [Service]
 BootTimeout = 30000
@@ -20,6 +26,7 @@ ConnectRetries = 10
 Labels = []
 EnableAsyncReadings = true
 AsyncBufferSize = 16
+UseMessageBus = false
 
 [Registry]
 Host = 'localhost'
@@ -38,11 +45,12 @@ Type = 'consul'
   Port = 48081
 
 [MessageQueue]
-Enabled = false
-Protocol = 'tcp'
+Protocol = 'redis'
 Host = 'localhost'
-Port = 1883
-Type = 'mqtt'
+Port = 6379
+Type = 'redis'
+AuthMode = 'usernamepassword'  # required for redis messagebus (secure or insecure).
+SecretName = "redisdb"
 PublishTopicPrefix = 'edgex/events' # /<device-profile-name>/<device-name>/<source-name> will be added to this Publish Topic prefix
   [MessageQueue.Optional]
   # Default MQTT Specific options that need to be here to enable environment variable overrides of them
@@ -55,8 +63,6 @@ PublishTopicPrefix = 'edgex/events' # /<device-profile-name>/<device-name>/<sour
   AutoReconnect = "true"
   ConnectTimeout = "5" # Seconds
   SkipCertVerify = "false" # Only used if Cert/Key file or Cert/Key PEMblock are specified
-  ClientAuth = "none" # Valid values are: `none`, `usernamepassword` or `clientcert`
-  Secretpath = "messagebus"  # Path in secret store used if ClientAuth not `none`
 
 [SecretStore]
 Type = 'vault'
