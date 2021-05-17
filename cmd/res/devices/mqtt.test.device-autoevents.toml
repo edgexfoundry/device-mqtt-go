@@ -13,6 +13,6 @@
        Topic = 'CommandTopic'
        CredentialsPath = 'credentials'
     [[DeviceList.AutoEvents]]
-       Frequency = '20s'
+       Interval = '20s'
        OnChange = false
        SourceName = 'testrandfloat32'
