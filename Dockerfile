@@ -28,6 +28,7 @@ WORKDIR /device-mqtt-go
 
 COPY . .
 
+RUN go mod tidy
 RUN go mod download
 
 # To run tests in the build container:
