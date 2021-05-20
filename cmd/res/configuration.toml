@@ -18,7 +18,7 @@ BootTimeout = 30000
 CheckInterval = '10s'
 Host = 'localhost'
 ServerBindAddr = ''  # blank value defaults to Service.Host value
-Port = 49982
+Port = 59982
 Protocol = 'http'
 StartupMsg = 'device mqtt started'
 Timeout = 5000
@@ -37,12 +37,12 @@ Type = 'consul'
   [Clients.core-data]
   Protocol = 'http'
   Host = 'localhost'
-  Port = 48080
+  Port = 59780
 
   [Clients.core-metadata]
   Protocol = 'http'
   Host = 'localhost'
-  Port = 48081
+  Port = 59781
 
 [MessageQueue]
 Protocol = 'redis'
