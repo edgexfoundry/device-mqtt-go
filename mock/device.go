@@ -9,11 +9,12 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/eclipse/paho.mqtt.golang"
 	"log"
 	"math/rand"
 	"net/url"
 	"time"
+
+	"github.com/eclipse/paho.mqtt.golang"
 )
 
 const (
@@ -32,12 +33,12 @@ func main() {
 // runCommandHandler use to test receiving commands from the device service and responded back for get/set commands.
 //
 // Use a REST client to send a command to the service like:
-// http://localhost:49982/api/v1/devices/{device id}>/message - use POST on this one with
-// {"message":"some text"} in body http://localhost:49982/api/v1/devices/<device id>/ping - use GET
-// http://localhost:49982/api/v1/devices/<device id>/randnum - use GET
+// http://localhost:59982/api/v1/devices/{device id}>/message - use POST on this one with
+// {"message":"some text"} in body http://localhost:59982/api/v1/devices/<device id>/ping - use GET
+// http://localhost:59982/api/v1/devices/<device id>/randnum - use GET
 //
 // If command micro service is running, the same can be performed through command to device service
-// like this http://localhost:48082/api/v1/device/<device id>/command/<command id>
+// like this http://localhost:59882/api/v1/device/<device id>/command/<command id>
 //
 // Requires the Device Service, Command, Core Data, Metadata and Mongo to all be running
 func runCommandHandler() {

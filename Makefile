@@ -29,7 +29,6 @@ test:
 	gofmt -l .
 	["`gofmt -l .`" = ""]
 	./bin/test-attribution-txt.sh
-	./bin/test-go-mod-tidy.sh
 
 clean:
 	rm -f $(MICROSERVICES)
