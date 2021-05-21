@@ -9,11 +9,12 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/eclipse/paho.mqtt.golang"
 	"log"
 	"math/rand"
 	"net/url"
 	"time"
+
+	"github.com/eclipse/paho.mqtt.golang"
 )
 
 const (
@@ -37,7 +38,7 @@ func main() {
 // http://localhost:59982/api/v1/devices/<device id>/randnum - use GET
 //
 // If command micro service is running, the same can be performed through command to device service
-// like this http://localhost:59782/api/v1/device/<device id>/command/<command id>
+// like this http://localhost:59882/api/v1/device/<device id>/command/<command id>
 //
 // Requires the Device Service, Command, Core Data, Metadata and Mongo to all be running
 func runCommandHandler() {
