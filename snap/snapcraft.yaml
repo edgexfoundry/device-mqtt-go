@@ -1,14 +1,7 @@
 name: edgex-device-mqtt
-base: core18
-version: "replace-me"
+base: core18 
 license: Apache-2.0
-version-script: |
-  if [ -f VERSION ]; then
-    PROJECT_VERSION=$(cat VERSION)
-  else
-    PROJECT_VERSION=local-dev
-  fi
-  echo $PROJECT_VERSION-$(date +%Y%m%d)+$(git rev-parse --short HEAD)
+adopt-info: version
 summary: Connect data MQTT to EdgeX using device-mqtt reference Device Service
 title: EdgeX MQTT Device Service
 description: |
@@ -26,8 +19,8 @@ architectures:
 grade: stable
 confinement: strict
 
-# edinburgh release is epoch 1
-epoch: 1
+# edinburgh, geneva,hanoi = 1, ireland = 2
+epoch: 2
 
 apps:
   device-mqtt:
@@ -43,6 +36,13 @@ apps:
     plugs: [network, network-bind]
 
 parts:
+  version:
+    plugin: nil
+    source: snap/local
+    override-pull: |
+      cd $SNAPCRAFT_PROJECT_DIR
+      GIT_VERSION=$(git describe --tags --abbrev=0 | sed 's/v//')
+      snapcraftctl set-version ${GIT_VERSION}
   device-mqtt:
     source: .
     plugin: make
@@ -59,11 +59,11 @@ parts:
       install -DT "./cmd/res/configuration.toml" "$SNAPCRAFT_PART_INSTALL/config/device-mqtt/res/configuration.toml"
 
       install -DT "./cmd/res/devices/mqtt.test.device.toml" \
-        "$SNAPCRAFT_PART_INSTALL/config/device-mqtt/devices/mqtt.test.device.toml"
+        "$SNAPCRAFT_PART_INSTALL/config/device-mqtt/res/devices/mqtt.test.device.toml"
       install -DT "./cmd/res/devices/mqtt.test.device-autoevents.toml" \
-        "$SNAPCRAFT_PART_INSTALL/config/device-mqtt/devices/mqtt.test.device-autoevents.toml"
+        "$SNAPCRAFT_PART_INSTALL/config/device-mqtt/res/devices/mqtt.test.device-autoevents.toml"
       install -DT "./cmd/res/profiles/mqtt.test.device.profile.yml" \
-        "$SNAPCRAFT_PART_INSTALL/config/device-mqtt/profiles/mqtt.test.device.profile.yml"
+        "$SNAPCRAFT_PART_INSTALL/config/device-mqtt/res/profiles/mqtt.test.device.profile.yml"
 
       install -DT "./Attribution.txt" \
          "$SNAPCRAFT_PART_INSTALL/usr/share/doc/device-mqtt/Attribution.txt"
