@@ -53,7 +53,7 @@ func (d *Driver) Initialize(lc logger.LoggingClient, asyncCh chan<- *sdkModel.As
 		return fmt.Errorf("unable to load '%s' custom configuration: %s", CustomConfigSectionName, err.Error())
 	}
 
-	lc.Infof("Custom config is: %v", d.serviceConfig)
+	lc.Debugf("Custom config is: %v", d.serviceConfig)
 
 	go func() {
 		err := startCommandResponseListening()

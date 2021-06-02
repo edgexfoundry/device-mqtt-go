@@ -89,8 +89,7 @@ EnableAsyncReadings = true
 AsyncBufferSize = 16
 UseMessageBus = false
 
-# Custom driver configs
-[CustomConfig]
+[MQTTBrokerInfo]
 IncomingSchema = 'tcp'
 IncomingHost = '0.0.0.0'
 IncomingPort = 1883

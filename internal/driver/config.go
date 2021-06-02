@@ -18,7 +18,7 @@ import (
 	"github.com/edgexfoundry/go-mod-core-contracts/v2/v2/models"
 )
 
-const CustomConfigSectionName = "CustomConfig"
+const CustomConfigSectionName = "MQTTBrokerInfo"
 
 type ConnectionInfo struct {
 	Schema          string
@@ -30,7 +30,7 @@ type ConnectionInfo struct {
 }
 
 type ServiceConfig struct {
-	CustomConfig CustomConfig
+	MQTTBrokerInfo MQTTBrokerInfo
 }
 
 // UpdateFromRaw updates the service's full configuration from raw data received from
@@ -46,7 +46,7 @@ func (sw *ServiceConfig) UpdateFromRaw(rawConfig interface{}) bool {
 	return true
 }
 
-type CustomConfig struct {
+type MQTTBrokerInfo struct {
 	IncomingSchema          string
 	IncomingHost            string
 	IncomingPort            int
@@ -123,7 +123,7 @@ func GetCredentials(secretPath string) (config.Credentials, error) {
 	credentials := config.Credentials{}
 	deviceService := service.RunningService()
 
-	timer := startup.NewTimer(driver.serviceConfig.CustomConfig.CredentialsRetryTime, driver.serviceConfig.CustomConfig.CredentialsRetryWait)
+	timer := startup.NewTimer(driver.serviceConfig.MQTTBrokerInfo.CredentialsRetryTime, driver.serviceConfig.MQTTBrokerInfo.CredentialsRetryWait)
 
 	var secretData map[string]string
 	var err error
