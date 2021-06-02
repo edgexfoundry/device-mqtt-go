@@ -17,7 +17,7 @@ import (
 
 	MQTT "github.com/eclipse/paho.mqtt.golang"
 	sdkModel "github.com/edgexfoundry/device-sdk-go/v2/pkg/models"
-	device "github.com/edgexfoundry/device-sdk-go/v2/pkg/service"
+	"github.com/edgexfoundry/device-sdk-go/v2/pkg/service"
 	"github.com/edgexfoundry/go-mod-core-contracts/v2/clients/logger"
 	"github.com/edgexfoundry/go-mod-core-contracts/v2/v2"
 	"github.com/edgexfoundry/go-mod-core-contracts/v2/v2/models"
@@ -28,28 +28,11 @@ import (
 var once sync.Once
 var driver *Driver
 
-type Config struct {
-	Incoming connectionInfo
-	Response connectionInfo
-}
-
-type connectionInfo struct {
-	MqttProtocol   string
-	MqttBroker     string
-	MqttBrokerPort int
-	MqttClientID   string
-	MqttTopic      string
-	MqttQos        int
-	MqttUser       string
-	MqttPassword   string
-	MqttKeepAlive  int
-}
-
 type Driver struct {
 	Logger           logger.LoggingClient
 	AsyncCh          chan<- *sdkModel.AsyncValues
 	CommandResponses sync.Map
-	Config           *configuration
+	serviceConfig    *ServiceConfig
 }
 
 func NewProtocolDriver() sdkModel.ProtocolDriver {
@@ -62,12 +45,15 @@ func NewProtocolDriver() sdkModel.ProtocolDriver {
 func (d *Driver) Initialize(lc logger.LoggingClient, asyncCh chan<- *sdkModel.AsyncValues, deviceCh chan<- []sdkModel.DiscoveredDevice) error {
 	d.Logger = lc
 	d.AsyncCh = asyncCh
+	d.serviceConfig = &ServiceConfig{}
 
-	config, err := CreateDriverConfig(device.DriverConfigs())
-	if err != nil {
-		return fmt.Errorf("read MQTT driver configuration failed: %w", err)
+	ds := service.RunningService()
+
+	if err := ds.LoadCustomConfig(d.serviceConfig, CustomConfigSectionName); err != nil {
+		return fmt.Errorf("unable to load '%s' custom configuration: %s", CustomConfigSectionName, err.Error())
 	}
-	d.Config = config
+
+	lc.Infof("Custom config is: %v", d.serviceConfig)
 
 	go func() {
 		err := startCommandResponseListening()

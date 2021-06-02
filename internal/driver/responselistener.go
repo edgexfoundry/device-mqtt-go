@@ -18,14 +18,14 @@ import (
 
 func startCommandResponseListening() error {
 
-	var scheme = driver.Config.ResponseSchema
-	var brokerUrl = driver.Config.ResponseHost
-	var brokerPort = driver.Config.ResponsePort
-	var secretPath = driver.Config.ResponseCredentialsPath
-	var mqttClientId = driver.Config.ResponseClientId
-	var qos = byte(driver.Config.ResponseQos)
-	var keepAlive = driver.Config.ResponseKeepAlive
-	var topic = driver.Config.ResponseTopic
+	var scheme = driver.serviceConfig.CustomConfig.ResponseSchema
+	var brokerUrl = driver.serviceConfig.CustomConfig.ResponseHost
+	var brokerPort = driver.serviceConfig.CustomConfig.ResponsePort
+	var secretPath = driver.serviceConfig.CustomConfig.ResponseCredentialsPath
+	var mqttClientId = driver.serviceConfig.CustomConfig.ResponseClientId
+	var qos = byte(driver.serviceConfig.CustomConfig.ResponseQos)
+	var keepAlive = driver.serviceConfig.CustomConfig.ResponseKeepAlive
+	var topic = driver.serviceConfig.CustomConfig.ResponseTopic
 
 	credentials, err := GetCredentials(secretPath)
 	if err != nil {
@@ -41,13 +41,13 @@ func startCommandResponseListening() error {
 	}
 
 	var client mqtt.Client
-	for i := 1; i <= driver.Config.ConnEstablishingRetry; i++ {
+	for i := 1; i <= driver.serviceConfig.CustomConfig.ConnEstablishingRetry; i++ {
 		client, err = createClient(mqttClientId, uri, keepAlive)
-		if err != nil && i == driver.Config.ConnEstablishingRetry {
+		if err != nil && i == driver.serviceConfig.CustomConfig.ConnEstablishingRetry {
 			return err
 		} else if err != nil {
 			driver.Logger.Error(fmt.Sprintf("Fail to initial conn for command response, %v ", err))
-			time.Sleep(time.Duration(driver.Config.ConnEstablishingRetry) * time.Second)
+			time.Sleep(time.Duration(driver.serviceConfig.CustomConfig.ConnEstablishingRetry) * time.Second)
 			driver.Logger.Warn("Retry to initial conn for command response")
 			continue
 		}
