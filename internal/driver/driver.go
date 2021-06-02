@@ -25,6 +25,11 @@ import (
 	"gopkg.in/mgo.v2/bson"
 )
 
+const (
+	AuthModeUsernamePassword = "usernamepassword"
+	AuthModeNone             = "none"
+)
+
 var once sync.Once
 var driver *Driver
 
@@ -89,17 +94,14 @@ func (d *Driver) HandleReadCommands(deviceName string, protocols map[string]mode
 		return responses, err
 	}
 
-	credentials, err := GetCredentials(connectionInfo.CredentialsPath)
-	if err != nil {
-		return responses, fmt.Errorf("Unable to get Command MQTT credentials for secret path '%s': %s", connectionInfo.CredentialsPath, err.Error())
-	}
-
-	driver.Logger.Info("Command MQTT credentials loaded")
-
 	uri := &url.URL{
 		Scheme: strings.ToLower(connectionInfo.Schema),
 		Host:   fmt.Sprintf("%s:%s", connectionInfo.Host, connectionInfo.Port),
-		User:   url.UserPassword(credentials.Username, credentials.Password),
+	}
+
+	err = SetCredentials(uri, "Command", connectionInfo.AuthMode, connectionInfo.CredentialsPath)
+	if err != nil {
+		return responses, err
 	}
 
 	client, err := createClient(connectionInfo.ClientId, uri, 30)

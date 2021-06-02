@@ -14,6 +14,7 @@ const (
 	Port            = "Port"
 	ClientId        = "ClientId"
 	Topic           = "Topic"
+	AuthMode        = "AuthMode"
 	CredentialsPath = "CredentialsPath"
 
 	// Driver config
@@ -24,6 +25,7 @@ const (
 	IncomingKeepAlive       = "IncomingKeepAlive"
 	IncomingClientId        = "IncomingClientId"
 	IncomingTopic           = "IncomingTopic"
+	IncomingAuthMode        = "IncomingAuthMode"
 	IncomingCredentialsPath = "IncomingCredentialsPath"
 
 	ResponseSchema          = "ResponseSchema"
@@ -33,6 +35,7 @@ const (
 	ResponseKeepAlive       = "ResponseKeepAlive"
 	ResponseClientId        = "ResponseClientId"
 	ResponseTopic           = "ResponseTopic"
+	ResponseAuthMode        = "ResponseAuthMode"
 	ResponseCredentialsPath = "ResponseCredentialsPath"
 
 	CredentialsRetryTime = "CredentialsRetryTime"

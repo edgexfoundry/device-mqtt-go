@@ -19,6 +19,7 @@ func TestCreateConnectionInfo(t *testing.T) {
 	port := "1883"
 	clientId := "CommandPublisher"
 	topic := "CommandTopic"
+	authMode := "none"
 	credentialsPath := "mqtt"
 
 	protocols := map[string]models.ProtocolProperties{
@@ -28,6 +29,7 @@ func TestCreateConnectionInfo(t *testing.T) {
 			Port:            port,
 			ClientId:        clientId,
 			Topic:           topic,
+			AuthMode:        authMode,
 			CredentialsPath: credentialsPath,
 		},
 	}
@@ -42,6 +44,7 @@ func TestCreateConnectionInfo(t *testing.T) {
 		connectionInfo.Port != port ||
 		connectionInfo.ClientId != clientId ||
 		connectionInfo.Topic != topic ||
+		connectionInfo.AuthMode != authMode ||
 		connectionInfo.CredentialsPath != credentialsPath {
 		t.Fatalf("Unexpect test result. %v should match to %v ", connectionInfo, protocols)
 	}
