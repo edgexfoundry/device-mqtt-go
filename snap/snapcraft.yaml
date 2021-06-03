@@ -22,15 +22,24 @@ confinement: strict
 # edinburgh, geneva,hanoi = 1, ireland = 2
 epoch: 2
 
+slots:
+  edgex-secretstore-token:
+    interface: content
+    content: edgex-secretstore-token
+    source:
+      write: [$SNAP_DATA/device-mqtt]
+
 apps:
   device-mqtt:
-    adapter: none
+    adapter: full
     command: bin/device-mqtt -confdir $SNAP_DATA/config/device-mqtt -profile res --registry $CONSUL_ADDR
     command-chain:
       - bin/startup-env-var.sh
     environment:
       CONSUL_ADDR: "consul://localhost:8500"
-      DEVICE_PROFILESDIR: $SNAP_DATA/config/device-mqtt/res
+      DEVICE_PROFILESDIR: $SNAP_DATA/config/device-mqtt/res/profiles
+      DEVICE_DEVICESDIR: $SNAP_DATA/config/device-mqtt/res/devices
+      SECRETSTORE_TOKENFILE: $SNAP_DATA/device-mqtt/secrets-token.json
       WRITABLE_LOGLEVEL: 'INFO'
     daemon: simple
     plugs: [network, network-bind]
