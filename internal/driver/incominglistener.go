@@ -19,14 +19,14 @@ import (
 )
 
 func startIncomingListening() error {
-	var scheme = driver.Config.IncomingSchema
-	var brokerUrl = driver.Config.IncomingHost
-	var brokerPort = driver.Config.IncomingPort
-	var secretPath = driver.Config.IncomingCredentialsPath
-	var mqttClientId = driver.Config.IncomingClientId
-	var qos = byte(driver.Config.IncomingQos)
-	var keepAlive = driver.Config.IncomingKeepAlive
-	var topic = driver.Config.IncomingTopic
+	var scheme = driver.serviceConfig.MQTTBrokerInfo.IncomingSchema
+	var brokerUrl = driver.serviceConfig.MQTTBrokerInfo.IncomingHost
+	var brokerPort = driver.serviceConfig.MQTTBrokerInfo.IncomingPort
+	var secretPath = driver.serviceConfig.MQTTBrokerInfo.IncomingCredentialsPath
+	var mqttClientId = driver.serviceConfig.MQTTBrokerInfo.IncomingClientId
+	var qos = byte(driver.serviceConfig.MQTTBrokerInfo.IncomingQos)
+	var keepAlive = driver.serviceConfig.MQTTBrokerInfo.IncomingKeepAlive
+	var topic = driver.serviceConfig.MQTTBrokerInfo.IncomingTopic
 
 	credentials, err := GetCredentials(secretPath)
 	if err != nil {
@@ -42,13 +42,13 @@ func startIncomingListening() error {
 	}
 
 	var client mqtt.Client
-	for i := 1; i <= driver.Config.ConnEstablishingRetry; i++ {
+	for i := 1; i <= driver.serviceConfig.MQTTBrokerInfo.ConnEstablishingRetry; i++ {
 		client, err = createClient(mqttClientId, uri, keepAlive)
-		if err != nil && i == driver.Config.ConnEstablishingRetry {
+		if err != nil && i == driver.serviceConfig.MQTTBrokerInfo.ConnEstablishingRetry {
 			return err
 		} else if err != nil {
 			driver.Logger.Error(fmt.Sprintf("Fail to initial conn for incoming data, %v ", err))
-			time.Sleep(time.Duration(driver.Config.ConnEstablishingRetry) * time.Second)
+			time.Sleep(time.Duration(driver.serviceConfig.MQTTBrokerInfo.ConnEstablishingRetry) * time.Second)
 			driver.Logger.Warn("Retry to initial conn for incoming data")
 			continue
 		}

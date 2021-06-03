@@ -87,25 +87,26 @@ EnableAsyncReadings = true
 AsyncBufferSize = 16
 UseMessageBus = false
 
-# Driver configs
-[Driver]
+[MQTTBrokerInfo]
 IncomingSchema = 'tcp'
 IncomingHost = '0.0.0.0'
-IncomingPort = '1883'
-IncomingQos = '0'
-IncomingKeepAlive = '3600'
+IncomingPort = 1883
+IncomingQos = 0
+IncomingKeepAlive = 3600
 IncomingClientId = 'IncomingDataSubscriber'
 IncomingTopic = 'DataTopic'
 IncomingCredentialsPath = 'credentials'
 ResponseSchema = 'tcp'
 ResponseHost = '0.0.0.0'
-ResponsePort = '1883'
-ResponseQos = '0'
-ResponseKeepAlive = '3600'
+ResponsePort = 1883
+ResponseQos = 0
+ResponseKeepAlive = 3600
 ResponseClientId = 'CommandResponseSubscriber'
 ResponseTopic = 'ResponseTopic'
 ResponseCredentialsPath = 'credentials'
-CredentialsRetryTime = '120' # Seconds
-CredentialsRetryWait = '1' # Seconds
-ConnEstablishingRetry = '10'
-ConnRetryWaitTime = '5'
+CredentialsRetryTime = 120 # Seconds
+CredentialsRetryWait = 1 # Seconds
+ConnEstablishingRetry = 10
+ConnRetryWaitTime = 5
+# AuthMode is the MQTT broker authentication mechanism. Currently, 'usernamepassword' is the only AuthMode supported by this service, and the secret keys are 'username' and 'password'.
+AuthMode = 'usernamepassword'

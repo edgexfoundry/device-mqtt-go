@@ -18,6 +18,8 @@ import (
 	"github.com/edgexfoundry/go-mod-core-contracts/v2/v2/models"
 )
 
+const CustomConfigSectionName = "MQTTBrokerInfo"
+
 type ConnectionInfo struct {
 	Schema          string
 	Host            string
@@ -27,7 +29,24 @@ type ConnectionInfo struct {
 	CredentialsPath string
 }
 
-type configuration struct {
+type ServiceConfig struct {
+	MQTTBrokerInfo MQTTBrokerInfo
+}
+
+// UpdateFromRaw updates the service's full configuration from raw data received from
+// the Service Provider.
+func (sw *ServiceConfig) UpdateFromRaw(rawConfig interface{}) bool {
+	configuration, ok := rawConfig.(*ServiceConfig)
+	if !ok {
+		return false //errors.New("unable to cast raw config to type 'ServiceConfig'")
+	}
+
+	*sw = *configuration
+
+	return true
+}
+
+type MQTTBrokerInfo struct {
 	IncomingSchema          string
 	IncomingHost            string
 	IncomingPort            int
@@ -51,16 +70,9 @@ type configuration struct {
 
 	ConnEstablishingRetry int
 	ConnRetryWaitTime     int
-}
 
-// CreateDriverConfig use to load driver config for incoming listener and response listener
-func CreateDriverConfig(configMap map[string]string) (*configuration, error) {
-	config := new(configuration)
-	err := load(configMap, config)
-	if err != nil {
-		return config, err
-	}
-	return config, nil
+	// AuthMode is the MQTT broker authentication mechanism. Currently, 'usernamepassword' is the only AuthMode supported by this service, and the secret keys are 'username' and 'password'.
+	AuthMode string
 }
 
 // CreateConnectionInfo use to load MQTT connectionInfo for read and write command
@@ -111,7 +123,7 @@ func GetCredentials(secretPath string) (config.Credentials, error) {
 	credentials := config.Credentials{}
 	deviceService := service.RunningService()
 
-	timer := startup.NewTimer(driver.Config.CredentialsRetryTime, driver.Config.CredentialsRetryWait)
+	timer := startup.NewTimer(driver.serviceConfig.MQTTBrokerInfo.CredentialsRetryTime, driver.serviceConfig.MQTTBrokerInfo.CredentialsRetryWait)
 
 	var secretData map[string]string
 	var err error
