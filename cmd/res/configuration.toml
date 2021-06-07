@@ -95,7 +95,8 @@ IncomingQos = 0
 IncomingKeepAlive = 3600
 IncomingClientId = 'IncomingDataSubscriber'
 IncomingTopic = 'DataTopic'
-IncomingAuthMode = 'none' # Valid values are 'none' or 'usernamepassword'
+# IncomingAuthMode is the MQTT broker authentication mechanism. Currently, 'none' and 'usernamepassword' is the only AuthMode supported by this service, and the secret keys are 'username' and 'password'.
+IncomingAuthMode = 'none'
 IncomingCredentialsPath = 'credentials'
 ResponseSchema = 'tcp'
 ResponseHost = '0.0.0.0'
@@ -104,11 +105,10 @@ ResponseQos = 0
 ResponseKeepAlive = 3600
 ResponseClientId = 'CommandResponseSubscriber'
 ResponseTopic = 'ResponseTopic'
-ResponseAuthMode = 'none' # Valid values are 'none' or 'usernamepassword'
+# ResponseAuthMode is the MQTT broker authentication mechanism. Currently, 'none' and 'usernamepassword' is the only AuthMode supported by this service, and the secret keys are 'username' and 'password'.
+ResponseAuthMode = 'none'
 ResponseCredentialsPath = 'credentials'
 CredentialsRetryTime = 120 # Seconds
 CredentialsRetryWait = 1 # Seconds
 ConnEstablishingRetry = 10
 ConnRetryWaitTime = 5
-# AuthMode is the MQTT broker authentication mechanism. Currently, 'usernamepassword' is the only AuthMode supported by this service, and the secret keys are 'username' and 'password'.
-AuthMode = 'usernamepassword'

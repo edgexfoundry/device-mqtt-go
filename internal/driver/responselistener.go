@@ -21,7 +21,7 @@ func startCommandResponseListening() error {
 	var scheme = driver.serviceConfig.MQTTBrokerInfo.ResponseSchema
 	var brokerUrl = driver.serviceConfig.MQTTBrokerInfo.ResponseHost
 	var brokerPort = driver.serviceConfig.MQTTBrokerInfo.ResponsePort
-	var authMode = driver.serviceConfig.MQTTBrokerInfo.AuthMode
+	var authMode = driver.serviceConfig.MQTTBrokerInfo.ResponseAuthMode
 	var secretPath = driver.serviceConfig.MQTTBrokerInfo.ResponseCredentialsPath
 	var mqttClientId = driver.serviceConfig.MQTTBrokerInfo.ResponseClientId
 	var qos = byte(driver.serviceConfig.MQTTBrokerInfo.ResponseQos)

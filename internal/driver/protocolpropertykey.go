@@ -16,31 +16,4 @@ const (
 	Topic           = "Topic"
 	AuthMode        = "AuthMode"
 	CredentialsPath = "CredentialsPath"
-
-	// Driver config
-	IncomingSchema          = "IncomingSchema"
-	IncomingHost            = "IncomingHost"
-	IncomingPort            = "IncomingPort"
-	IncomingQos             = "IncomingQos"
-	IncomingKeepAlive       = "IncomingKeepAlive"
-	IncomingClientId        = "IncomingClientId"
-	IncomingTopic           = "IncomingTopic"
-	IncomingAuthMode        = "IncomingAuthMode"
-	IncomingCredentialsPath = "IncomingCredentialsPath"
-
-	ResponseSchema          = "ResponseSchema"
-	ResponseHost            = "ResponseHost"
-	ResponsePort            = "ResponsePort"
-	ResponseQos             = "ResponseQos"
-	ResponseKeepAlive       = "ResponseKeepAlive"
-	ResponseClientId        = "ResponseClientId"
-	ResponseTopic           = "ResponseTopic"
-	ResponseAuthMode        = "ResponseAuthMode"
-	ResponseCredentialsPath = "ResponseCredentialsPath"
-
-	CredentialsRetryTime = "CredentialsRetryTime"
-	CredentialsRetryWait = "CredentialsRetryWait"
-
-	ConnEstablishingRetry = "ConnEstablishingRetry"
-	ConnRetryWaitTime     = "ConnRetryWaitTime"
 )

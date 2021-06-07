@@ -22,7 +22,7 @@ func startIncomingListening() error {
 	var scheme = driver.serviceConfig.MQTTBrokerInfo.IncomingSchema
 	var brokerUrl = driver.serviceConfig.MQTTBrokerInfo.IncomingHost
 	var brokerPort = driver.serviceConfig.MQTTBrokerInfo.IncomingPort
-	var authMode = driver.serviceConfig.MQTTBrokerInfo.AuthMode
+	var authMode = driver.serviceConfig.MQTTBrokerInfo.IncomingAuthMode
 	var secretPath = driver.serviceConfig.MQTTBrokerInfo.IncomingCredentialsPath
 	var mqttClientId = driver.serviceConfig.MQTTBrokerInfo.IncomingClientId
 	var qos = byte(driver.serviceConfig.MQTTBrokerInfo.IncomingQos)

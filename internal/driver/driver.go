@@ -188,17 +188,14 @@ func (d *Driver) HandleWriteCommands(deviceName string, protocols map[string]mod
 		return err
 	}
 
-	credentials, err := GetCredentials(connectionInfo.CredentialsPath)
-	if err != nil {
-		return fmt.Errorf("Unable to get Command MQTT credentials for secret path '%s': %s", connectionInfo.CredentialsPath, err.Error())
-	}
-
-	driver.Logger.Info("Command MQTT credentials loaded")
-
 	uri := &url.URL{
 		Scheme: strings.ToLower(connectionInfo.Schema),
 		Host:   fmt.Sprintf("%s:%s", connectionInfo.Host, connectionInfo.Port),
-		User:   url.UserPassword(credentials.Username, credentials.Password),
+	}
+
+	err = SetCredentials(uri, "Command", connectionInfo.AuthMode, connectionInfo.CredentialsPath)
+	if err != nil {
+		return err
 	}
 
 	client, err := createClient(connectionInfo.ClientId, uri, 30)

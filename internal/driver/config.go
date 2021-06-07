@@ -74,9 +74,6 @@ type MQTTBrokerInfo struct {
 
 	ConnEstablishingRetry int
 	ConnRetryWaitTime     int
-
-	// AuthMode is the MQTT broker authentication mechanism. Currently, 'usernamepassword' is the only AuthMode supported by this service, and the secret keys are 'username' and 'password'.
-	AuthMode string
 }
 
 // CreateConnectionInfo use to load MQTT connectionInfo for read and write command
