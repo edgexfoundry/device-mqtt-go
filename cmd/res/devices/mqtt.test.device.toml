@@ -11,4 +11,5 @@
        Port = '1883'
        ClientId = 'CommandPublisher'
        Topic = 'CommandTopic'
+       AuthMode = 'none' # Valid values are 'none' or 'usernamepassword'
        CredentialsPath = 'credentials'

@@ -22,23 +22,21 @@ func startIncomingListening() error {
 	var scheme = driver.serviceConfig.MQTTBrokerInfo.IncomingSchema
 	var brokerUrl = driver.serviceConfig.MQTTBrokerInfo.IncomingHost
 	var brokerPort = driver.serviceConfig.MQTTBrokerInfo.IncomingPort
+	var authMode = driver.serviceConfig.MQTTBrokerInfo.IncomingAuthMode
 	var secretPath = driver.serviceConfig.MQTTBrokerInfo.IncomingCredentialsPath
 	var mqttClientId = driver.serviceConfig.MQTTBrokerInfo.IncomingClientId
 	var qos = byte(driver.serviceConfig.MQTTBrokerInfo.IncomingQos)
 	var keepAlive = driver.serviceConfig.MQTTBrokerInfo.IncomingKeepAlive
 	var topic = driver.serviceConfig.MQTTBrokerInfo.IncomingTopic
 
-	credentials, err := GetCredentials(secretPath)
-	if err != nil {
-		return fmt.Errorf("Unable to get incoming MQTT credentials for secret path '%s': %s", secretPath, err.Error())
-	}
-
-	driver.Logger.Info("Incoming MQTT credentials loaded")
-
 	uri := &url.URL{
 		Scheme: strings.ToLower(scheme),
 		Host:   fmt.Sprintf("%s:%d", brokerUrl, brokerPort),
-		User:   url.UserPassword(credentials.Username, credentials.Password),
+	}
+
+	err := SetCredentials(uri, "Incoming", authMode, secretPath)
+	if err != nil {
+		return err
 	}
 
 	var client mqtt.Client

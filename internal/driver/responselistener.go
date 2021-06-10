@@ -21,23 +21,21 @@ func startCommandResponseListening() error {
 	var scheme = driver.serviceConfig.MQTTBrokerInfo.ResponseSchema
 	var brokerUrl = driver.serviceConfig.MQTTBrokerInfo.ResponseHost
 	var brokerPort = driver.serviceConfig.MQTTBrokerInfo.ResponsePort
+	var authMode = driver.serviceConfig.MQTTBrokerInfo.ResponseAuthMode
 	var secretPath = driver.serviceConfig.MQTTBrokerInfo.ResponseCredentialsPath
 	var mqttClientId = driver.serviceConfig.MQTTBrokerInfo.ResponseClientId
 	var qos = byte(driver.serviceConfig.MQTTBrokerInfo.ResponseQos)
 	var keepAlive = driver.serviceConfig.MQTTBrokerInfo.ResponseKeepAlive
 	var topic = driver.serviceConfig.MQTTBrokerInfo.ResponseTopic
 
-	credentials, err := GetCredentials(secretPath)
-	if err != nil {
-		return fmt.Errorf("Unable to get response MQTT credentials for secret path '%s': %s", secretPath, err.Error())
-	}
-
-	driver.Logger.Info("Response MQTT credentials loaded")
-
 	uri := &url.URL{
 		Scheme: strings.ToLower(scheme),
 		Host:   fmt.Sprintf("%s:%d", brokerUrl, brokerPort),
-		User:   url.UserPassword(credentials.Username, credentials.Password),
+	}
+
+	err := SetCredentials(uri, "Response", authMode, secretPath)
+	if err != nil {
+		return err
 	}
 
 	var client mqtt.Client

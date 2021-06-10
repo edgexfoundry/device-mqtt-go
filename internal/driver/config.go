@@ -8,6 +8,7 @@ package driver
 
 import (
 	"fmt"
+	"net/url"
 	"reflect"
 	"strconv"
 
@@ -26,6 +27,7 @@ type ConnectionInfo struct {
 	Port            string
 	ClientId        string
 	Topic           string
+	AuthMode        string
 	CredentialsPath string
 }
 
@@ -54,6 +56,7 @@ type MQTTBrokerInfo struct {
 	IncomingKeepAlive       int
 	IncomingClientId        string
 	IncomingTopic           string
+	IncomingAuthMode        string
 	IncomingCredentialsPath string
 
 	ResponseSchema          string
@@ -63,6 +66,7 @@ type MQTTBrokerInfo struct {
 	ResponseKeepAlive       int
 	ResponseClientId        string
 	ResponseTopic           string
+	ResponseAuthMode        string
 	ResponseCredentialsPath string
 
 	CredentialsRetryTime int
@@ -70,9 +74,6 @@ type MQTTBrokerInfo struct {
 
 	ConnEstablishingRetry int
 	ConnRetryWaitTime     int
-
-	// AuthMode is the MQTT broker authentication mechanism. Currently, 'usernamepassword' is the only AuthMode supported by this service, and the secret keys are 'username' and 'password'.
-	AuthMode string
 }
 
 // CreateConnectionInfo use to load MQTT connectionInfo for read and write command
@@ -116,6 +117,26 @@ func load(config map[string]string, des interface{}) error {
 			return fmt.Errorf("none supported value type %v ,%v", valueField.Kind(), typeField.Name)
 		}
 	}
+	return nil
+}
+
+func SetCredentials(uri *url.URL, category string, authMode string, secretPath string) error {
+	switch authMode {
+	case AuthModeUsernamePassword:
+		credentials, err := GetCredentials(secretPath)
+		if err != nil {
+			return fmt.Errorf("Unable to get %s MQTT credentials for secret path '%s': %s", category, secretPath, err.Error())
+		}
+
+		driver.Logger.Infof("%s MQTT credentials loaded", category)
+		uri.User = url.UserPassword(credentials.Username, credentials.Password)
+
+	case AuthModeNone:
+		return nil
+	default:
+		return fmt.Errorf("invalid AuthMode '%s' for %s MQTT connection of", authMode, category)
+	}
+
 	return nil
 }
 
