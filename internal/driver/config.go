@@ -1,6 +1,6 @@
 // -*- Mode: Go; indent-tabs-mode: t -*-
 //
-// Copyright (C) 2019 IOTech Ltd
+// Copyright (C) 2019-2021 IOTech Ltd
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -16,10 +16,12 @@ import (
 	"github.com/edgexfoundry/go-mod-bootstrap/v2/bootstrap/secret"
 	"github.com/edgexfoundry/go-mod-bootstrap/v2/bootstrap/startup"
 	"github.com/edgexfoundry/go-mod-bootstrap/v2/config"
+	"github.com/edgexfoundry/go-mod-core-contracts/v2/errors"
 	"github.com/edgexfoundry/go-mod-core-contracts/v2/v2/models"
 )
 
 const CustomConfigSectionName = "MQTTBrokerInfo"
+const WritableInfoSectionName = CustomConfigSectionName + "/Writable"
 
 type ConnectionInfo struct {
 	Schema          string
@@ -48,6 +50,14 @@ func (sw *ServiceConfig) UpdateFromRaw(rawConfig interface{}) bool {
 	return true
 }
 
+// Validate ensures your custom configuration has proper values.
+func (info *MQTTBrokerInfo) Validate() errors.EdgeX {
+	if info.Writable.ResponseFetchInterval == 0 {
+		return errors.NewCommonEdgeX(errors.KindContractInvalid, "MQTTBrokerInfo.Writable.ResponseFetchInterval configuration setting can not be blank", nil)
+	}
+	return nil
+}
+
 type MQTTBrokerInfo struct {
 	IncomingSchema          string
 	IncomingHost            string
@@ -74,6 +84,13 @@ type MQTTBrokerInfo struct {
 
 	ConnEstablishingRetry int
 	ConnRetryWaitTime     int
+
+	Writable WritableInfo
+}
+
+type WritableInfo struct {
+	// ResponseFetchInterval specifies the retry interval(milliseconds) to fetch the command response from the MQTT broker
+	ResponseFetchInterval int
 }
 
 // CreateConnectionInfo use to load MQTT connectionInfo for read and write command
