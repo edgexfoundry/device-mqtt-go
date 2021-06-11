@@ -15,12 +15,14 @@ import (
 	"sync"
 	"time"
 
-	MQTT "github.com/eclipse/paho.mqtt.golang"
 	sdkModel "github.com/edgexfoundry/device-sdk-go/v2/pkg/models"
 	"github.com/edgexfoundry/device-sdk-go/v2/pkg/service"
 	"github.com/edgexfoundry/go-mod-core-contracts/v2/clients/logger"
+	"github.com/edgexfoundry/go-mod-core-contracts/v2/errors"
 	"github.com/edgexfoundry/go-mod-core-contracts/v2/v2"
 	"github.com/edgexfoundry/go-mod-core-contracts/v2/v2/models"
+
+	MQTT "github.com/eclipse/paho.mqtt.golang"
 	"github.com/spf13/cast"
 	"gopkg.in/mgo.v2/bson"
 )
@@ -60,6 +62,16 @@ func (d *Driver) Initialize(lc logger.LoggingClient, asyncCh chan<- *sdkModel.As
 
 	lc.Debugf("Custom config is: %v", d.serviceConfig)
 
+	if err := d.serviceConfig.MQTTBrokerInfo.Validate(); err != nil {
+		return errors.NewCommonEdgeXWrapper(err)
+	}
+
+	if err := ds.ListenForCustomConfigChanges(
+		&d.serviceConfig.MQTTBrokerInfo.Writable,
+		WritableInfoSectionName, d.updateWritableConfig); err != nil {
+		return errors.NewCommonEdgeX(errors.Kind(err), fmt.Sprintf("unable to listen for changes for '%s' custom configuration", WritableInfoSectionName), err)
+	}
+
 	go func() {
 		err := startCommandResponseListening()
 		if err != nil {
@@ -77,6 +89,15 @@ func (d *Driver) Initialize(lc logger.LoggingClient, asyncCh chan<- *sdkModel.As
 	}()
 
 	return nil
+}
+
+func (d *Driver) updateWritableConfig(rawWritableConfig interface{}) {
+	updated, ok := rawWritableConfig.(*WritableInfo)
+	if !ok {
+		d.Logger.Error("unable to update writable config: Can not cast raw config to type 'WritableInfo'")
+		return
+	}
+	d.serviceConfig.MQTTBrokerInfo.Writable = *updated
 }
 
 func (d *Driver) DisconnectDevice(deviceName string, protocols map[string]models.ProtocolProperties) error {
@@ -438,7 +459,7 @@ func (d *Driver) fetchCommandResponse(cmdUuid string) (string, bool) {
 			d.CommandResponses.Delete(cmdUuid)
 			break
 		} else {
-			time.Sleep(time.Second * time.Duration(1))
+			time.Sleep(time.Millisecond * time.Duration(d.serviceConfig.MQTTBrokerInfo.Writable.ResponseFetchInterval))
 		}
 	}
 
