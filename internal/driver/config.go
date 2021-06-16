@@ -9,29 +9,14 @@ package driver
 import (
 	"fmt"
 	"net/url"
-	"reflect"
-	"strconv"
 
 	"github.com/edgexfoundry/device-sdk-go/v2/pkg/service"
 	"github.com/edgexfoundry/go-mod-bootstrap/v2/bootstrap/secret"
 	"github.com/edgexfoundry/go-mod-bootstrap/v2/bootstrap/startup"
 	"github.com/edgexfoundry/go-mod-bootstrap/v2/config"
 	"github.com/edgexfoundry/go-mod-core-contracts/v2/errors"
-	"github.com/edgexfoundry/go-mod-core-contracts/v2/v2/models"
+	"github.com/edgexfoundry/go-mod-core-contracts/v2/models"
 )
-
-const CustomConfigSectionName = "MQTTBrokerInfo"
-const WritableInfoSectionName = CustomConfigSectionName + "/Writable"
-
-type ConnectionInfo struct {
-	Schema          string
-	Host            string
-	Port            string
-	ClientId        string
-	Topic           string
-	AuthMode        string
-	CredentialsPath string
-}
 
 type ServiceConfig struct {
 	MQTTBrokerInfo MQTTBrokerInfo
@@ -50,6 +35,28 @@ func (sw *ServiceConfig) UpdateFromRaw(rawConfig interface{}) bool {
 	return true
 }
 
+type MQTTBrokerInfo struct {
+	Schema    string
+	Host      string
+	Port      int
+	Qos       int
+	KeepAlive int
+	ClientId  string
+
+	CredentialsRetryTime  int
+	CredentialsRetryWait  int
+	ConnEstablishingRetry int
+	ConnRetryWaitTime     int
+
+	AuthMode        string
+	CredentialsPath string
+
+	IncomingTopic string
+	ResponseTopic string
+
+	Writable WritableInfo
+}
+
 // Validate ensures your custom configuration has proper values.
 func (info *MQTTBrokerInfo) Validate() errors.EdgeX {
 	if info.Writable.ResponseFetchInterval == 0 {
@@ -58,83 +65,21 @@ func (info *MQTTBrokerInfo) Validate() errors.EdgeX {
 	return nil
 }
 
-type MQTTBrokerInfo struct {
-	IncomingSchema          string
-	IncomingHost            string
-	IncomingPort            int
-	IncomingQos             int
-	IncomingKeepAlive       int
-	IncomingClientId        string
-	IncomingTopic           string
-	IncomingAuthMode        string
-	IncomingCredentialsPath string
-
-	ResponseSchema          string
-	ResponseHost            string
-	ResponsePort            int
-	ResponseQos             int
-	ResponseKeepAlive       int
-	ResponseClientId        string
-	ResponseTopic           string
-	ResponseAuthMode        string
-	ResponseCredentialsPath string
-
-	CredentialsRetryTime int
-	CredentialsRetryWait int
-
-	ConnEstablishingRetry int
-	ConnRetryWaitTime     int
-
-	Writable WritableInfo
-}
-
 type WritableInfo struct {
 	// ResponseFetchInterval specifies the retry interval(milliseconds) to fetch the command response from the MQTT broker
 	ResponseFetchInterval int
 }
 
-// CreateConnectionInfo use to load MQTT connectionInfo for read and write command
-func CreateConnectionInfo(protocols map[string]models.ProtocolProperties) (*ConnectionInfo, error) {
-	info := new(ConnectionInfo)
-	protocol, ok := protocols[Protocol]
+func fetchCommandTopic(protocols map[string]models.ProtocolProperties) (string, errors.EdgeX) {
+	properties, ok := protocols[Protocol]
 	if !ok {
-		return info, fmt.Errorf("unable to load config, '%s' not exist", Protocol)
+		return "", errors.NewCommonEdgeX(errors.KindContractInvalid, fmt.Sprintf("'%s' protocol properties is not defined", Protocol), nil)
 	}
-
-	err := load(protocol, info)
-	if err != nil {
-		return info, err
+	commandTopic, ok := properties[CommandTopic]
+	if !ok {
+		return "", errors.NewCommonEdgeX(errors.KindContractInvalid, fmt.Sprintf("'%s' not found in the '%s' protocol properties", CommandTopic, Protocol), nil)
 	}
-	return info, nil
-}
-
-// load by reflect to check map key and then fetch the value
-func load(config map[string]string, des interface{}) error {
-	errorMessage := "unable to load config, '%s' not exist"
-	val := reflect.ValueOf(des).Elem()
-	for i := 0; i < val.NumField(); i++ {
-		typeField := val.Type().Field(i)
-		valueField := val.Field(i)
-
-		val, ok := config[typeField.Name]
-		if !ok {
-			return fmt.Errorf(errorMessage, typeField.Name)
-		}
-
-		switch valueField.Kind() {
-		case reflect.Int:
-			intVal, err := strconv.Atoi(val)
-			if err != nil {
-				return err
-			}
-			valueField.SetInt(int64(intVal))
-		case reflect.String:
-			valueField.SetString(val)
-		default:
-			return fmt.Errorf("none supported value type %v ,%v", valueField.Kind(), typeField.Name)
-		}
-	}
-	return nil
+	return commandTopic, nil
 }
 
 func SetCredentials(uri *url.URL, category string, authMode string, secretPath string) error {

@@ -39,7 +39,7 @@ deviceResources:
   description: "device notification message"
   properties:
     valueType: "String"
-    readWrite: "W"
+    readWrite: "RW"
     scale: ""
     offset: ""
     base: ""
@@ -65,7 +65,7 @@ deviceCommands:
     - { deviceResource: "ping" }
 -
   name: testmessage
-  readWrite: "W"
+  readWrite: "RW"
   isHidden: false
   resourceOperations:
     - { deviceResource: "message" }
