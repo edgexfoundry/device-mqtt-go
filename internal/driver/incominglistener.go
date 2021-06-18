@@ -15,19 +15,6 @@ import (
 	"github.com/eclipse/paho.mqtt.golang"
 )
 
-func startIncomingListening() error {
-	var qos = byte(driver.serviceConfig.MQTTBrokerInfo.Qos)
-	var topic = driver.serviceConfig.MQTTBrokerInfo.IncomingTopic
-	token := driver.mqttClient.Subscribe(topic, qos, onIncomingDataReceived)
-	if token.Wait() && token.Error() != nil {
-		driver.Logger.Infof("[Incoming listener] Stop incoming data listening. Cause:%v", token.Error())
-		return token.Error()
-	}
-
-	driver.Logger.Info("[Incoming listener] Start incoming data listening. ")
-	select {}
-}
-
 func onIncomingDataReceived(client mqtt.Client, message mqtt.Message) {
 	var data map[string]interface{}
 	json.Unmarshal(message.Payload(), &data)

@@ -12,20 +12,6 @@ import (
 	"github.com/eclipse/paho.mqtt.golang"
 )
 
-func startCommandResponseListening() error {
-	var qos = byte(driver.serviceConfig.MQTTBrokerInfo.Qos)
-	var topic = driver.serviceConfig.MQTTBrokerInfo.ResponseTopic
-
-	token := driver.mqttClient.Subscribe(topic, qos, onCommandResponseReceived)
-	if token.Wait() && token.Error() != nil {
-		driver.Logger.Infof("[Response listener] Stop command response listening. Cause:%v", token.Error())
-		return token.Error()
-	}
-
-	driver.Logger.Info("[Response listener] Start command response listening. ")
-	select {}
-}
-
 func onCommandResponseReceived(client mqtt.Client, message mqtt.Message) {
 	var response map[string]interface{}
 

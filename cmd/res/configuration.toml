@@ -97,7 +97,7 @@ ConnEstablishingRetry = 10
 ConnRetryWaitTime = 5
 
 # AuthMode is the MQTT broker authentication mechanism. Currently, 'none' and 'usernamepassword' is the only AuthMode supported by this service, and the secret keys are 'username' and 'password'.
-AuthMode = 'usernamepassword'
+AuthMode = 'none'
 CredentialsPath = 'credentials'
 
 IncomingTopic = 'DataTopic'
