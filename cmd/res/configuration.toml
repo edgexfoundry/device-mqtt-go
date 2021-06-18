@@ -73,12 +73,8 @@ TokenFile = '/tmp/edgex/secrets/device-mqtt/secrets-token.json'
 
 [Device]
 DataTransform = true
-InitCmd = ''
-InitCmdArgs = ''
 MaxCmdOps = 128
 MaxCmdValueLen = 256
-RemoveCmd = ''
-RemoveCmdArgs = ''
 ProfilesDir = ''
 DevicesDir = ''
 UpdateLastConnected = false
@@ -88,30 +84,25 @@ AsyncBufferSize = 16
 UseMessageBus = true
 
 [MQTTBrokerInfo]
-IncomingSchema = 'tcp'
-IncomingHost = '0.0.0.0'
-IncomingPort = 1883
-IncomingQos = 0
-IncomingKeepAlive = 3600
-IncomingClientId = 'IncomingDataSubscriber'
-IncomingTopic = 'DataTopic'
-# IncomingAuthMode is the MQTT broker authentication mechanism. Currently, 'none' and 'usernamepassword' is the only AuthMode supported by this service, and the secret keys are 'username' and 'password'.
-IncomingAuthMode = 'none'
-IncomingCredentialsPath = 'credentials'
-ResponseSchema = 'tcp'
-ResponseHost = '0.0.0.0'
-ResponsePort = 1883
-ResponseQos = 0
-ResponseKeepAlive = 3600
-ResponseClientId = 'CommandResponseSubscriber'
-ResponseTopic = 'ResponseTopic'
-# ResponseAuthMode is the MQTT broker authentication mechanism. Currently, 'none' and 'usernamepassword' is the only AuthMode supported by this service, and the secret keys are 'username' and 'password'.
-ResponseAuthMode = 'none'
-ResponseCredentialsPath = 'credentials'
+Schema = 'tcp'
+Host = '0.0.0.0'
+Port = 1883
+Qos = 0
+KeepAlive = 3600
+ClientId = 'device-mqtt'
+
 CredentialsRetryTime = 120 # Seconds
 CredentialsRetryWait = 1 # Seconds
 ConnEstablishingRetry = 10
 ConnRetryWaitTime = 5
+
+# AuthMode is the MQTT broker authentication mechanism. Currently, 'none' and 'usernamepassword' is the only AuthMode supported by this service, and the secret keys are 'username' and 'password'.
+AuthMode = 'none'
+CredentialsPath = 'credentials'
+
+IncomingTopic = 'DataTopic'
+responseTopic = 'ResponseTopic'
+
     [MQTTBrokerInfo.Writable]
     # ResponseFetchInterval specifies the retry interval(milliseconds) to fetch the command response from the MQTT broker
-    ResponseFetchInterval = 1000
+    ResponseFetchInterval = 500

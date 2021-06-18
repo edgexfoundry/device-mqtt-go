@@ -1,62 +1,45 @@
 // -*- Mode: Go; indent-tabs-mode: t -*-
 //
-// Copyright (C) 2019 IOTech Ltd
+// Copyright (C) 2019-2021 IOTech Ltd
 //
 // SPDX-License-Identifier: Apache-2.0
 
 package driver
 
 import (
-	"strings"
 	"testing"
 
-	"github.com/edgexfoundry/go-mod-core-contracts/v2/v2/models"
+	"github.com/edgexfoundry/go-mod-core-contracts/v2/errors"
+	"github.com/edgexfoundry/go-mod-core-contracts/v2/models"
+
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
-func TestCreateConnectionInfo(t *testing.T) {
-	schema := "tcp"
-	host := "0.0.0.0"
-	port := "1883"
-	clientId := "CommandPublisher"
-	topic := "CommandTopic"
-	authMode := "none"
-	credentialsPath := "mqtt"
+func TestFetchCommandTopic(t *testing.T) {
+	topic := "test-command-topic"
 
-	protocols := map[string]models.ProtocolProperties{
-		Protocol: {
-			Schema:          schema,
-			Host:            host,
-			Port:            port,
-			ClientId:        clientId,
-			Topic:           topic,
-			AuthMode:        authMode,
-			CredentialsPath: credentialsPath,
-		},
+	var tests = []struct {
+		name              string
+		properties        map[string]models.ProtocolProperties
+		expectedErrorKind errors.ErrKind
+	}{
+		{name: "valid", properties: map[string]models.ProtocolProperties{Protocol: {CommandTopic: topic}}, expectedErrorKind: ""},
+		{name: "invalid, protocol properties is not defined", properties: map[string]models.ProtocolProperties{}, expectedErrorKind: errors.KindContractInvalid},
+		{name: "invalid, property is not exist", properties: map[string]models.ProtocolProperties{Protocol: {}}, expectedErrorKind: errors.KindContractInvalid},
+	}
+	for _, testCase := range tests {
+		t.Run(testCase.name, func(t *testing.T) {
+			commandTopic, err := fetchCommandTopic(testCase.properties)
+
+			if testCase.expectedErrorKind != "" {
+				require.Equal(t, errors.Kind(err), testCase.expectedErrorKind)
+				return
+			} else {
+				require.NoError(t, err)
+				assert.Equal(t, topic, commandTopic)
+			}
+		})
 	}
 
-	connectionInfo, err := CreateConnectionInfo(protocols)
-
-	if err != nil {
-		t.Fatalf("Fail to create connectionIfo. Error: %v", err)
-	}
-	if connectionInfo.Schema != schema ||
-		connectionInfo.Host != host ||
-		connectionInfo.Port != port ||
-		connectionInfo.ClientId != clientId ||
-		connectionInfo.Topic != topic ||
-		connectionInfo.AuthMode != authMode ||
-		connectionInfo.CredentialsPath != credentialsPath {
-		t.Fatalf("Unexpect test result. %v should match to %v ", connectionInfo, protocols)
-	}
-}
-
-func TestCreateConnectionInfo_fail(t *testing.T) {
-	protocols := map[string]models.ProtocolProperties{
-		Protocol: {},
-	}
-
-	_, err := CreateConnectionInfo(protocols)
-	if err == nil || !strings.Contains(err.Error(), "unable to load config") {
-		t.Fatalf("Unexpect test result, config should be fail to load")
-	}
 }

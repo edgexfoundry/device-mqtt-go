@@ -6,10 +6,4 @@
   Labels = [ 'MQTT', 'test' ]
   [DeviceList.Protocols]
     [DeviceList.Protocols.mqtt]
-       Schema = 'tcp'
-       Host = '0.0.0.0'
-       Port = '1883'
-       ClientId = 'CommandPublisher'
-       Topic = 'CommandTopic'
-       AuthMode = 'none' # Valid values are 'none' or 'usernamepassword'
-       CredentialsPath = 'credentials'
+       CommandTopic = 'CommandTopic'

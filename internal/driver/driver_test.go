@@ -13,7 +13,8 @@ import (
 
 	"github.com/edgexfoundry/device-sdk-go/v2/pkg/models"
 	"github.com/edgexfoundry/go-mod-core-contracts/v2/clients/logger"
-	"github.com/edgexfoundry/go-mod-core-contracts/v2/v2"
+	"github.com/edgexfoundry/go-mod-core-contracts/v2/common"
+
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -27,7 +28,7 @@ func TestNewResult_bool(t *testing.T) {
 	var reading interface{} = true
 	req := models.CommandRequest{
 		DeviceResourceName: "light",
-		Type:               v2.ValueTypeBool,
+		Type:               common.ValueTypeBool,
 	}
 
 	cmdVal, err := newResult(req, reading)
@@ -44,7 +45,7 @@ func TestNewResult_uint8(t *testing.T) {
 	var reading interface{} = uint8(123)
 	req := models.CommandRequest{
 		DeviceResourceName: "temperature",
-		Type:               v2.ValueTypeUint8,
+		Type:               common.ValueTypeUint8,
 	}
 
 	cmdVal, err := newResult(req, reading)
@@ -61,7 +62,7 @@ func TestNewResult_int8(t *testing.T) {
 	var reading interface{} = int8(123)
 	req := models.CommandRequest{
 		DeviceResourceName: "temperature",
-		Type:               v2.ValueTypeInt8,
+		Type:               common.ValueTypeInt8,
 	}
 
 	cmdVal, err := newResult(req, reading)
@@ -78,7 +79,7 @@ func TestNewResultFailed_int8(t *testing.T) {
 	var reading interface{} = int16(256)
 	req := models.CommandRequest{
 		DeviceResourceName: "temperature",
-		Type:               v2.ValueTypeInt8,
+		Type:               common.ValueTypeInt8,
 	}
 
 	_, err := newResult(req, reading)
@@ -92,7 +93,7 @@ func TestNewResult_uint16(t *testing.T) {
 	var reading interface{} = uint16(123)
 	req := models.CommandRequest{
 		DeviceResourceName: "temperature",
-		Type:               v2.ValueTypeUint16,
+		Type:               common.ValueTypeUint16,
 	}
 
 	cmdVal, err := newResult(req, reading)
@@ -109,7 +110,7 @@ func TestNewResult_int16(t *testing.T) {
 	var reading interface{} = int16(123)
 	req := models.CommandRequest{
 		DeviceResourceName: "temperature",
-		Type:               v2.ValueTypeInt16,
+		Type:               common.ValueTypeInt16,
 	}
 
 	cmdVal, err := newResult(req, reading)
@@ -126,7 +127,7 @@ func TestNewResult_uint32(t *testing.T) {
 	var reading interface{} = uint32(123)
 	req := models.CommandRequest{
 		DeviceResourceName: "temperature",
-		Type:               v2.ValueTypeUint32,
+		Type:               common.ValueTypeUint32,
 	}
 
 	cmdVal, err := newResult(req, reading)
@@ -143,7 +144,7 @@ func TestNewResult_int32(t *testing.T) {
 	var reading interface{} = int32(123)
 	req := models.CommandRequest{
 		DeviceResourceName: "temperature",
-		Type:               v2.ValueTypeInt32,
+		Type:               common.ValueTypeInt32,
 	}
 
 	cmdVal, err := newResult(req, reading)
@@ -160,7 +161,7 @@ func TestNewResult_uint64(t *testing.T) {
 	var reading interface{} = uint64(123)
 	req := models.CommandRequest{
 		DeviceResourceName: "temperature",
-		Type:               v2.ValueTypeUint64,
+		Type:               common.ValueTypeUint64,
 	}
 
 	cmdVal, err := newResult(req, reading)
@@ -177,7 +178,7 @@ func TestNewResult_int64(t *testing.T) {
 	var reading interface{} = int64(123)
 	req := models.CommandRequest{
 		DeviceResourceName: "temperature",
-		Type:               v2.ValueTypeInt64,
+		Type:               common.ValueTypeInt64,
 	}
 
 	cmdVal, err := newResult(req, reading)
@@ -193,7 +194,7 @@ func TestNewResult_int64(t *testing.T) {
 func TestNewResult_float32(t *testing.T) {
 	req := models.CommandRequest{
 		DeviceResourceName: "temperature",
-		Type:               v2.ValueTypeFloat32,
+		Type:               common.ValueTypeFloat32,
 	}
 
 	tests := []struct {
@@ -222,7 +223,7 @@ func TestNewResult_float32(t *testing.T) {
 func TestNewResult_float64(t *testing.T) {
 	req := models.CommandRequest{
 		DeviceResourceName: "temperature",
-		Type:               v2.ValueTypeFloat64,
+		Type:               common.ValueTypeFloat64,
 	}
 
 	tests := []struct {
@@ -252,7 +253,7 @@ func TestNewResult_float64ToInt8(t *testing.T) {
 	var reading interface{} = float64(123.11)
 	req := models.CommandRequest{
 		DeviceResourceName: "temperature",
-		Type:               v2.ValueTypeInt8,
+		Type:               common.ValueTypeInt8,
 	}
 
 	cmdVal, err := newResult(req, reading)
@@ -269,7 +270,7 @@ func TestNewResult_float64ToInt16(t *testing.T) {
 	var reading interface{} = float64(123.11)
 	req := models.CommandRequest{
 		DeviceResourceName: "temperature",
-		Type:               v2.ValueTypeInt16,
+		Type:               common.ValueTypeInt16,
 	}
 
 	cmdVal, err := newResult(req, reading)
@@ -286,7 +287,7 @@ func TestNewResult_float64ToInt32(t *testing.T) {
 	var reading interface{} = float64(123.11)
 	req := models.CommandRequest{
 		DeviceResourceName: "temperature",
-		Type:               v2.ValueTypeInt32,
+		Type:               common.ValueTypeInt32,
 	}
 
 	cmdVal, err := newResult(req, reading)
@@ -303,7 +304,7 @@ func TestNewResult_float64ToInt64(t *testing.T) {
 	var reading interface{} = float64(123.11)
 	req := models.CommandRequest{
 		DeviceResourceName: "temperature",
-		Type:               v2.ValueTypeInt64,
+		Type:               common.ValueTypeInt64,
 	}
 
 	cmdVal, err := newResult(req, reading)
@@ -320,7 +321,7 @@ func TestNewResult_float64ToUint8(t *testing.T) {
 	var reading interface{} = float64(123.11)
 	req := models.CommandRequest{
 		DeviceResourceName: "temperature",
-		Type:               v2.ValueTypeUint8,
+		Type:               common.ValueTypeUint8,
 	}
 
 	cmdVal, err := newResult(req, reading)
@@ -337,7 +338,7 @@ func TestNewResult_float64ToUint16(t *testing.T) {
 	var reading interface{} = float64(123.11)
 	req := models.CommandRequest{
 		DeviceResourceName: "temperature",
-		Type:               v2.ValueTypeUint16,
+		Type:               common.ValueTypeUint16,
 	}
 
 	cmdVal, err := newResult(req, reading)
@@ -354,7 +355,7 @@ func TestNewResult_float64ToUint32(t *testing.T) {
 	var reading interface{} = float64(123.11)
 	req := models.CommandRequest{
 		DeviceResourceName: "temperature",
-		Type:               v2.ValueTypeUint32,
+		Type:               common.ValueTypeUint32,
 	}
 
 	cmdVal, err := newResult(req, reading)
@@ -371,7 +372,7 @@ func TestNewResult_float64ToUint64(t *testing.T) {
 	var reading interface{} = float64(123.11)
 	req := models.CommandRequest{
 		DeviceResourceName: "temperature",
-		Type:               v2.ValueTypeUint64,
+		Type:               common.ValueTypeUint64,
 	}
 
 	cmdVal, err := newResult(req, reading)
@@ -388,7 +389,7 @@ func TestNewResult_float64ToFloat32(t *testing.T) {
 	var reading interface{} = float64(123.11)
 	req := models.CommandRequest{
 		DeviceResourceName: "temperature",
-		Type:               v2.ValueTypeFloat32,
+		Type:               common.ValueTypeFloat32,
 	}
 
 	cmdVal, err := newResult(req, reading)
@@ -405,7 +406,7 @@ func TestNewResult_float64ToString(t *testing.T) {
 	var reading interface{} = float64(123.11)
 	req := models.CommandRequest{
 		DeviceResourceName: "temperature",
-		Type:               v2.ValueTypeString,
+		Type:               common.ValueTypeString,
 	}
 
 	cmdVal, err := newResult(req, reading)
@@ -422,7 +423,7 @@ func TestNewResult_string(t *testing.T) {
 	var reading interface{} = "test string"
 	req := models.CommandRequest{
 		DeviceResourceName: "temperature",
-		Type:               v2.ValueTypeString,
+		Type:               common.ValueTypeString,
 	}
 
 	cmdVal, err := newResult(req, reading)
@@ -439,7 +440,7 @@ func TestNewResult_stringToInt64(t *testing.T) {
 	var reading interface{} = "123"
 	req := models.CommandRequest{
 		DeviceResourceName: "temperature",
-		Type:               v2.ValueTypeInt64,
+		Type:               common.ValueTypeInt64,
 	}
 
 	cmdVal, err := newResult(req, reading)
@@ -456,7 +457,7 @@ func TestNewResult_stringToInt8(t *testing.T) {
 	var reading interface{} = "123"
 	req := models.CommandRequest{
 		DeviceResourceName: "temperature",
-		Type:               v2.ValueTypeInt8,
+		Type:               common.ValueTypeInt8,
 	}
 
 	cmdVal, err := newResult(req, reading)
@@ -473,7 +474,7 @@ func TestNewResult_stringToUint8(t *testing.T) {
 	var reading interface{} = "123"
 	req := models.CommandRequest{
 		DeviceResourceName: "temperature",
-		Type:               v2.ValueTypeUint8,
+		Type:               common.ValueTypeUint8,
 	}
 
 	cmdVal, err := newResult(req, reading)
@@ -490,7 +491,7 @@ func TestNewResult_stringToUint32(t *testing.T) {
 	var reading interface{} = "123"
 	req := models.CommandRequest{
 		DeviceResourceName: "temperature",
-		Type:               v2.ValueTypeUint32,
+		Type:               common.ValueTypeUint32,
 	}
 
 	cmdVal, err := newResult(req, reading)
@@ -507,7 +508,7 @@ func TestNewResult_stringToUint64(t *testing.T) {
 	var reading interface{} = "123"
 	req := models.CommandRequest{
 		DeviceResourceName: "temperature",
-		Type:               v2.ValueTypeUint64,
+		Type:               common.ValueTypeUint64,
 	}
 
 	cmdVal, err := newResult(req, reading)
@@ -524,7 +525,7 @@ func TestNewResult_stringToBool(t *testing.T) {
 	var reading interface{} = "true"
 	req := models.CommandRequest{
 		DeviceResourceName: "temperature",
-		Type:               v2.ValueTypeBool,
+		Type:               common.ValueTypeBool,
 	}
 
 	cmdVal, err := newResult(req, reading)
@@ -541,7 +542,7 @@ func TestNewResult_numberToUint64(t *testing.T) {
 	var reading interface{} = 123
 	req := models.CommandRequest{
 		DeviceResourceName: "temperature",
-		Type:               v2.ValueTypeUint64,
+		Type:               common.ValueTypeUint64,
 	}
 
 	cmdVal, err := newResult(req, reading)
@@ -558,7 +559,7 @@ func TestNewResult_floatNumberToFloat32(t *testing.T) {
 	var reading interface{} = 123.0
 	req := models.CommandRequest{
 		DeviceResourceName: "temperature",
-		Type:               v2.ValueTypeFloat32,
+		Type:               common.ValueTypeFloat32,
 	}
 
 	cmdVal, err := newResult(req, reading)
@@ -575,7 +576,7 @@ func TestNewResult_numberToString(t *testing.T) {
 	var reading interface{} = 123
 	req := models.CommandRequest{
 		DeviceResourceName: "temperature",
-		Type:               v2.ValueTypeString,
+		Type:               common.ValueTypeString,
 	}
 
 	cmdVal, err := newResult(req, reading)
