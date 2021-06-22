@@ -1,4 +1,4 @@
-name: "Test.Device.MQTT.Profile"
+name: "Test-Device-MQTT-Profile"
 manufacturer: "Dell"
 model: "MQTT-2"
 labels:
