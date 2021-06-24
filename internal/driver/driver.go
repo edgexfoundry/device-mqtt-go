@@ -438,7 +438,7 @@ func onConnectHandler(client mqtt.Client) {
 	responseTopic := driver.serviceConfig.MQTTBrokerInfo.ResponseTopic
 	incomingTopic := driver.serviceConfig.MQTTBrokerInfo.IncomingTopic
 
-	token := driver.mqttClient.Subscribe(incomingTopic, qos, onIncomingDataReceived)
+	token := client.Subscribe(incomingTopic, qos, onIncomingDataReceived)
 	if token.Wait() && token.Error() != nil {
 		client.Disconnect(0)
 		driver.Logger.Errorf("could not subscribe to topic '%s': %s",

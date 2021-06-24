@@ -69,8 +69,8 @@ parts:
 
       install -DT "./cmd/res/devices/mqtt.test.device.toml" \
         "$SNAPCRAFT_PART_INSTALL/config/device-mqtt/res/devices/mqtt.test.device.toml"
-      install -DT "./cmd/res/devices/mqtt.test.device-autoevents.toml" \
-        "$SNAPCRAFT_PART_INSTALL/config/device-mqtt/res/devices/mqtt.test.device-autoevents.toml"
+      install -DT "./cmd/res/devices/mqtt.test.device.toml" \
+        "$SNAPCRAFT_PART_INSTALL/config/device-mqtt/res/devices/mqtt.test.device.toml"
       install -DT "./cmd/res/profiles/mqtt.test.device.profile.yml" \
         "$SNAPCRAFT_PART_INSTALL/config/device-mqtt/res/profiles/mqtt.test.device.profile.yml"
 

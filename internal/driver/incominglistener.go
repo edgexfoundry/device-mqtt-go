@@ -8,6 +8,7 @@ package driver
 
 import (
 	"encoding/json"
+	"fmt"
 
 	"github.com/edgexfoundry/device-sdk-go/v2/pkg/models"
 	"github.com/edgexfoundry/device-sdk-go/v2/pkg/service"
@@ -15,40 +16,50 @@ import (
 	"github.com/eclipse/paho.mqtt.golang"
 )
 
+const (
+	name = "name"
+	cmd  = "cmd"
+)
+
 func onIncomingDataReceived(client mqtt.Client, message mqtt.Message) {
 	var data map[string]interface{}
 	json.Unmarshal(message.Payload(), &data)
 
-	if !checkDataWithKey(data, "name") || !checkDataWithKey(data, "cmd") {
+	nameVal, ok := data[name]
+	if !ok {
+		driver.Logger.Warnf("[Incoming listener] Incoming reading ignored, reading data `%v` should contain the field `%s` to indicate the device name", data, name)
 		return
 	}
-
-	deviceName := data["name"].(string)
-	cmd := data["cmd"].(string)
-
-	reading, ok := data[cmd]
+	cmdVal, ok := data[cmd]
 	if !ok {
-		driver.Logger.Warnf("[Incoming listener] Incoming reading ignored. No reading data found : topic=%v msg=%v", message.Topic(), string(message.Payload()))
+		driver.Logger.Warnf("[Incoming listener] Incoming reading ignored, reading data `%v` should contain the field `%s` to indicate the device resource name", data, cmd)
+		return
+	}
+	deviceName := fmt.Sprintf("%s", nameVal)
+	resourceName := fmt.Sprintf("%s", cmdVal)
+
+	reading, ok := data[resourceName]
+	if !ok {
+		driver.Logger.Warnf("[Incoming listener] Incoming reading ignored, reading data `%v` should contain the field `%s` with the actual reading value", data, resourceName)
 		return
 	}
 
 	service := service.RunningService()
 
-	deviceObject, ok := service.DeviceResource(deviceName, cmd)
+	deviceObject, ok := service.DeviceResource(deviceName, resourceName)
 	if !ok {
-		driver.Logger.Warnf("[Incoming listener] Incoming reading ignored. No DeviceObject found : topic=%v msg=%v", message.Topic(), string(message.Payload()))
+		driver.Logger.Warnf("[Incoming listener] Incoming reading ignored, device resource `%s` not found from the device `%s`", resourceName, deviceName)
 		return
 	}
 
 	req := models.CommandRequest{
-		DeviceResourceName: cmd,
+		DeviceResourceName: resourceName,
 		Type:               deviceObject.Properties.ValueType,
 	}
 
 	result, err := newResult(req, reading)
-
 	if err != nil {
-		driver.Logger.Warnf("[Incoming listener] Incoming reading ignored.   topic=%v msg=%v error=%v", message.Topic(), string(message.Payload()), err)
+		driver.Logger.Warnf("[Incoming listener] Incoming reading ignored, %v", err)
 		return
 	}
 
@@ -60,21 +71,4 @@ func onIncomingDataReceived(client mqtt.Client, message mqtt.Message) {
 	driver.Logger.Debugf("[Incoming listener] Incoming reading received: topic=%v msg=%v", message.Topic(), string(message.Payload()))
 
 	driver.AsyncCh <- asyncValues
-
-}
-
-func checkDataWithKey(data map[string]interface{}, key string) bool {
-	val, ok := data[key]
-	if !ok {
-		driver.Logger.Warnf("[Incoming listener] Incoming reading ignored. No %v found : msg=%v", key, data)
-		return false
-	}
-
-	switch val.(type) {
-	case string:
-		return true
-	default:
-		driver.Logger.Warnf("[Incoming listener] Incoming reading ignored. %v should be string : msg=%v", key, data)
-		return false
-	}
 }
