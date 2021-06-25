@@ -7,3 +7,7 @@
   [DeviceList.Protocols]
     [DeviceList.Protocols.mqtt]
        CommandTopic = 'CommandTopic'
+#    [[DeviceList.AutoEvents]]
+#       Interval = '20s'
+#       OnChange = false
+#       SourceName = 'testrandfloat32'
