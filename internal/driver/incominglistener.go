@@ -27,12 +27,12 @@ func onIncomingDataReceived(client mqtt.Client, message mqtt.Message) {
 
 	nameVal, ok := data[name]
 	if !ok {
-		driver.Logger.Warnf("[Incoming listener] Incoming reading ignored, reading data `%v` should contain the field `%s` to indicate the device name", data, name)
+		driver.Logger.Errorf("[Incoming listener] Incoming reading ignored, reading data `%v` should contain the field `%s` to indicate the device name", data, name)
 		return
 	}
 	cmdVal, ok := data[cmd]
 	if !ok {
-		driver.Logger.Warnf("[Incoming listener] Incoming reading ignored, reading data `%v` should contain the field `%s` to indicate the device resource name", data, cmd)
+		driver.Logger.Errorf("[Incoming listener] Incoming reading ignored, reading data `%v` should contain the field `%s` to indicate the device resource name", data, cmd)
 		return
 	}
 	deviceName := fmt.Sprintf("%s", nameVal)
@@ -40,7 +40,7 @@ func onIncomingDataReceived(client mqtt.Client, message mqtt.Message) {
 
 	reading, ok := data[resourceName]
 	if !ok {
-		driver.Logger.Warnf("[Incoming listener] Incoming reading ignored, reading data `%v` should contain the field `%s` with the actual reading value", data, resourceName)
+		driver.Logger.Errorf("[Incoming listener] Incoming reading ignored, reading data `%v` should contain the field `%s` with the actual reading value", data, resourceName)
 		return
 	}
 
@@ -48,7 +48,7 @@ func onIncomingDataReceived(client mqtt.Client, message mqtt.Message) {
 
 	deviceObject, ok := service.DeviceResource(deviceName, resourceName)
 	if !ok {
-		driver.Logger.Warnf("[Incoming listener] Incoming reading ignored, device resource `%s` not found from the device `%s`", resourceName, deviceName)
+		driver.Logger.Errorf("[Incoming listener] Incoming reading ignored, device resource `%s` not found from the device `%s`", resourceName, deviceName)
 		return
 	}
 
@@ -59,7 +59,7 @@ func onIncomingDataReceived(client mqtt.Client, message mqtt.Message) {
 
 	result, err := newResult(req, reading)
 	if err != nil {
-		driver.Logger.Warnf("[Incoming listener] Incoming reading ignored, %v", err)
+		driver.Logger.Errorf("[Incoming listener] Incoming reading ignored, %v", err)
 		return
 	}
 
