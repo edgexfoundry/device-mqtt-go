@@ -4,29 +4,27 @@
 [Github repository](https://github.com/edgexfoundry/device-mqtt-go)
 
 ## [v2.0.0] Ireland - 2021-06-30  (Not Compatible with 1.x releases)
+### Change Logs for EdgeX Dependencies
+- [device-sdk-go](https://github.com/edgexfoundry/device-sdk-go/blob/v2.0.0/CHANGELOG.md)
+- [go-mod-bootstrap](https://github.com/edgexfoundry/go-mod-bootstrap/blob/v2.0.0/CHANGELOG.md)
+- [go-mod-core-contracts](https://github.com/edgexfoundry/go-mod-core-contracts/blob/v2.0.0/CHANGELOG.md)
 
 ### Features ✨
+- Fix onConnectHandler panics and update config file ([#288](https://github.com/edgexfoundry/device-mqtt-go/pull/288))
 - Using single MQTT broker config ([#277](https://github.com/edgexfoundry/device-mqtt-go/issues/277)) ([#056bd70](https://github.com/edgexfoundry/device-mqtt-go/commits/056bd70))
 - Enable using MessageBus as the default ([#279](https://github.com/edgexfoundry/device-mqtt-go/issues/279)) ([#f18a6a3](https://github.com/edgexfoundry/device-mqtt-go/commits/f18a6a3))
 - Extract the command response retry interval as configuration ([#62ff07c](https://github.com/edgexfoundry/device-mqtt-go/commits/62ff07c))
 - Move Driver config to new custom config section ([#5b2c07b](https://github.com/edgexfoundry/device-mqtt-go/commits/5b2c07b))
 - Add secure MessagBus capability ([#696b33d](https://github.com/edgexfoundry/device-mqtt-go/commits/696b33d))
 - Remove Logging configuration ([#f1a7c6f](https://github.com/edgexfoundry/device-mqtt-go/commits/f1a7c6f))
-- Fixup for PR review. ([#52941ff](https://github.com/edgexfoundry/device-mqtt-go/commits/52941ff))
 - Updated Dockerfile to install dumb-init ([#bc66537](https://github.com/edgexfoundry/device-mqtt-go/commits/bc66537))
 - Enable use of secret via SecretProvider for MQTT broker credentials ([#33a7955](https://github.com/edgexfoundry/device-mqtt-go/commits/33a7955))
 ### Bug Fixes 🐛
 - Change "."s in profile name to "-"s ([#284](https://github.com/edgexfoundry/device-mqtt-go/issues/284)) ([#8213f84](https://github.com/edgexfoundry/device-mqtt-go/commits/8213f84))
 - Add AuthMode settings so have ability to enable/disable Auth MQTT connections ([#269](https://github.com/edgexfoundry/device-mqtt-go/issues/269)) ([#9a33ad5](https://github.com/edgexfoundry/device-mqtt-go/commits/9a33ad5))
-- Remove retry items of SecretStore config and update secret path ([#265](https://github.com/edgexfoundry/device-mqtt-go/issues/265)) ([#c0141a0](https://github.com/edgexfoundry/device-mqtt-go/commits/c0141a0))
 - Add Type='vault' to [SecretStore] config ([#7c58968](https://github.com/edgexfoundry/device-mqtt-go/commits/7c58968))
 - Corrected port numbers per PR comments ([#dbf9134](https://github.com/edgexfoundry/device-mqtt-go/commits/dbf9134))
 - Added missing InsecureSecrets Section and UseMessageBus = false ([#ed2040e](https://github.com/edgexfoundry/device-mqtt-go/commits/ed2040e))
-- **build:** update Dockerfiles to use go 1.16 ([#cc189d3](https://github.com/edgexfoundry/device-mqtt-go/commits/cc189d3))
-- **build:** update go.mod to go 1.16 ([#df72406](https://github.com/edgexfoundry/device-mqtt-go/commits/df72406))
-- **snap:** update go to 1.16 ([#941ce85](https://github.com/edgexfoundry/device-mqtt-go/commits/941ce85))
-- **snap:** update snap v2 support ([#59017e6](https://github.com/edgexfoundry/device-mqtt-go/commits/59017e6))
-- **snap:** fix v2 update issues ([#adbb9aa](https://github.com/edgexfoundry/device-mqtt-go/commits/adbb9aa))
 ### Code Refactoring ♻
 - Change PublishTopicPrefix value to be 'edgex/events/device' ([#3890446](https://github.com/edgexfoundry/device-mqtt-go/commits/3890446))
 - Rename the custom config name to MQTTBrokerInfo ([#d8fe7de](https://github.com/edgexfoundry/device-mqtt-go/commits/d8fe7de))
@@ -41,7 +39,6 @@
     Device MQTT default port number has changed to 59982
     ```
 - rename example device AutoEvent Fequency to Interval ([#3a738e3](https://github.com/edgexfoundry/device-mqtt-go/commits/3a738e3))
-- Final go.mod update ([#ef69828](https://github.com/edgexfoundry/device-mqtt-go/commits/ef69828))
 - Added go mod tidy to dockerfile ([#5919639](https://github.com/edgexfoundry/device-mqtt-go/commits/5919639))
 - Update for new service key names and overrides for hyphen to underscore ([#356f292](https://github.com/edgexfoundry/device-mqtt-go/commits/356f292))
     ```
@@ -55,6 +52,10 @@
 - update build files for zmq dependency ([#d53328a](https://github.com/edgexfoundry/device-mqtt-go/commits/d53328a))
 - **deps:** bump github.com/eclipse/paho.mqtt.golang ([#788356c](https://github.com/edgexfoundry/device-mqtt-go/commits/788356c))
 - **deps:** bump github.com/stretchr/testify from 1.5.1 to 1.7.0 ([#5dc0bc9](https://github.com/edgexfoundry/device-mqtt-go/commits/5dc0bc9))
+- update Dockerfiles to use go 1.16 ([#cc189d3](https://github.com/edgexfoundry/device-mqtt-go/commits/cc189d3))
+- update go.mod to go 1.16 ([#df72406](https://github.com/edgexfoundry/device-mqtt-go/commits/df72406))
+- **snap:** update go to 1.16 ([#941ce85](https://github.com/edgexfoundry/device-mqtt-go/commits/941ce85))
+- **snap:** update snap v2 support ([#59017e6](https://github.com/edgexfoundry/device-mqtt-go/commits/59017e6))
 ### Continuous Integration 🔄
 - update local docker image names ([#06b6566](https://github.com/edgexfoundry/device-mqtt-go/commits/06b6566))
 
