@@ -1,5 +1,5 @@
 [Writable]
-LogLevel = 'INFO'
+LogLevel = "INFO"
   # InsecureSecrets are required for when Redis is used for message bus
   [Writable.InsecureSecrets]
     [Writable.InsecureSecrets.DB]
@@ -14,39 +14,39 @@ LogLevel = 'INFO'
       password = ""
 
 [Service]
-HealthCheckInterval = '10s'
-Host = 'localhost'
+HealthCheckInterval = "10s"
+Host = "localhost"
 Port = 59982
-ServerBindAddr = ''  # blank value defaults to Service.Host value
-StartupMsg = 'device mqtt started'
+ServerBindAddr = ""  # blank value defaults to Service.Host value
+StartupMsg = "device mqtt started"
 # MaxRequestSize limit the request body size in byte of put command
 MaxRequestSize = 0 # value 0 unlimit the request size.
-RequestTimeout = '5s'
+RequestTimeout = "5s"
 
 [Registry]
-Host = 'localhost'
+Host = "localhost"
 Port = 8500
-Type = 'consul'
+Type = "consul"
 
 [Clients]
   [Clients.core-data]
-  Protocol = 'http'
-  Host = 'localhost'
+  Protocol = "http"
+  Host = "localhost"
   Port = 59880
 
   [Clients.core-metadata]
-  Protocol = 'http'
-  Host = 'localhost'
+  Protocol = "http"
+  Host = "localhost"
   Port = 59881
 
 [MessageQueue]
-Protocol = 'redis'
-Host = 'localhost'
+Protocol = "redis"
+Host = "localhost"
 Port = 6379
-Type = 'redis'
-AuthMode = 'usernamepassword'  # required for redis messagebus (secure or insecure).
+Type = "redis"
+AuthMode = "usernamepassword"  # required for redis messagebus (secure or insecure).
 SecretName = "redisdb"
-PublishTopicPrefix = 'edgex/events/device' # /<device-profile-name>/<device-name>/<source-name> will be added to this Publish Topic prefix
+PublishTopicPrefix = "edgex/events/device" # /<device-profile-name>/<device-name>/<source-name> will be added to this Publish Topic prefix
   [MessageQueue.Optional]
   # Default MQTT Specific options that need to be here to enable environment variable overrides of them
   # Client Identifiers
@@ -60,23 +60,23 @@ PublishTopicPrefix = 'edgex/events/device' # /<device-profile-name>/<device-name
   SkipCertVerify = "false" # Only used if Cert/Key file or Cert/Key PEMblock are specified
 
 [SecretStore]
-Type = 'vault'
-Host = 'localhost'
+Type = "vault"
+Host = "localhost"
 Port = 8200
-Path = 'device-mqtt/'
-Protocol = 'http'
-RootCaCertPath = ''
-ServerName = ''
-TokenFile = '/tmp/edgex/secrets/device-mqtt/secrets-token.json'
+Path = "device-mqtt/"
+Protocol = "http"
+RootCaCertPath = ""
+ServerName = ""
+TokenFile = "/tmp/edgex/secrets/device-mqtt/secrets-token.json"
     [SecretStore.Authentication]
-    AuthType = 'X-Vault-Token'
+    AuthType = "X-Vault-Token"
 
 [Device]
 DataTransform = true
 MaxCmdOps = 128
 MaxCmdValueLen = 256
-ProfilesDir = './res/profiles'
-DevicesDir = './res/devices'
+ProfilesDir = "./res/profiles"
+DevicesDir = "./res/devices"
 UpdateLastConnected = false
 Labels = []
 EnableAsyncReadings = true
@@ -84,24 +84,24 @@ AsyncBufferSize = 16
 UseMessageBus = true
 
 [MQTTBrokerInfo]
-Schema = 'tcp'
-Host = '0.0.0.0'
+Schema = "tcp"
+Host = "0.0.0.0"
 Port = 1883
 Qos = 0
 KeepAlive = 3600
-ClientId = 'device-mqtt'
+ClientId = "device-mqtt"
 
 CredentialsRetryTime = 120 # Seconds
 CredentialsRetryWait = 1 # Seconds
 ConnEstablishingRetry = 10
 ConnRetryWaitTime = 5
 
-# AuthMode is the MQTT broker authentication mechanism. Currently, 'none' and 'usernamepassword' is the only AuthMode supported by this service, and the secret keys are 'username' and 'password'.
-AuthMode = 'none'
-CredentialsPath = 'credentials'
+# AuthMode is the MQTT broker authentication mechanism. Currently, "none" and "usernamepassword" is the only AuthMode supported by this service, and the secret keys are "username" and "password".
+AuthMode = "none"
+CredentialsPath = "credentials"
 
-IncomingTopic = 'DataTopic'
-responseTopic = 'ResponseTopic'
+IncomingTopic = "DataTopic"
+responseTopic = "ResponseTopic"
 
     [MQTTBrokerInfo.Writable]
     # ResponseFetchInterval specifies the retry interval(milliseconds) to fetch the command response from the MQTT broker
