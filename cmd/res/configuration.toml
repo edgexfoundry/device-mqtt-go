@@ -100,8 +100,15 @@ ConnRetryWaitTime = 5
 AuthMode = "none"
 CredentialsPath = "credentials"
 
+# Comment out/remove when using multi-level topics
 IncomingTopic = "DataTopic"
-responseTopic = "ResponseTopic"
+ResponseTopic = "ResponseTopic"
+UseTopicLevels = false
+
+# Uncomment to use multi-level topics
+# IncomingTopic = "incoming/data/#"
+# ResponseTopic = "command/response/#"
+# UseTopicLevels = true
 
     [MQTTBrokerInfo.Writable]
     # ResponseFetchInterval specifies the retry interval(milliseconds) to fetch the command response from the MQTT broker
