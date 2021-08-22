@@ -4,6 +4,12 @@ Please check if your PR fulfills the following requirements:
 - [ ] Tests for the changes have been added (for bug fixes / features)
 - [ ] Docs have been added / updated (for bug fixes / features)
 
+###Related Docs PR now required (if applicable)
+Related Docs PR:
+
+If n/a for Docs PR, state why it is not applicable:
+<!-- Replace this text with reason or delete this block if related PR linked. -->
+
 **If your build fails** due to your commit message not passing the build checks, please review the guidelines here: https://github.com/edgexfoundry/device-mqtt-go/blob/master/.github/CONTRIBUTING.md
 
 ## What is the current behavior?
