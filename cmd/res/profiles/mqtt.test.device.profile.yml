@@ -70,9 +70,11 @@ deviceCommands:
   resourceOperations:
     - { deviceResource: "message" }
 -
-  name: randfloat32andfloat64
+  name: allValues
   readWrite: "RW"
   isHidden: false
   resourceOperations:
     - { deviceResource: "randfloat32" }
     - { deviceResource: "randfloat64" }
+    - { deviceResource: "ping" }
+    - { deviceResource: "message" }
