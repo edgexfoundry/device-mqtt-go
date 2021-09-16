@@ -8,20 +8,20 @@ deviceResources:
 -
   name: randfloat32
   isHidden: true
-  description: "device random number with Base64 encoding"
+  description: "random 32 bit float"
   properties:
     valueType: "Float32"
-    readWrite: "R"
+    readWrite: "RW"
     defaultValue: "0.00"
     minimum: "0.00"
     maximum: "100.00"
 -
   name: randfloat64
   isHidden: true
-  description: "device random number with e notion"
+  description: "random 64 bit float"
   properties:
     valueType: "Float64"
-    readWrite: "R"
+    readWrite: "RW"
     defaultValue: "0.00"
     minimum: "0.00"
     maximum: "100.00"
@@ -68,4 +68,13 @@ deviceCommands:
   readWrite: "RW"
   isHidden: false
   resourceOperations:
+    - { deviceResource: "message" }
+-
+  name: allValues
+  readWrite: "RW"
+  isHidden: false
+  resourceOperations:
+    - { deviceResource: "randfloat32" }
+    - { deviceResource: "randfloat64" }
+    - { deviceResource: "ping" }
     - { deviceResource: "message" }
