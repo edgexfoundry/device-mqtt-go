@@ -19,7 +19,13 @@ func (d *Driver) onCommandResponseReceived(client mqtt.Client, message mqtt.Mess
 	if d.serviceConfig.MQTTBrokerInfo.UseTopicLevels {
 		topic := message.Topic()
 		metaData := strings.Split(topic, "/")
-		uuid = metaData[len(metaData)-1]
+
+		if len(metaData) == 0 {
+			driver.Logger.Errorf("[Response listener] Command response ignored. metaData in the message is not sufficient to retrieve UUID: topic=%v msg=%v", message.Topic(), metaData)
+			return
+		} else {
+			uuid = metaData[len(metaData)-1]
+		}
 	} else {
 		var response map[string]interface{}
 		var ok bool
@@ -27,7 +33,7 @@ func (d *Driver) onCommandResponseReceived(client mqtt.Client, message mqtt.Mess
 		json.Unmarshal(message.Payload(), &response)
 		uuid, ok = response["uuid"].(string)
 		if !ok {
-			driver.Logger.Warnf("[Response listener] Command response ignored. No UUID found in the message: topic=%v msg=%v", message.Topic(), string(message.Payload()))
+			driver.Logger.Errorf("[Response listener] Command response ignored. No UUID found in the message: topic=%v msg=%v", message.Topic(), string(message.Payload()))
 			return
 		}
 	}
