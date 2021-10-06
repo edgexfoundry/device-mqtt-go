@@ -16,18 +16,19 @@ GIT_SHA=$(shell git rev-parse HEAD)
 
 GOFLAGS=-ldflags "-X github.com/edgexfoundry/device-mqtt-go.Version=$(VERSION)"
 
+tidy:
+	go mod tidy
+
 build: $(MICROSERVICES)
 
 cmd/device-mqtt:
-	go mod tidy
 	$(GOCGO) build $(GOFLAGS) -o $@ ./cmd
 
 test:
-	go mod tidy
 	$(GOCGO) test ./... -coverprofile=coverage.out
 	$(GOCGO) vet ./...
-	gofmt -l .
-	["`gofmt -l .`" = ""]
+	gofmt -l $$(find . -type f -name '*.go'| grep -v "/vendor/")
+	[ "`gofmt -l $$(find . -type f -name '*.go'| grep -v "/vendor/")`" = "" ]
 	./bin/test-attribution-txt.sh
 
 clean:
@@ -44,3 +45,6 @@ docker_device_mqtt_go:
 		-t edgexfoundry/device-mqtt:$(GIT_SHA) \
 		-t edgexfoundry/device-mqtt:$(VERSION)-dev \
 		.
+
+vendor:
+	$(GO) mod vendor

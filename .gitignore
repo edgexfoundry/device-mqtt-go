@@ -17,7 +17,6 @@
 vendor/
 cmd/device-mqtt
 glide.lock
-go.sum
 VERSION
 
 # snap files
