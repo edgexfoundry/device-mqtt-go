@@ -1,7 +1,7 @@
 name: edgex-device-mqtt
 base: core18 
 license: Apache-2.0
-adopt-info: version
+adopt-info: device-mqtt
 summary: Connect data MQTT to EdgeX using device-mqtt reference Device Service
 title: EdgeX MQTT Device Service
 description: |
@@ -53,13 +53,6 @@ plugs:
     target: $SNAP_DATA/config/device-mqtt/res
 
 parts:
-  version:
-    plugin: nil
-    source: snap/local
-    override-pull: |
-      cd $SNAPCRAFT_PROJECT_DIR
-      GIT_VERSION=$(git describe --tags --abbrev=0 | sed 's/v//')
-      snapcraftctl set-version ${GIT_VERSION}
 
   hooks:
     source: snap/local/hooks
@@ -81,6 +74,15 @@ parts:
       - go/1.16/stable
     override-build: |
       cd $SNAPCRAFT_PART_SRC
+
+      GIT_VERSION=$(git describe --tags --abbrev=0 | sed 's/v//')
+      if [ -z "$GIT_VERSION" ]; then
+        GIT_VERSION="0.0.0"
+      fi
+      snapcraftctl set-version ${GIT_VERSION}
+      # this is needed for make build
+      echo $GIT_VERSION > ./VERSION
+
       go mod tidy
       make build
 
