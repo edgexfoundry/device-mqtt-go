@@ -74,10 +74,11 @@ $ sudo snap start --enable edgex-device-mqtt.device-mqtt
 ### Using a content interface to set device configuration
 
 The `device-config` content interface allows another snap to seed this device
-snap with both a configuration file and one or more device profiles. 
+snap with configuration files under the `$SNAP_DATA/config/device-mqtt/res` directory.
 
 
-To use, create a new snap with a directory containing the configuration and device profile files. Your snapcraft.yaml file then needs to define a slot with read access to the directory you are sharing.
+To use, create a new snap with a directory containing the configuration files.
+Your `snapcraft.yaml` file then needs to define a slot with read access to the directory you are sharing.
 
 ```
 slots:
@@ -148,6 +149,10 @@ service.max-result-count        // Service.MaxResultCount
 service.max-request-size        // Service.MaxRequestSize
 service.startup-msg             // Service.StartupMsg
 service.request-timeout         // Service.RequestTimeout
+
+[SecretStore]
+secret-store.secrets-file               // SecretStore.SecretsFile
+secret-store.disable-scrub-secrets-file // SecretStore.DisableScrubSecretsFile
 
 [Clients.core-data]
 clients.core-data.port          // Clients.core-data.Port
