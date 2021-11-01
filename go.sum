@@ -54,12 +54,14 @@ github.com/eclipse/paho.mqtt.golang v1.3.5 h1:sWtmgNxYM9P2sP+xEItMozsR3w0cqZFlqn
 github.com/eclipse/paho.mqtt.golang v1.3.5/go.mod h1:eTzb4gxwwyWpqBUHGQZ4ABAV7+Jgm1PklsYT/eo8Hcc=
 github.com/edgexfoundry/device-sdk-go/v2 v2.0.1-dev.23 h1:iBOmYNUQGHH31jDJb2g6rKN/N8eSwrKsRf89cWu1qs0=
 github.com/edgexfoundry/device-sdk-go/v2 v2.0.1-dev.23/go.mod h1:ehRpOLRWxJAwMIliF+uWGVqO7tD2Cr7BJhKlVlO9Ajo=
-github.com/edgexfoundry/go-mod-bootstrap/v2 v2.0.1-dev.13 h1:LvbGywemQcG2xgZi6MaK63b5G+Vt1SF3tP7Lly6DdVs=
 github.com/edgexfoundry/go-mod-bootstrap/v2 v2.0.1-dev.13/go.mod h1:FUTBZgP4hMyJOetw3WkM6trUs2SG3AceO3NAZhZyG9M=
+github.com/edgexfoundry/go-mod-bootstrap/v2 v2.0.1-dev.15 h1:Gtk7eRe70LCdxww8tIkhGEvgxPBECb4lU/8xdRmPUI0=
+github.com/edgexfoundry/go-mod-bootstrap/v2 v2.0.1-dev.15/go.mod h1:84xs+nDgmAu8X2qTWsj9GTkgcIQDzS+O/O6RjvFE38M=
 github.com/edgexfoundry/go-mod-configuration/v2 v2.0.1-dev.5 h1:icE1aVlX7I3SJ0qPqZJchCr2JLe2TMRZlUMIM2qoivo=
 github.com/edgexfoundry/go-mod-configuration/v2 v2.0.1-dev.5/go.mod h1:MvHit0MxBXN4bC8LL0NZRsw72ByRE1XwtVLQP9C+2vg=
 github.com/edgexfoundry/go-mod-core-contracts/v2 v2.0.0/go.mod h1:pfXURRetgIto0GR0sCjDrfa71hqJ1wxmQWi/mOzWfWU=
 github.com/edgexfoundry/go-mod-core-contracts/v2 v2.0.1-dev.21/go.mod h1:I6UhBPCREubcU0ouIGBdZlNG5Xx4NijUVN5rvEtD03k=
+github.com/edgexfoundry/go-mod-core-contracts/v2 v2.0.1-dev.23/go.mod h1:I6UhBPCREubcU0ouIGBdZlNG5Xx4NijUVN5rvEtD03k=
 github.com/edgexfoundry/go-mod-core-contracts/v2 v2.0.1-dev.26 h1:8S8+GZR8fOSg3yvVQiIUZ+EpGtG6dDcwhZiOkvBWV8M=
 github.com/edgexfoundry/go-mod-core-contracts/v2 v2.0.1-dev.26/go.mod h1:I6UhBPCREubcU0ouIGBdZlNG5Xx4NijUVN5rvEtD03k=
 github.com/edgexfoundry/go-mod-messaging/v2 v2.0.2-dev.6 h1:gu0+92a3ytXKDxl1IXrI7EzHJUTCgjLmAZXjHzFbDgA=
