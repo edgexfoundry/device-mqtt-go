@@ -67,6 +67,9 @@ Path = "device-mqtt/"
 Protocol = "http"
 RootCaCertPath = ""
 ServerName = ""
+# Uncomment to seed service secrets file
+# SecretsFile = "/tmp/edgex/secrets/device-mqtt/secrets.json"
+DisableScrubSecretsFile = false
 TokenFile = "/tmp/edgex/secrets/device-mqtt/secrets-token.json"
     [SecretStore.Authentication]
     AuthType = "X-Vault-Token"
