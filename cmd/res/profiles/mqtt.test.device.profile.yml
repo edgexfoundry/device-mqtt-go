@@ -43,6 +43,14 @@ deviceResources:
     scale: ""
     offset: ""
     base: ""
+-
+  name: json
+  isHidden: false
+  description: "JSON message"
+  properties:
+    valueType: "Object"
+    readWrite: "RW"
+    mediaType: "application/json"
 
 deviceCommands:
 -
@@ -76,5 +84,4 @@ deviceCommands:
   resourceOperations:
     - { deviceResource: "randfloat32" }
     - { deviceResource: "randfloat64" }
-    - { deviceResource: "ping" }
     - { deviceResource: "message" }
