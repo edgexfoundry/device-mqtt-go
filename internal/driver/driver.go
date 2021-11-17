@@ -306,6 +306,8 @@ func newResult(req sdkModel.CommandRequest, reading interface{}) (*sdkModel.Comm
 		if err != nil {
 			return nil, fmt.Errorf(castError, req.DeviceResourceName, err)
 		}
+	case common.ValueTypeObject:
+		val = reading
 	default:
 		return nil, fmt.Errorf("return result fail, none supported value type: %v", req.Type)
 
@@ -348,6 +350,8 @@ func newCommandValue(valueType string, param *sdkModel.CommandValue) (interface{
 		commandValue, err = param.Float32Value()
 	case common.ValueTypeFloat64:
 		commandValue, err = param.Float64Value()
+	case common.ValueTypeObject:
+		commandValue, err = param.ObjectValue()
 	default:
 		err = fmt.Errorf("fail to convert param, none supported value type: %v", valueType)
 	}

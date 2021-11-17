@@ -17,7 +17,7 @@ import (
 func checkValueInRange(valueType string, reading interface{}) bool {
 	isValid := false
 
-	if valueType == common.ValueTypeString || valueType == common.ValueTypeBool {
+	if valueType == common.ValueTypeString || valueType == common.ValueTypeBool || valueType == common.ValueTypeObject {
 		return true
 	}
 

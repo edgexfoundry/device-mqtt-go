@@ -588,3 +588,17 @@ func TestNewResult_numberToString(t *testing.T) {
 		t.Errorf("Convert new result(%v) failed, error: %v", val, err)
 	}
 }
+
+func TestNewResult_object(t *testing.T) {
+	var reading interface{} = map[string]string{name: "My JSON"}
+	req := models.CommandRequest{
+		DeviceResourceName: "json",
+		Type:               common.ValueTypeObject,
+	}
+
+	cmdVal, err := newResult(req, reading)
+	require.NoError(t, err)
+	val, err := cmdVal.ObjectValue()
+	require.NoError(t, err)
+	assert.Equal(t, reading, val)
+}
