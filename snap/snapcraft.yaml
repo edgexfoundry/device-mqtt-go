@@ -1,5 +1,5 @@
 name: edgex-device-mqtt
-base: core18 
+base: core20
 license: Apache-2.0
 adopt-info: device-mqtt
 summary: Connect data MQTT to EdgeX using device-mqtt reference Device Service
@@ -42,8 +42,7 @@ apps:
       SECRETSTORE_TOKENFILE: $SNAP_DATA/device-mqtt/secrets-token.json
       WRITABLE_LOGLEVEL: 'INFO'
     daemon: simple
-    passthrough:
-      install-mode: disable
+    install-mode: disable
     plugs: [network, network-bind]
 
 plugs:
