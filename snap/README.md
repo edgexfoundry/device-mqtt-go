@@ -146,12 +146,10 @@ For details on the mapping of configuration options to Config options, please re
 **Note** - all of the configuration options below must be specified with the prefix: 'env.'
 ```
 [Service]
-service.boot-timeout            // Service.BootTimeout
 service.health-check-interval   // Service.HealthCheckInterval
 service.host                    // Service.Host
 service.server-bind-addr        // Service.ServerBindAddr
 service.port                    // Service.Port
-service.protocol                // Service.Protocol
 service.max-result-count        // Service.MaxResultCount
 service.max-request-size        // Service.MaxRequestSize
 service.startup-msg             // Service.StartupMsg
