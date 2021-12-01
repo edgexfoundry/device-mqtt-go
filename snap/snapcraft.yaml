@@ -49,7 +49,7 @@ plugs:
   device-config:
     interface: content
     content: device-config
-    target: $SNAP_DATA/config/device-mqtt/res
+    target: $SNAP_DATA/config/device-mqtt
 
 parts:
 
