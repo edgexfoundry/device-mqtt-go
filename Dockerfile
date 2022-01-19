@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-ARG BASE=golang:1.16-alpine3.14
+ARG BASE=golang:1.17-alpine3.15
 FROM ${BASE} AS builder
 
 ARG ALPINE_PKG_BASE="make git openssh-client gcc libc-dev zeromq-dev libsodium-dev"
@@ -26,9 +26,10 @@ RUN apk add --update --no-cache ${ALPINE_PKG_BASE} ${ALPINE_PKG_EXTRA}
 
 WORKDIR /device-mqtt-go
 
-COPY . .
+COPY go.mod vendor* ./
 RUN [ ! -d "vendor" ] && go mod download all || echo "skipping..."
 
+COPY . .
 # To run tests in the build container:
 #   docker build --build-arg 'MAKE=build test' .
 # This is handy of you do your Docker business on a Mac
