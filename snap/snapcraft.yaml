@@ -84,13 +84,14 @@ parts:
       install -DT "./LICENSE" \
          "$SNAPCRAFT_PART_INSTALL/usr/share/doc/device-mqtt/LICENSE"
 
-  runtime-helpers:
+  config-common:
     plugin: dump
     source: snap/local/runtime-helpers
 
   metadata:
     plugin: nil
     source-type: git
+    build-packages: [wget]
     override-pull: |
       # download the metadata in AppStream format
       # this is temp URL pending PR https://github.com/canonical/edgex-snap-metadata/pull/4
@@ -104,9 +105,9 @@ parts:
         VERSION="0.0.0"
       fi
       
-      snapcraftctl set-version $VERSION
-
       # write version to file for the build
       echo $VERSION > ./VERSION
+
+      snapcraftctl set-version $VERSION
 
     parse-info: [edgex-device-mqtt.metainfo.xml]
