@@ -93,9 +93,9 @@ parts:
     source-type: git
     build-packages: [curl]
     override-pull: |
-      # download the metadata in AppStream format
-      curl --silent --show-error --location --remote-name \
-        https://raw.githubusercontent.com/canonical/edgex-snap-metadata/appstream/edgex-device-mqtt.metainfo.xml
+      # download the summary, description, and icon URL in AppStream format
+      curl --silent --show-error --location --output app.metainfo.xml \
+        https://github.com/farshidtz/edgex-snap-metadata/raw/appstream/${SNAPCRAFT_PROJECT_NAME}.metainfo.xml
 
       # get the version from git tag
       cd $SNAPCRAFT_PROJECT_DIR
@@ -110,4 +110,4 @@ parts:
 
       snapcraftctl set-version $VERSION
 
-    parse-info: [edgex-device-mqtt.metainfo.xml]
+    parse-info: [app.metainfo.xml]
