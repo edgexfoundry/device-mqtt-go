@@ -1,17 +1,8 @@
 name: edgex-device-mqtt
 base: core20
 license: Apache-2.0
-adopt-info: device-mqtt
-summary: Connect data MQTT to EdgeX using device-mqtt reference Device Service
-title: EdgeX MQTT Device Service
-description: |
-  The official reference EdgeX device-mqtt Device Service built using the 
-  device-sdk-go to interact with MQTT brokers. 
-  Initially the daemon in the snap is disabled - a device profile must be
-  provisioned externally with core-metadata or provided to device-mqtt inside
-  "$SNAP_DATA/config/device-mqtt/res" before starting.
+adopt-info: metadata
 
-# TODO: add armhf when the project supports this
 architectures:
   - build-on: amd64
   - build-on: arm64
@@ -19,7 +10,8 @@ architectures:
 grade: stable
 confinement: strict
 
-# edinburgh, geneva,hanoi = 1, ireland = 2
+# 1: edinburgh, geneva, hanoi
+# 2: ireland, jakarta
 epoch: 2
 
 slots:
@@ -64,6 +56,7 @@ parts:
       install -DT ./cmd/install/install "$SNAPCRAFT_PART_INSTALL/snap/hooks/install"
 
   device-mqtt:
+    after: [metadata]
     source: .
     plugin: make
     build-packages: [git, libzmq3-dev, zip, pkg-config]
@@ -73,13 +66,8 @@ parts:
     override-build: |
       cd $SNAPCRAFT_PART_SRC
 
-      GIT_VERSION=$(git describe --tags --abbrev=0 | sed 's/v//')
-      if [ -z "$GIT_VERSION" ]; then
-        GIT_VERSION="0.0.0"
-      fi
-      snapcraftctl set-version ${GIT_VERSION}
-      # this is needed for make build
-      echo $GIT_VERSION > ./VERSION
+      # the version is needed for the build
+      cat ./VERSION
 
       go mod tidy
       make build
@@ -102,3 +90,29 @@ parts:
   config-common:
     plugin: dump
     source: snap/local/runtime-helpers
+
+  metadata:
+    plugin: nil
+    source: https://github.com/canonical/edgex-snap-metadata.git
+    source-branch: appstream
+    source-depth: 1
+    override-build: |
+      # install the icon at the default internal path
+      install -DT edgex-snap-icon.png \
+        $SNAPCRAFT_PART_INSTALL/meta/gui/icon.png
+
+      # change to this project's repo to get the version
+      cd $SNAPCRAFT_PROJECT_DIR
+
+      if git describe ; then
+        VERSION=$(git describe --tags --abbrev=0 | sed 's/v//')
+      else
+        VERSION="0.0.0"
+      fi
+      
+      # write version to file for the build
+      echo $VERSION > ./VERSION
+
+      # set the version of this snap
+      snapcraftctl set-version $VERSION
+    parse-info: [edgex-device-mqtt.metainfo.xml]
