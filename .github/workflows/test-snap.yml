@@ -1,0 +1,17 @@
+name: Snap Testing
+
+on:
+  pull_request:
+    branches: [ main ]
+  # allow manual trigger
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run snap tests
+        uses: farshidtz/edgex-snap-tests@action-test-runner
+        with:
+          name: device-mqtt
