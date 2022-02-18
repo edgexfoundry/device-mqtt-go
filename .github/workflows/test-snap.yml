@@ -7,8 +7,10 @@ on:
   workflow_dispatch:
 
 jobs:
-  test:
+  build:
     runs-on: ubuntu-latest
+    outputs:
+      snap: ${{steps.snapcraft.outputs.snap}}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -19,11 +21,27 @@ jobs:
         run: git describe
 
       - name: Build snap
-        id: build
+        id: snapcraft
         uses: snapcore/action-build@v1
-        
+      
+      - uses: actions/upload-artifact@v2
+        with:
+          name: ${{steps.snapcraft.outputs.snap}}
+          path: ${{steps.snapcraft.outputs.snap}}
+          retention-days: 7
+
+  test:
+    needs: build  
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download the snap from previous job
+        id: download
+        uses: actions/download-artifact@v2
+        with:
+          name: ${{needs.build.outputs.snap}}
+
       - name: Run snap tests
         uses: canonical/edgex-snap-testing@action-test-runner-2
         with:
           name: device-mqtt
-          snap: ${{ steps.build.outputs.snap }}
+          snap: ${{needs.build.outputs.snap}}
