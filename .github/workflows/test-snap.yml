@@ -10,8 +10,20 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Debug version
+        run: git describe
+
+      - name: Build snap
+        id: build
+        uses: snapcore/action-build@v1
+        
       - name: Run snap tests
-        uses: farshidtz/edgex-snap-tests@action-test-runner
+        uses: canonical/edgex-snap-testing@action-test-runner-2
         with:
           name: device-mqtt
+          snap: ${{ steps.build.outputs.snap }}
