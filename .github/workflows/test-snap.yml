@@ -7,8 +7,23 @@ on:
   workflow_dispatch:
 
 jobs:
-  snap-testing:
-    uses: canonical/edgex-snap-testing/.github/workflows/build+test.yml@reusable-workflow
-    with:
-      name: device-mqtt
-  
+  build:
+    name: Build Snap
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build and upload snap
+        id: build
+        uses: canonical/edgex-snap-testing/build@multiple-actions
+    outputs:
+      snap: ${{steps.build.outputs.snap}}
+
+  test:
+    name: Test Snap
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download and test snap
+        uses: canonical/edgex-snap-testing/test@multiple-actions
+        with:
+          name: device-mqtt
+          snap: ${{needs.build.outputs.snap}}
