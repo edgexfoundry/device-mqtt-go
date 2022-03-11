@@ -24,6 +24,8 @@ import (
 	"strings"
 
 	hooks "github.com/canonical/edgex-snap-hooks/v2"
+	"github.com/canonical/edgex-snap-hooks/v2/log"
+	"github.com/canonical/edgex-snap-hooks/v2/options"
 	local "github.com/edgexfoundry/device-mqtt-go/hooks"
 )
 
@@ -99,4 +101,12 @@ func main() {
 		hooks.Error(fmt.Sprintf("Invalid value for 'autostart' : %s", autostart))
 		os.Exit(1)
 	}
+
+	log.SetComponentName("edgex-device-mqtt:configure")
+	log.Info("Processing apps.* and config.* configuration")
+	if err := options.ProcessOptions(); err != nil {
+		log.Errorf("could not process options: %v", err)
+		os.Exit(1)
+	}
+
 }
