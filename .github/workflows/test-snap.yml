@@ -13,7 +13,7 @@ jobs:
     steps:
       - name: Build and upload snap
         id: build
-        uses: canonical/edgex-snap-testing/build@multiple-actions
+        uses: canonical/edgex-snap-testing/build@v1
     outputs:
       snap: ${{steps.build.outputs.snap}}
 
@@ -23,7 +23,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Download and test snap
-        uses: canonical/edgex-snap-testing/test@multiple-actions
+        uses: canonical/edgex-snap-testing/test@v1
         with:
           name: device-mqtt
           snap: ${{needs.build.outputs.snap}}
