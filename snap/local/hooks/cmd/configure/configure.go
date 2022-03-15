@@ -104,7 +104,7 @@ func main() {
 
 	log.SetComponentName("edgex-device-mqtt:configure")
 	log.Info("Processing apps.* and config.* configuration")
-	if err := options.ProcessOptions(); err != nil {
+	if err := options.ProcessOptions([]string{"device-mqtt"}); err != nil {
 		log.Errorf("could not process options: %v", err)
 		os.Exit(1)
 	}
