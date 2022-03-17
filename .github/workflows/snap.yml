@@ -25,3 +25,4 @@ jobs:
         with:
           name: device-mqtt
           snap: ${{needs.build.outputs.snap}}
+
