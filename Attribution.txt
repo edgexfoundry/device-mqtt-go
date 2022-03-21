@@ -164,3 +164,6 @@ https://github.com/go-redis/redis/blob/master/LICENSE
 
 golang.org/x/text (Unspecified) https://github.com/golang/text
 https://github.com/golang/text/blob/master/LICENSE
+
+go-kit/log (MIT) https://github.com/go-kit/log
+https://github.com/go-kit/log/blob/main/LICENSE
