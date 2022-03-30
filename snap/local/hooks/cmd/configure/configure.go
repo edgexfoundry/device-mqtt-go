@@ -103,9 +103,8 @@ func main() {
 	}
 
 	log.SetComponentName("configure")
-	log.Debug("Processing apps.* and config.* configuration")
-	if err := options.ProcessOptions("device-mqtt"); err != nil {
-		log.Errorf("could not process options: %v", err)
+	if err := options.ProcessAppConfig("device-mqtt"); err != nil {
+		hooks.Error(fmt.Sprintf("could not process options: %v", err))
 		os.Exit(1)
 	}
 
