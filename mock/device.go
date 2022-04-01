@@ -14,7 +14,7 @@ import (
 	"net/url"
 	"time"
 
-	"github.com/eclipse/paho.mqtt.golang"
+	mqtt "github.com/eclipse/paho.mqtt.golang"
 )
 
 const (
@@ -91,14 +91,14 @@ func runDataSender() {
 	data["method"] = "get"
 
 	for {
-		data["randnum"] = rand.Float64()
+		data["randnum"] = rand.Float64() //nolint:gosec
 		jsonData, err := json.Marshal(data)
 		if err != nil {
 			fmt.Println(err)
 		}
 		client.Publish(topic, qos, false, jsonData)
 
-		fmt.Println(fmt.Sprintf("Send response: %v", string(jsonData)))
+		fmt.Printf("Send response: %v", string(jsonData))
 
 		time.Sleep(time.Second * time.Duration(30))
 	}
@@ -108,7 +108,10 @@ func runDataSender() {
 func onCommandReceivedFromBroker(client mqtt.Client, message mqtt.Message) {
 	var request map[string]interface{}
 
-	json.Unmarshal(message.Payload(), &request)
+	err := json.Unmarshal(message.Payload(), &request)
+	if err != nil {
+		log.Println(fmt.Sprintf("Error unmarshaling payload: %s", err))
+	}
 	uuid, ok := request["uuid"]
 	if ok {
 		log.Println(fmt.Sprintf("Command response received: topic=%v uuid=%v msg=%v", message.Topic(), uuid, string(message.Payload())))
@@ -121,10 +124,10 @@ func onCommandReceivedFromBroker(client mqtt.Client, message mqtt.Message) {
 				request["ping"] = "pong"
 				sendTestData(request)
 			case "randfloat32":
-				request["randfloat32"] = rand.Float32()
+				request["randfloat32"] = rand.Float32() //nolint:gosec
 				sendTestData(request)
 			case "randfloat64":
-				request["randfloat64"] = rand.Float64()
+				request["randfloat64"] = rand.Float64() //nolint:gosec
 				sendTestData(request)
 			case "message":
 				request["message"] = "test-message"
@@ -159,11 +162,11 @@ func sendTestData(response map[string]interface{}) {
 	}
 	client.Publish(topic, qos, false, jsonData)
 
-	fmt.Println(fmt.Sprintf("Send response: %v", string(jsonData)))
+	fmt.Printf("Send response: %v", string(jsonData))
 }
 
 func createMqttClient(clientID string, uri *url.URL) (mqtt.Client, error) {
-	fmt.Println(fmt.Sprintf("Create MQTT client and connection: uri=%v clientID=%v ", uri.String(), clientID))
+	fmt.Printf("Create MQTT client and connection: uri=%v clientID=%v ", uri.String(), clientID)
 	opts := mqtt.NewClientOptions()
 	opts.AddBroker(fmt.Sprintf("%s://%s", uri.Scheme, uri.Host))
 	opts.SetClientID(clientID)
@@ -171,12 +174,12 @@ func createMqttClient(clientID string, uri *url.URL) (mqtt.Client, error) {
 	password, _ := uri.User.Password()
 	opts.SetPassword(password)
 	opts.SetConnectionLostHandler(func(client mqtt.Client, e error) {
-		fmt.Println(fmt.Sprintf("Connection lost : %v", e))
+		fmt.Printf("Connection lost : %v", e)
 		token := client.Connect()
 		if token.Wait() && token.Error() != nil {
-			fmt.Println(fmt.Sprintf("Reconnection failed : %v", e))
+			fmt.Printf("Reconnection failed : %v", e)
 		} else {
-			fmt.Println(fmt.Sprintf("Reconnection sucessful : %v", e))
+			fmt.Printf("Reconnection sucessful : %v", e)
 		}
 	})
 

@@ -21,7 +21,7 @@ import (
 	"github.com/edgexfoundry/go-mod-core-contracts/v2/errors"
 	"github.com/edgexfoundry/go-mod-core-contracts/v2/models"
 
-	"github.com/eclipse/paho.mqtt.golang"
+	mqtt "github.com/eclipse/paho.mqtt.golang"
 	"github.com/google/uuid"
 	"github.com/spf13/cast"
 )
@@ -150,7 +150,11 @@ func (d *Driver) handleReadCommandRequest(req sdkModel.CommandRequest, topic str
 	driver.Logger.Debugf("Parse command response: %v", cmdResponse)
 
 	var response map[string]interface{}
-	json.Unmarshal([]byte(cmdResponse), &response)
+	err = json.Unmarshal([]byte(cmdResponse), &response)
+	if err != nil {
+		driver.Logger.Errorf("Error unmarshaling response: %s", err)
+	}
+
 	reading, ok := response[cmd]
 	if !ok {
 		return nil, errors.NewCommonEdgeX(errors.KindContractInvalid, fmt.Sprintf("'%s' field not found in the response %s", cmd, cmdResponse), nil)

@@ -14,7 +14,7 @@ import (
 	"github.com/edgexfoundry/device-sdk-go/v2/pkg/models"
 	"github.com/edgexfoundry/device-sdk-go/v2/pkg/service"
 
-	"github.com/eclipse/paho.mqtt.golang"
+	mqtt "github.com/eclipse/paho.mqtt.golang"
 )
 
 const (
@@ -42,8 +42,10 @@ func (d *Driver) onIncomingDataReceived(client mqtt.Client, message mqtt.Message
 		reading = string(message.Payload())
 	} else {
 		var data map[string]interface{}
-		json.Unmarshal(message.Payload(), &data)
-
+		err := json.Unmarshal(message.Payload(), &data)
+		if err != nil {
+			driver.Logger.Errorf("Error unmarshaling payload: %s", err)
+		}
 		nameVal, ok := data[name]
 		if !ok {
 			driver.Logger.Errorf("[Incoming listener] Incoming reading ignored, reading data `%v` should contain the field `%s` to indicate the device name", data, name)
