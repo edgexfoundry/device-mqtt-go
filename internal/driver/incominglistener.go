@@ -45,6 +45,7 @@ func (d *Driver) onIncomingDataReceived(client mqtt.Client, message mqtt.Message
 		err := json.Unmarshal(message.Payload(), &data)
 		if err != nil {
 			driver.Logger.Errorf("Error unmarshaling payload: %s", err)
+			return
 		}
 		nameVal, ok := data[name]
 		if !ok {

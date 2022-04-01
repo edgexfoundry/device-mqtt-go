@@ -33,6 +33,7 @@ func (d *Driver) onCommandResponseReceived(client mqtt.Client, message mqtt.Mess
 		err := json.Unmarshal(message.Payload(), &response)
 		if err != nil {
 			driver.Logger.Errorf("Error unmarshaling payload: %s", err)
+			return
 		}
 		uuid, ok = response["uuid"].(string)
 		if !ok {

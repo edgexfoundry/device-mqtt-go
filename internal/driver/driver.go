@@ -153,6 +153,7 @@ func (d *Driver) handleReadCommandRequest(req sdkModel.CommandRequest, topic str
 	err = json.Unmarshal([]byte(cmdResponse), &response)
 	if err != nil {
 		driver.Logger.Errorf("Error unmarshaling response: %s", err)
+		return nil, errors.NewCommonEdgeX(errors.KindIOError, "Error umarshaling the response", err)
 	}
 
 	reading, ok := response[cmd]

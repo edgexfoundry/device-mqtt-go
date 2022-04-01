@@ -111,6 +111,7 @@ func onCommandReceivedFromBroker(client mqtt.Client, message mqtt.Message) {
 	err := json.Unmarshal(message.Payload(), &request)
 	if err != nil {
 		log.Println(fmt.Sprintf("Error unmarshaling payload: %s", err))
+		return
 	}
 	uuid, ok := request["uuid"]
 	if ok {
