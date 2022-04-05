@@ -10,7 +10,7 @@ import (
 	"encoding/json"
 	"strings"
 
-	"github.com/eclipse/paho.mqtt.golang"
+	mqtt "github.com/eclipse/paho.mqtt.golang"
 )
 
 func (d *Driver) onCommandResponseReceived(client mqtt.Client, message mqtt.Message) {
@@ -30,7 +30,11 @@ func (d *Driver) onCommandResponseReceived(client mqtt.Client, message mqtt.Mess
 		var response map[string]interface{}
 		var ok bool
 
-		json.Unmarshal(message.Payload(), &response)
+		err := json.Unmarshal(message.Payload(), &response)
+		if err != nil {
+			driver.Logger.Errorf("Error unmarshaling payload: %s", err)
+			return
+		}
 		uuid, ok = response["uuid"].(string)
 		if !ok {
 			driver.Logger.Errorf("[Response listener] Command response ignored. No UUID found in the message: topic=%v msg=%v", message.Topic(), string(message.Payload()))
