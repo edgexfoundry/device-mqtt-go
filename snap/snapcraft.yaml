@@ -69,7 +69,7 @@ parts:
       # the version is needed for the build
       cat ./VERSION
 
-      go mod tidy
+      go mod tidy -compat=1.17
       make build
 
       install -DT "./cmd/device-mqtt" "$SNAPCRAFT_PART_INSTALL/bin/device-mqtt"
