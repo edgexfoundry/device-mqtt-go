@@ -23,7 +23,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Download and test snap
-        uses: canonical/edgex-snap-testing/test@v2
+        uses: MonicaisHer/edgex-snap-testing/test@remove-defaults
         with:
           name: device-mqtt
           snap: ${{needs.build.outputs.snap}}
