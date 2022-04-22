@@ -51,6 +51,12 @@ func main() {
 
 	}
 
+	log.SetComponentName("configure")
+	if err := options.ProcessAppConfig("device-mqtt"); err != nil {
+		hooks.Error(fmt.Sprintf("could not process options: %v", err))
+		os.Exit(1)
+	}
+
 	// read env var override configuration
 	envJSON, err = cli.Config(hooks.EnvConfig)
 	if err != nil {
@@ -99,12 +105,6 @@ func main() {
 		// no action necessary
 	default:
 		hooks.Error(fmt.Sprintf("Invalid value for 'autostart' : %s", autostart))
-		os.Exit(1)
-	}
-
-	log.SetComponentName("configure")
-	if err := options.ProcessAppConfig("device-mqtt"); err != nil {
-		hooks.Error(fmt.Sprintf("could not process options: %v", err))
 		os.Exit(1)
 	}
 }
