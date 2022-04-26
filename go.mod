@@ -2,9 +2,9 @@ module github.com/edgexfoundry/device-mqtt-go
 
 require (
 	github.com/eclipse/paho.mqtt.golang v1.3.5
-	github.com/edgexfoundry/device-sdk-go/v2 v2.2.0-dev.22
-	github.com/edgexfoundry/go-mod-bootstrap/v2 v2.2.0-dev.9
-	github.com/edgexfoundry/go-mod-core-contracts/v2 v2.2.0-dev.21
+	github.com/edgexfoundry/device-sdk-go/v2 v2.2.0-dev.32
+	github.com/edgexfoundry/go-mod-bootstrap/v2 v2.2.0-dev.17
+	github.com/edgexfoundry/go-mod-core-contracts/v2 v2.2.0-dev.26
 	github.com/google/uuid v1.3.0
 	github.com/spf13/cast v1.4.1
 	github.com/stretchr/testify v1.7.1
@@ -16,10 +16,10 @@ require (
 	github.com/armon/go-metrics v0.0.0-20180917152333-f0300d1749da // indirect
 	github.com/cenkalti/backoff v2.2.1+incompatible // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
-	github.com/edgexfoundry/go-mod-configuration/v2 v2.1.0 // indirect
-	github.com/edgexfoundry/go-mod-messaging/v2 v2.2.0-dev.9 // indirect
-	github.com/edgexfoundry/go-mod-registry/v2 v2.1.0 // indirect
-	github.com/edgexfoundry/go-mod-secrets/v2 v2.2.0-dev.5 // indirect
+	github.com/edgexfoundry/go-mod-configuration/v2 v2.2.0-dev.3 // indirect
+	github.com/edgexfoundry/go-mod-messaging/v2 v2.2.0-dev.12 // indirect
+	github.com/edgexfoundry/go-mod-registry/v2 v2.2.0-dev.3 // indirect
+	github.com/edgexfoundry/go-mod-secrets/v2 v2.2.0-dev.6 // indirect
 	github.com/fatih/color v1.9.0 // indirect
 	github.com/fxamacker/cbor/v2 v2.4.0 // indirect
 	github.com/go-kit/log v0.2.0 // indirect
@@ -51,6 +51,7 @@ require (
 	github.com/pebbe/zmq4 v1.2.7 // indirect
 	github.com/pelletier/go-toml v1.9.4 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
+	github.com/rcrowley/go-metrics v0.0.0-20181016184325-3113b8401b8a // indirect
 	github.com/spiffe/go-spiffe/v2 v2.0.0 // indirect
 	github.com/x448/float16 v0.8.4 // indirect
 	github.com/zeebo/errs v1.2.2 // indirect
