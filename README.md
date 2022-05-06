@@ -11,8 +11,6 @@ For docker, please refer to the [Dockerfile](Dockerfile) and [Docker Compose Bui
 
 For the snap, refer to the [snap](snap) directory.
 
-The details of the EdgeX release artifacts are available [here](https://docs.edgexfoundry.org/2.1/design/adr/devops/0010-Release-Artifacts).
-
 ## Usage
 Users can refer to [this document](https://docs.edgexfoundry.org/2.1/examples/Ch-ExamplesAddingMQTTDevice) to learn how to use this device service.
 
