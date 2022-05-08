@@ -18,7 +18,26 @@
 - Enable security hardening ([#ec9d6ac](https://github.com/edgexfoundry/device-mqtt-go/commits/ec9d6ac))
 
 ### Bug Fixes 🐛
-- **snap:** expose parent directory in device-config plug ([#1a2d89f](https://github.com/edgexfoundry/device-mqtt-go/commits/1a2d89f))
+- **snap:** Expose parent directory in device-config plug ([#1a2d89f](https://github.com/edgexfoundry/device-mqtt-go/commits/1a2d89f))
+
+### Code Refactoring ♻
+- **snap:** Remove redundant content identifier ([#302ebdb](https://github.com/edgexfoundry/device-mqtt-go/commits/302ebdb))
+
+### Documentation 📖
+- Add deployment section to readme ([#330](https://github.com/edgexfoundry/device-mqtt-go/issues/330)) ([#7f14e9a](https://github.com/edgexfoundry/device-mqtt-go/commits/7f14e9a))
+
+### Build 👷
+- Update to latest SDK w/o ZMQ on windows ([#0aab54c](https://github.com/edgexfoundry/device-mqtt-go/commits/0aab54c))
+    ```
+    BREAKING CHANGE:
+    ZeroMQ no longer supported on native Windows for EdgeX
+    MessageBus
+    ```
+- **snap:** source metadata from repo ([#328](https://github.com/edgexfoundry/device-mqtt-go/issues/328)) ([#195658a](https://github.com/edgexfoundry/device-mqtt-go/commits/195658a))
+
+### Continuous Integration 🔄
+- gomod changes related for Go 1.17 ([#335](https://github.com/edgexfoundry/device-mqtt-go/issues/335)) ([#6506aa6](https://github.com/edgexfoundry/device-mqtt-go/commits/6506aa6))
+- Go 1.17 related changes ([#334](https://github.com/edgexfoundry/device-mqtt-go/issues/334)) ([#620914e](https://github.com/edgexfoundry/device-mqtt-go/commits/620914e))
 
 ## [v2.1.0] Jakarta - 2021-11-18  (Not Compatible with 1.x releases)
 
@@ -30,6 +49,20 @@
 
 ### Bug Fixes 🐛
 - Update all TOML to use quote and not single-quote ([#298](https://github.com/edgexfoundry/device-mqtt-go/issues/298)) ([#255d6e1](https://github.com/edgexfoundry/device-mqtt-go/commits/255d6e1))
+
+### Code Refactoring ♻
+
+### Documentation 📖
+- Update build status badge ([#56d1e45](https://github.com/edgexfoundry/device-mqtt-go/commits/56d1e45))
+- **snap:** Fix markdown and replication errors ([#8907cac](https://github.com/edgexfoundry/device-mqtt-go/commits/8907cac))
+
+### Build 👷
+- Update to use released SDK ([#322](https://github.com/edgexfoundry/device-mqtt-go/issues/322)) ([#ea5b921](https://github.com/edgexfoundry/device-mqtt-go/commits/ea5b921))
+- Update alpine base to 3.14 ([#304](https://github.com/edgexfoundry/device-mqtt-go/issues/304)) ([#9a27036](https://github.com/edgexfoundry/device-mqtt-go/commits/9a27036))
+- **snap:** Upgrade to snap core20 ([#2f4bb9e](https://github.com/edgexfoundry/device-mqtt-go/commits/2f4bb9e))
+
+### Continuous Integration 🔄
+- Remove need for CI specific Dockerfile ([#1a605e9](https://github.com/edgexfoundry/device-mqtt-go/commits/1a605e9))
 
 ## [v2.0.0] Ireland - 2021-06-30  (Not Compatible with 1.x releases)
 
