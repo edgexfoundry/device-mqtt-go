@@ -3,11 +3,68 @@
 ## EdgeX MQTT Device Service
 [Github repository](https://github.com/edgexfoundry/device-mqtt-go)
 
-## [v2.0.0] Ireland - 2021-06-30  (Not Compatible with 1.x releases)
 ### Change Logs for EdgeX Dependencies
-- [device-sdk-go](https://github.com/edgexfoundry/device-sdk-go/blob/v2.0.0/CHANGELOG.md)
-- [go-mod-bootstrap](https://github.com/edgexfoundry/go-mod-bootstrap/blob/v2.0.0/CHANGELOG.md)
-- [go-mod-core-contracts](https://github.com/edgexfoundry/go-mod-core-contracts/blob/v2.0.0/CHANGELOG.md)
+- [device-sdk-go](https://github.com/edgexfoundry/device-sdk-go/blob/main/CHANGELOG.md)
+- [go-mod-core-contracts](https://github.com/edgexfoundry/go-mod-core-contracts/blob/main/CHANGELOG.md)
+- [go-mod-bootstrap](https://github.com/edgexfoundry/go-mod-bootstrap/blob/main/CHANGELOG.md)
+- [go-mod-messaging](https://github.com/edgexfoundry/go-mod-messaging/blob/main/CHANGELOG.md) (indirect dependency)
+- [go-mod-registry](https://github.com/edgexfoundry/go-mod-registry/blob/main/CHANGELOG.md)  (indirect dependency)
+- [go-mod-secrets](https://github.com/edgexfoundry/go-mod-secrets/blob/main/CHANGELOG.md) (indirect dependency)
+- [go-mod-configuration](https://github.com/edgexfoundry/go-mod-configuration/blob/main/CHANGELOG.md) (indirect dependency)
+
+## [v2.2.0] Kamakura - 2022-05-11  (Not Compatible with 1.x releases)
+
+### Features ✨
+- Enable security hardening ([#ec9d6ac](https://github.com/edgexfoundry/device-mqtt-go/commits/ec9d6ac))
+
+### Bug Fixes 🐛
+- **snap:** Expose parent directory in device-config plug ([#1a2d89f](https://github.com/edgexfoundry/device-mqtt-go/commits/1a2d89f))
+
+### Code Refactoring ♻
+- **snap:** Remove redundant content identifier ([#302ebdb](https://github.com/edgexfoundry/device-mqtt-go/commits/302ebdb))
+
+### Documentation 📖
+- Add deployment section to readme ([#330](https://github.com/edgexfoundry/device-mqtt-go/issues/330)) ([#7f14e9a](https://github.com/edgexfoundry/device-mqtt-go/commits/7f14e9a))
+
+### Build 👷
+- Update to latest SDK w/o ZMQ on windows ([#0aab54c](https://github.com/edgexfoundry/device-mqtt-go/commits/0aab54c))
+    ```
+    BREAKING CHANGE:
+    ZeroMQ no longer supported on native Windows for EdgeX
+    MessageBus
+    ```
+- **snap:** source metadata from repo ([#328](https://github.com/edgexfoundry/device-mqtt-go/issues/328)) ([#195658a](https://github.com/edgexfoundry/device-mqtt-go/commits/195658a))
+
+### Continuous Integration 🔄
+- gomod changes related for Go 1.17 ([#335](https://github.com/edgexfoundry/device-mqtt-go/issues/335)) ([#6506aa6](https://github.com/edgexfoundry/device-mqtt-go/commits/6506aa6))
+- Go 1.17 related changes ([#334](https://github.com/edgexfoundry/device-mqtt-go/issues/334)) ([#620914e](https://github.com/edgexfoundry/device-mqtt-go/commits/620914e))
+
+## [v2.1.0] Jakarta - 2021-11-18  (Not Compatible with 1.x releases)
+
+### Features ✨
+- Add support for new Object reading type ([#323](https://github.com/edgexfoundry/device-mqtt-go/issues/323)) ([#5b76d0d](https://github.com/edgexfoundry/device-mqtt-go/commits/5b76d0d))
+- Update config file to include secrets file parameters ([#310](https://github.com/edgexfoundry/device-mqtt-go/issues/310)) ([#c11b57c](https://github.com/edgexfoundry/device-mqtt-go/commits/c11b57c))
+- Add UseMqttLevels capability to pass in metadata ([#303](https://github.com/edgexfoundry/device-mqtt-go/issues/303)) ([#7270bca](https://github.com/edgexfoundry/device-mqtt-go/commits/7270bca))
+- **snap:** bump edgex-snap-hooks to support secretsfile config ([#a36a4aa](https://github.com/edgexfoundry/device-mqtt-go/commits/a36a4aa))
+
+### Bug Fixes 🐛
+- Update all TOML to use quote and not single-quote ([#298](https://github.com/edgexfoundry/device-mqtt-go/issues/298)) ([#255d6e1](https://github.com/edgexfoundry/device-mqtt-go/commits/255d6e1))
+
+### Code Refactoring ♻
+
+### Documentation 📖
+- Update build status badge ([#56d1e45](https://github.com/edgexfoundry/device-mqtt-go/commits/56d1e45))
+- **snap:** Fix markdown and replication errors ([#8907cac](https://github.com/edgexfoundry/device-mqtt-go/commits/8907cac))
+
+### Build 👷
+- Update to use released SDK ([#322](https://github.com/edgexfoundry/device-mqtt-go/issues/322)) ([#ea5b921](https://github.com/edgexfoundry/device-mqtt-go/commits/ea5b921))
+- Update alpine base to 3.14 ([#304](https://github.com/edgexfoundry/device-mqtt-go/issues/304)) ([#9a27036](https://github.com/edgexfoundry/device-mqtt-go/commits/9a27036))
+- **snap:** Upgrade to snap core20 ([#2f4bb9e](https://github.com/edgexfoundry/device-mqtt-go/commits/2f4bb9e))
+
+### Continuous Integration 🔄
+- Remove need for CI specific Dockerfile ([#1a605e9](https://github.com/edgexfoundry/device-mqtt-go/commits/1a605e9))
+
+## [v2.0.0] Ireland - 2021-06-30  (Not Compatible with 1.x releases)
 
 ### Features ✨
 - Fix onConnectHandler panics and update config file ([#288](https://github.com/edgexfoundry/device-mqtt-go/pull/288))
@@ -19,6 +76,7 @@
 - Remove Logging configuration ([#f1a7c6f](https://github.com/edgexfoundry/device-mqtt-go/commits/f1a7c6f))
 - Updated Dockerfile to install dumb-init ([#bc66537](https://github.com/edgexfoundry/device-mqtt-go/commits/bc66537))
 - Enable use of secret via SecretProvider for MQTT broker credentials ([#33a7955](https://github.com/edgexfoundry/device-mqtt-go/commits/33a7955))
+
 ### Bug Fixes 🐛
 - Change "."s in profile name to "-"s ([#284](https://github.com/edgexfoundry/device-mqtt-go/issues/284)) ([#8213f84](https://github.com/edgexfoundry/device-mqtt-go/commits/8213f84))
 - Add AuthMode settings so have ability to enable/disable Auth MQTT connections ([#269](https://github.com/edgexfoundry/device-mqtt-go/issues/269)) ([#9a33ad5](https://github.com/edgexfoundry/device-mqtt-go/commits/9a33ad5))
