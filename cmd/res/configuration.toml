@@ -100,7 +100,7 @@ UseMessageBus = true
 
 [MQTTBrokerInfo]
 Schema = "tcp"
-Host = "0.0.0.0"
+Host = "localhost"
 Port = 1883
 Qos = 0
 KeepAlive = 3600
