@@ -25,6 +25,7 @@ import (
 	hooks "github.com/canonical/edgex-snap-hooks/v2"
 	"github.com/canonical/edgex-snap-hooks/v2/log"
 	"github.com/canonical/edgex-snap-hooks/v2/options"
+	"github.com/canonical/edgex-snap-hooks/v2/snapctl"
 )
 
 // ConfToEnv defines mappings from snap config keys to EdgeX environment variable
@@ -80,11 +81,6 @@ func configure() {
 		log.Fatalf("edgex-device-mqtt:configure: initialization failure: %v", err)
 	}
 
-	log.SetComponentName("configure")
-	if err := options.ProcessAppConfig("device-mqtt"); err != nil {
-		log.Fatalf("could not process options: %v", err)
-	}
-
 	// read env var override configuration
 	envJSON, err = cli.Config(hooks.EnvConfig)
 	if err != nil {
@@ -102,32 +98,35 @@ func configure() {
 	// If autostart is not explicitly set, default to "no"
 	// as only example service configuration and profiles
 	// are provided by default.
-	autostart, err := cli.Config(hooks.AutostartConfig)
+	autostart, err := snapctl.Get("autostart").Run()
 	if err != nil {
 		log.Fatalf("Reading config 'autostart' failed: %v", err)
 	}
 	if autostart == "" {
-		hooks.Debug("edgex-device-mqtt autostart is NOT set, initializing to 'no'")
+		log.Debug("autostart is NOT set, initializing to 'no'")
 		autostart = "no"
 	}
 	autostart = strings.ToLower(autostart)
+	log.Debugf("autostart=%s", autostart)
 
-	hooks.Debug(fmt.Sprintf("edgex-device-mqtt autostart is %s", autostart))
-
-	// service is stopped/disabled by default in the install hook
+	// services are stopped/disabled by default in the install hook
 	switch autostart {
-	case "true":
-		fallthrough
-	case "yes":
-		err = cli.Start("device-mqtt", true)
+	case "true", "yes":
+		err = snapctl.Start("device-mqtt").Enable().Run()
 		if err != nil {
-			log.Fatalf("Can't start service - %v", err)
+			log.Fatalf("Can't start service: %s", err)
 		}
-	case "false":
-		// no action necessary
-	case "no":
+	case "false", "no":
 		// no action necessary
 	default:
-		log.Fatalf("Invalid value for 'autostart' : %s", autostart)
+		log.Fatalf("Invalid value for 'autostart': %s", autostart)
+	}
+
+	log.SetComponentName("configure")
+
+	log.Info("Processing options")
+	err = options.ProcessAppConfig("device-mqtt")
+	if err != nil {
+		log.Fatalf("could not process options: %v", err)
 	}
 }
