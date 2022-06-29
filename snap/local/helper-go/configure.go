@@ -28,6 +28,7 @@ import (
 	"github.com/canonical/edgex-snap-hooks/v2/snapctl"
 )
 
+// Deprecated
 // ConfToEnv defines mappings from snap config keys to EdgeX environment variable
 // names that are used to override individual device-mqtt's [Driver]  configuration
 // values via a .env file read by the snap service wrapper.
