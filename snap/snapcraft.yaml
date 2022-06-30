@@ -26,7 +26,7 @@ apps:
     adapter: full
     command: bin/device-mqtt -confdir $SNAP_DATA/config/device-mqtt -profile res --registry $CONSUL_ADDR
     command-chain:
-      - bin/startup-env-var.sh
+      - bin/source-env-file.sh
     environment:
       CONSUL_ADDR: "consul://localhost:8500"
       DEVICE_PROFILESDIR: $SNAP_DATA/config/device-mqtt/res/profiles
@@ -44,16 +44,15 @@ plugs:
 
 parts:
 
-  hooks:
-    source: snap/local/hooks
+  helper-go:
+    source: snap/local/helper-go
     plugin: make
     build-snaps:
       - go/1.17/stable
     override-build: |
       cd $SNAPCRAFT_PART_SRC
       make build
-      install -DT ./cmd/configure/configure "$SNAPCRAFT_PART_INSTALL/snap/hooks/configure"
-      install -DT ./cmd/install/install "$SNAPCRAFT_PART_INSTALL/snap/hooks/install"
+      install -DT ./helper-go $SNAPCRAFT_PART_INSTALL/bin/helper-go
 
   device-mqtt:
     after: [metadata]
@@ -87,9 +86,11 @@ parts:
       install -DT "./LICENSE" \
          "$SNAPCRAFT_PART_INSTALL/usr/share/doc/device-mqtt/LICENSE"
 
-  config-common:
+  local-bin:
     plugin: dump
-    source: snap/local/runtime-helpers
+    source: snap/local/bin
+    organize:
+      source-env-file.sh: bin/source-env-file.sh
 
   metadata:
     plugin: nil
