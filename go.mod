@@ -1,5 +1,7 @@
 module github.com/edgexfoundry/device-mqtt-go
 
+go 1.18
+
 require (
 	github.com/eclipse/paho.mqtt.golang v1.4.1
 	github.com/edgexfoundry/device-sdk-go/v2 v2.2.1-dev.11
@@ -66,5 +68,3 @@ require (
 	gopkg.in/square/go-jose.v2 v2.4.1 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
-
-go 1.17
