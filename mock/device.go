@@ -110,12 +110,12 @@ func onCommandReceivedFromBroker(client mqtt.Client, message mqtt.Message) {
 
 	err := json.Unmarshal(message.Payload(), &request)
 	if err != nil {
-		log.Println(fmt.Sprintf("Error unmarshaling payload: %s", err))
+		log.Printf("Error unmarshaling payload: %s\n", err)
 		return
 	}
 	uuid, ok := request["uuid"]
 	if ok {
-		log.Println(fmt.Sprintf("Command response received: topic=%v uuid=%v msg=%v", message.Topic(), uuid, string(message.Payload())))
+		log.Printf("Command response received: topic=%v uuid=%v msg=%v\n", message.Topic(), uuid, string(message.Payload()))
 
 		if request["method"] == "set" {
 			sendTestData(request)
@@ -136,7 +136,7 @@ func onCommandReceivedFromBroker(client mqtt.Client, message mqtt.Message) {
 			}
 		}
 	} else {
-		log.Println(fmt.Sprintf("Command response ignored. No UUID found in the message: topic=%v msg=%v", message.Topic(), string(message.Payload())))
+		log.Printf("Command response ignored. No UUID found in the message: topic=%v msg=%v\n", message.Topic(), string(message.Payload()))
 	}
 }
 
