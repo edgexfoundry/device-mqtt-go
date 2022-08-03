@@ -5,3 +5,8 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+  # Maintain dependencies for snap's internal Go modules
+  - package-ecosystem: "gomod"
+    directory: "/snap/local/helper-go"
+    schedule:
+      interval: "weekly"
