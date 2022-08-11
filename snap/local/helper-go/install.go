@@ -40,8 +40,8 @@ func installDevices() error {
 	path := "/config/device-mqtt/res/devices"
 
 	err := hooks.CopyDir(
-		hooks.Snap+path,
-		hooks.SnapData+path)
+		env.Snap+path,
+		env.SnapData+path)
 	if err != nil {
 		return err
 	}
@@ -53,8 +53,8 @@ func installDevProfiles() error {
 	path := "/config/device-mqtt/res/profiles"
 
 	err := hooks.CopyDir(
-		hooks.Snap+path,
-		hooks.SnapData+path)
+		env.Snap+path,
+		env.SnapData+path)
 	if err != nil {
 		return err
 	}
