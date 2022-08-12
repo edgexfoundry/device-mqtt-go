@@ -60,7 +60,7 @@ var ConfToEnv = map[string]string{
 
 // configure is called by the main function
 func configure() {
-	const service = "device-mqtt"
+	const app = "device-mqtt"
 
 	log.SetComponentName("configure")
 
@@ -71,20 +71,20 @@ func configure() {
 	}
 	if envJSON != "" {
 		log.Debugf("envJSON: %s", envJSON)
-		err = hooks.HandleEdgeXConfig(service, envJSON, ConfToEnv)
+		err = hooks.HandleEdgeXConfig(app, envJSON, ConfToEnv)
 		if err != nil {
 			log.Fatalf("HandleEdgeXConfig failed: %v", err)
 		}
 	}
 
 	log.Info("Processing config options")
-	err = options.ProcessConfig(service)
+	err = options.ProcessConfig(app)
 	if err != nil {
 		log.Fatalf("could not process config options: %v", err)
 	}
 
 	log.Info("Processing autostart options")
-	err = options.ProcessAutostart(service)
+	err = options.ProcessAutostart(app)
 	if err != nil {
 		log.Fatalf("could not process autostart options: %v", err)
 	}
