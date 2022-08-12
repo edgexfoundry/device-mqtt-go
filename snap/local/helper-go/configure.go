@@ -19,13 +19,9 @@
 package main
 
 import (
-	"fmt"
-	"strings"
-
 	hooks "github.com/canonical/edgex-snap-hooks/v2"
 	"github.com/canonical/edgex-snap-hooks/v2/log"
 	"github.com/canonical/edgex-snap-hooks/v2/options"
-	"github.com/canonical/edgex-snap-hooks/v2/snapctl"
 )
 
 // Deprecated
@@ -62,72 +58,34 @@ var ConfToEnv = map[string]string{
 	"device.use-message-bus":       "DEVICE_USEMESSAGEBUS",
 }
 
-var cli *hooks.CtlCli = hooks.NewSnapCtl()
-
 // configure is called by the main function
 func configure() {
-	var debug = false
-	var err error
-	var envJSON string
+	const app = "device-mqtt"
 
-	status, err := cli.Config("debug")
-	if err != nil {
-		log.Fatalf("edgex-device-mqtt:configure: can't read value of 'debug': %v", err)
-	}
-	if status == "true" {
-		debug = true
-	}
+	log.SetComponentName("configure")
 
-	if err = hooks.Init(debug, "edgex-device-mqtt"); err != nil {
-		log.Fatalf("edgex-device-mqtt:configure: initialization failure: %v", err)
-	}
-
-	// read env var override configuration
-	envJSON, err = cli.Config(hooks.EnvConfig)
+	log.Info("Processing legacy env options")
+	envJSON, err := hooks.NewSnapCtl().Config(hooks.EnvConfig)
 	if err != nil {
 		log.Fatalf("Reading config 'env' failed: %v", err)
 	}
-
 	if envJSON != "" {
-		hooks.Debug(fmt.Sprintf("edgex-device-mqtt:configure: envJSON: %s", envJSON))
-		err = hooks.HandleEdgeXConfig("device-mqtt", envJSON, ConfToEnv)
+		log.Debugf("envJSON: %s", envJSON)
+		err = hooks.HandleEdgeXConfig(app, envJSON, ConfToEnv)
 		if err != nil {
 			log.Fatalf("HandleEdgeXConfig failed: %v", err)
 		}
 	}
 
-	// If autostart is not explicitly set, default to "no"
-	// as only example service configuration and profiles
-	// are provided by default.
-	autostart, err := snapctl.Get("autostart").Run()
+	log.Info("Processing config options")
+	err = options.ProcessConfig(app)
 	if err != nil {
-		log.Fatalf("Reading config 'autostart' failed: %v", err)
-	}
-	if autostart == "" {
-		log.Debug("autostart is NOT set, initializing to 'no'")
-		autostart = "no"
-	}
-	autostart = strings.ToLower(autostart)
-	log.Debugf("autostart=%s", autostart)
-
-	// services are stopped/disabled by default in the install hook
-	switch autostart {
-	case "true", "yes":
-		err = snapctl.Start("device-mqtt").Enable().Run()
-		if err != nil {
-			log.Fatalf("Can't start service: %s", err)
-		}
-	case "false", "no":
-		// no action necessary
-	default:
-		log.Fatalf("Invalid value for 'autostart': %s", autostart)
+		log.Fatalf("could not process config options: %v", err)
 	}
 
-	log.SetComponentName("configure")
-
-	log.Info("Processing options")
-	err = options.ProcessAppConfig("device-mqtt")
+	log.Info("Processing autostart options")
+	err = options.ProcessAutostart(app)
 	if err != nil {
-		log.Fatalf("could not process options: %v", err)
+		log.Fatalf("could not process autostart options: %v", err)
 	}
 }
