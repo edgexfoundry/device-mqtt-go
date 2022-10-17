@@ -17,9 +17,18 @@ epoch: 2
 slots:
   edgex-secretstore-token:
     interface: content
-    content: edgex-secretstore-token
     source:
       write: [$SNAP_DATA/device-mqtt]
+
+plugs:
+  device-mqtt-config:
+    interface: content
+    target: $SNAP_DATA/config/device-mqtt
+
+  # deprecated
+  device-config:
+    interface: content
+    target: $SNAP_DATA/config/device-mqtt
 
 apps:
   device-mqtt:
@@ -36,11 +45,6 @@ apps:
     daemon: simple
     install-mode: disable
     plugs: [network, network-bind]
-
-plugs:
-  device-config:
-    interface: content
-    target: $SNAP_DATA/config/device-mqtt
 
 parts:
 
