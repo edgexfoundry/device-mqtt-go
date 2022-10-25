@@ -16,7 +16,20 @@ LogLevel = "INFO"
       password = ""
   [Writable.Reading]
   ReadingUnits = true
-  
+  [Writable.Telemetry]
+  Interval = "30s"
+  PublishTopicPrefix  = "edgex/telemetry" # /<service-name>/<metric-name> will be added to this Publish Topic prefix
+    [Writable.Telemetry.Metrics] # All service's metric names must be present in this list.
+    # Device SDK provided Service Metrics
+    EventsSent = true
+    ReadingsSent = true
+    # Common Security Service Metrics
+    SecuritySecretsRequested = true
+    SecuritySecretsStored = true
+    SecurityConsulTokensRequested = true
+    SecurityConsulTokenDuration = true
+    [Writable.Telemetry.Tags] # Contains the service level tags to be attached to all the service's metrics
+#    Gateway="my-iot-gateway" # Tag must be added here or via Consul Env Override can only chnage existing value, not added new ones.
 [Service]
 HealthCheckInterval = "10s"
 Host = "localhost"
@@ -70,8 +83,8 @@ PublishTopicPrefix = "edgex/events/device" # /<device-profile-name>/<device-name
   DefaultPubRetryAttempts = "2"
   Subject = "edgex/#" # Required for NATS Jetstram only for stream autoprovsioning
   [MessageQueue.Topics]
-  CommandRequestTopic = "edgex/command/request/device-mqtt/#"   # subscribing for inbound command requests
-  CommandResponseTopicPrefix = "edgex/command/response"   # publishing outbound command responses; <device-service>/<device-name>/<command-name>/<method> will be added to this publish topic prefix
+  CommandRequestTopic = "edgex/device/command/request/device-mqtt/#"   # subscribing for inbound command requests
+  CommandResponseTopicPrefix = "edgex/device/command/response"   # publishing outbound command responses; <device-service>/<device-name>/<command-name>/<method> will be added to this publish topic prefix
 
 [SecretStore]
 Type = "vault"
