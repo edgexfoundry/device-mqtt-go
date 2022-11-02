@@ -12,7 +12,30 @@
 - [go-mod-secrets](https://github.com/edgexfoundry/go-mod-secrets/blob/main/CHANGELOG.md) (indirect dependency)
 - [go-mod-configuration](https://github.com/edgexfoundry/go-mod-configuration/blob/main/CHANGELOG.md) (indirect dependency)
 
-## [v2.2.0] Kamakura - 2022-05-11  (Not Compatible with 1.x releases)
+## [v2.3.0] Levski - 2022-11-09 (Only compatible with the 2.x releases)
+
+### Features ✨
+
+- Add Service Metrics configuration ([#431](https://github.com/edgexfoundry/device-mqtt-go/issues/431)) ([#b192367](https://github.com/edgexfoundry/device-mqtt-go/commits/b192367))
+- Add NATS configuration and build option ([#414](https://github.com/edgexfoundry/device-mqtt-go/issues/414)) ([#626368a](https://github.com/edgexfoundry/device-mqtt-go/commits/626368a))
+- Add commanding via message configuration ([#b1e10e2](https://github.com/edgexfoundry/device-mqtt-go/commits/b1e10e2))
+- Add go-winio to attribution (new SPIFFE dependency) ([#383](https://github.com/edgexfoundry/device-mqtt-go/issues/383)) ([#7519713](https://github.com/edgexfoundry/device-mqtt-go/commits/7519713))
+- **snap:** add config interface with unique identifier ([#6b3f84b](https://github.com/edgexfoundry/device-mqtt-go/commits/6b3f84b))
+
+### Bug Fixes 🐛
+
+- replace broker host config with a valid example ([#396](https://github.com/edgexfoundry/device-mqtt-go/issues/396)) ([#2c395e9](https://github.com/edgexfoundry/device-mqtt-go/commits/2c395e9))
+- **snap:** Remove duplicate file copying in install hook ([#420](https://github.com/edgexfoundry/device-mqtt-go/issues/420)) ([#1a028d9](https://github.com/edgexfoundry/device-mqtt-go/commits/1a028d9))
+
+### Code Refactoring ♻
+
+- **snap:** edgex-snap-hooks related upgrade ([#397](https://github.com/edgexfoundry/device-mqtt-go/issues/397)) ([#8b7bfd0](https://github.com/edgexfoundry/device-mqtt-go/commits/8b7bfd0))
+
+### Build 👷
+
+- Upgrade to Go 1.18, fix linter issues and optimize attribution script ([#403](https://github.com/edgexfoundry/device-mqtt-go/issues/403)) ([#7e9452b](https://github.com/edgexfoundry/device-mqtt-go/commits/7e9452b))
+
+## [v2.2.0] Kamakura - 2022-05-11  (Only compatible with the 2.x releases)
 
 ### Features ✨
 - Enable security hardening ([#ec9d6ac](https://github.com/edgexfoundry/device-mqtt-go/commits/ec9d6ac))
@@ -39,7 +62,7 @@
 - gomod changes related for Go 1.17 ([#335](https://github.com/edgexfoundry/device-mqtt-go/issues/335)) ([#6506aa6](https://github.com/edgexfoundry/device-mqtt-go/commits/6506aa6))
 - Go 1.17 related changes ([#334](https://github.com/edgexfoundry/device-mqtt-go/issues/334)) ([#620914e](https://github.com/edgexfoundry/device-mqtt-go/commits/620914e))
 
-## [v2.1.0] Jakarta - 2021-11-18  (Not Compatible with 1.x releases)
+## [v2.1.0] Jakarta - 2021-11-18  (Only compatible with the 2.x releases)
 
 ### Features ✨
 - Add support for new Object reading type ([#323](https://github.com/edgexfoundry/device-mqtt-go/issues/323)) ([#5b76d0d](https://github.com/edgexfoundry/device-mqtt-go/commits/5b76d0d))
@@ -64,7 +87,7 @@
 ### Continuous Integration 🔄
 - Remove need for CI specific Dockerfile ([#1a605e9](https://github.com/edgexfoundry/device-mqtt-go/commits/1a605e9))
 
-## [v2.0.0] Ireland - 2021-06-30  (Not Compatible with 1.x releases)
+## [v2.0.0] Ireland - 2021-06-30  (Only compatible with the 2.x releases)
 
 ### Features ✨
 - Fix onConnectHandler panics and update config file ([#288](https://github.com/edgexfoundry/device-mqtt-go/pull/288))
