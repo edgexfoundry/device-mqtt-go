@@ -1,13 +1,13 @@
 // -*- Mode: Go; indent-tabs-mode: t -*-
 //
-// Copyright (C) 2018 IOTech Ltd
+// Copyright (C) 2018-2022 IOTech Ltd
 //
 // SPDX-License-Identifier: Apache-2.0
 
 package main
 
 import (
-	"github.com/edgexfoundry/device-sdk-go/v2/pkg/startup"
+	"github.com/edgexfoundry/device-sdk-go/v3/pkg/startup"
 
 	"github.com/edgexfoundry/device-mqtt-go"
 	"github.com/edgexfoundry/device-mqtt-go/internal/driver"

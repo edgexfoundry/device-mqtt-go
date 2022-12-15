@@ -1,6 +1,6 @@
 // -*- Mode: Go; indent-tabs-mode: t -*-
 //
-// Copyright (C) 2018-2021 IOTech Ltd
+// Copyright (C) 2018-2022 IOTech Ltd
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -11,8 +11,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/edgexfoundry/device-sdk-go/v2/pkg/models"
-	"github.com/edgexfoundry/device-sdk-go/v2/pkg/service"
+	"github.com/edgexfoundry/device-sdk-go/v3/pkg/models"
+	"github.com/edgexfoundry/device-sdk-go/v3/pkg/service"
 
 	mqtt "github.com/eclipse/paho.mqtt.golang"
 )
