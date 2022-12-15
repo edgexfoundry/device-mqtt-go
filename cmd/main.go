@@ -7,9 +7,9 @@
 package main
 
 import (
-	"github.com/edgexfoundry/device-sdk-go/v2/pkg/startup"
+	"github.com/edgexfoundry/device-sdk-go/v3/pkg/startup"
 
-	"github.com/edgexfoundry/device-mqtt-go"
+	device_mqtt "github.com/edgexfoundry/device-mqtt-go"
 	"github.com/edgexfoundry/device-mqtt-go/internal/driver"
 )
 
