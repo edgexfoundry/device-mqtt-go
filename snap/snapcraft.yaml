@@ -62,8 +62,7 @@ parts:
     after: [metadata]
     source: .
     plugin: make
-    build-packages: [git, libzmq3-dev, zip, pkg-config]
-    stage-packages: [libzmq5]
+    build-packages: [git, zip, pkg-config]
     build-snaps:
       - go/1.18/stable
     override-build: |

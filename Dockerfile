@@ -17,7 +17,7 @@ FROM ${BASE} AS builder
 
 ARG ADD_BUILD_TAGS=""
 ARG MAKE="make -e ADD_BUILD_TAGS=$ADD_BUILD_TAGS build"
-ARG ALPINE_PKG_BASE="make git openssh-client gcc libc-dev zeromq-dev libsodium-dev"
+ARG ALPINE_PKG_BASE="make git openssh-client"
 ARG ALPINE_PKG_EXTRA=""
 
 # Install our build time packages.
@@ -40,7 +40,7 @@ LABEL license='VSPDX-License-Identifier: Apache-2.0' \
       copyright='Copyright (c) 2020-2021: IoTech Ltd'
 
 # dumb-init needed for injected secure bootstrapping entrypoint script when run in secure mode.
-RUN apk add --update --no-cache zeromq dumb-init
+RUN apk add --update --no-cache dumb-init
 
 COPY --from=builder /device-mqtt-go/cmd /
 COPY --from=builder /device-mqtt-go/LICENSE /
