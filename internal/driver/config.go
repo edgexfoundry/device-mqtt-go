@@ -1,6 +1,6 @@
 // -*- Mode: Go; indent-tabs-mode: t -*-
 //
-// Copyright (C) 2019-2022 IOTech Ltd
+// Copyright (C) 2019-2023 IOTech Ltd
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -10,7 +10,7 @@ import (
 	"fmt"
 	"net/url"
 
-	"github.com/edgexfoundry/device-sdk-go/v3/pkg/service"
+	"github.com/edgexfoundry/go-mod-bootstrap/v3/bootstrap/interfaces"
 	"github.com/edgexfoundry/go-mod-bootstrap/v3/bootstrap/secret"
 	"github.com/edgexfoundry/go-mod-bootstrap/v3/bootstrap/startup"
 	"github.com/edgexfoundry/go-mod-bootstrap/v3/config"
@@ -80,13 +80,18 @@ func fetchCommandTopic(protocols map[string]models.ProtocolProperties) (string, 
 	if !ok {
 		return "", errors.NewCommonEdgeX(errors.KindContractInvalid, fmt.Sprintf("'%s' not found in the '%s' protocol properties", CommandTopic, Protocol), nil)
 	}
-	return commandTopic, nil
+	commandTopicString, ok := commandTopic.(string)
+	if !ok {
+		return "", errors.NewCommonEdgeX(errors.KindContractInvalid, fmt.Sprintf("cannot convert '%v' to string type", CommandTopic), nil)
+	}
+
+	return commandTopicString, nil
 }
 
-func SetCredentials(uri *url.URL, category string, authMode string, secretPath string) error {
+func SetCredentials(uri *url.URL, secretProvider interfaces.SecretProvider, category string, authMode string, secretPath string) error {
 	switch authMode {
 	case AuthModeUsernamePassword:
-		credentials, err := GetCredentials(secretPath)
+		credentials, err := GetCredentials(secretProvider, secretPath)
 		if err != nil {
 			return fmt.Errorf("Unable to get %s MQTT credentials for secret path '%s': %s", category, secretPath, err.Error())
 		}
@@ -103,16 +108,15 @@ func SetCredentials(uri *url.URL, category string, authMode string, secretPath s
 	return nil
 }
 
-func GetCredentials(secretPath string) (config.Credentials, error) {
+func GetCredentials(secretProvider interfaces.SecretProvider, secretPath string) (config.Credentials, error) {
 	credentials := config.Credentials{}
-	deviceService := service.RunningService()
 
 	timer := startup.NewTimer(driver.serviceConfig.MQTTBrokerInfo.CredentialsRetryTime, driver.serviceConfig.MQTTBrokerInfo.CredentialsRetryWait)
 
 	var secretData map[string]string
 	var err error
 	for timer.HasNotElapsed() {
-		secretData, err = deviceService.SecretProvider.GetSecret(secretPath, secret.UsernameKey, secret.PasswordKey)
+		secretData, err = secretProvider.GetSecret(secretPath, secret.UsernameKey, secret.PasswordKey)
 		if err == nil {
 			break
 		}

@@ -1,6 +1,6 @@
 // -*- Mode: Go; indent-tabs-mode: t -*-
 //
-// Copyright (C) 2019-2022 IOTech Ltd
+// Copyright (C) 2019-2023 IOTech Ltd
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -14,14 +14,13 @@ import (
 	"sync"
 	"time"
 
+	mqtt "github.com/eclipse/paho.mqtt.golang"
+	"github.com/edgexfoundry/device-sdk-go/v3/pkg/interfaces"
 	sdkModel "github.com/edgexfoundry/device-sdk-go/v3/pkg/models"
-	"github.com/edgexfoundry/device-sdk-go/v3/pkg/service"
 	"github.com/edgexfoundry/go-mod-core-contracts/v3/clients/logger"
 	"github.com/edgexfoundry/go-mod-core-contracts/v3/common"
 	"github.com/edgexfoundry/go-mod-core-contracts/v3/errors"
 	"github.com/edgexfoundry/go-mod-core-contracts/v3/models"
-
-	mqtt "github.com/eclipse/paho.mqtt.golang"
 	"github.com/google/uuid"
 	"github.com/spf13/cast"
 )
@@ -30,6 +29,7 @@ var once sync.Once
 var driver *Driver
 
 type Driver struct {
+	sdk              interfaces.DeviceServiceSDK
 	Logger           logger.LoggingClient
 	AsyncCh          chan<- *sdkModel.AsyncValues
 	CommandResponses sync.Map
@@ -37,31 +37,30 @@ type Driver struct {
 	mqttClient       mqtt.Client
 }
 
-func NewProtocolDriver() sdkModel.ProtocolDriver {
+func NewProtocolDriver() interfaces.ProtocolDriver {
 	once.Do(func() {
 		driver = new(Driver)
 	})
 	return driver
 }
 
-func (d *Driver) Initialize(lc logger.LoggingClient, asyncCh chan<- *sdkModel.AsyncValues, deviceCh chan<- []sdkModel.DiscoveredDevice) error {
-	d.Logger = lc
-	d.AsyncCh = asyncCh
+func (d *Driver) Initialize(sdk interfaces.DeviceServiceSDK) error {
+	d.sdk = sdk
+	d.Logger = sdk.LoggingClient()
+	d.AsyncCh = sdk.AsyncValuesChannel()
 	d.serviceConfig = &ServiceConfig{}
 
-	ds := service.RunningService()
-
-	if err := ds.LoadCustomConfig(d.serviceConfig, CustomConfigSectionName); err != nil {
+	if err := sdk.LoadCustomConfig(d.serviceConfig, CustomConfigSectionName); err != nil {
 		return fmt.Errorf("unable to load '%s' custom configuration: %s", CustomConfigSectionName, err.Error())
 	}
 
-	lc.Debugf("Custom config is: %v", d.serviceConfig)
+	d.Logger.Debugf("Custom config is: %v", d.serviceConfig)
 
 	if err := d.serviceConfig.MQTTBrokerInfo.Validate(); err != nil {
 		return errors.NewCommonEdgeXWrapper(err)
 	}
 
-	if err := ds.ListenForCustomConfigChanges(
+	if err := sdk.ListenForCustomConfigChanges(
 		&d.serviceConfig.MQTTBrokerInfo.Writable,
 		WritableInfoSectionName, d.updateWritableConfig); err != nil {
 		return errors.NewCommonEdgeX(errors.Kind(err), fmt.Sprintf("unable to listen for changes for '%s' custom configuration", WritableInfoSectionName), err)
@@ -410,7 +409,7 @@ func (d *Driver) createMqttClient(serviceConfig *ServiceConfig) (mqtt.Client, er
 		Host:   fmt.Sprintf("%s:%d", brokerUrl, brokerPort),
 	}
 
-	err := SetCredentials(uri, "init", authMode, secretPath)
+	err := SetCredentials(uri, d.sdk.SecretProvider(), "init", authMode, secretPath)
 	if err != nil {
 		return nil, errors.NewCommonEdgeXWrapper(err)
 	}

@@ -1,6 +1,6 @@
 // -*- Mode: Go; indent-tabs-mode: t -*-
 //
-// Copyright (C) 2018-2022 IOTech Ltd
+// Copyright (C) 2018-2023 IOTech Ltd
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -11,10 +11,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/edgexfoundry/device-sdk-go/v3/pkg/models"
-	"github.com/edgexfoundry/device-sdk-go/v3/pkg/service"
-
 	mqtt "github.com/eclipse/paho.mqtt.golang"
+	"github.com/edgexfoundry/device-sdk-go/v3/pkg/models"
 )
 
 const (
@@ -67,9 +65,7 @@ func (d *Driver) onIncomingDataReceived(client mqtt.Client, message mqtt.Message
 		}
 	}
 
-	service := service.RunningService()
-
-	deviceObject, ok := service.DeviceResource(deviceName, resourceName)
+	deviceObject, ok := d.sdk.DeviceResource(deviceName, resourceName)
 	if !ok {
 		driver.Logger.Errorf("[Incoming listener] Incoming reading ignored, device resource `%s` not found from the device `%s`", resourceName, deviceName)
 		return
