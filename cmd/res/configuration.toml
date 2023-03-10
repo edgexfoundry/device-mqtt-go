@@ -5,7 +5,7 @@ LogLevel = "INFO"
   # InsecureSecrets are required for when Redis is used for message bus
   [Writable.InsecureSecrets]
     [Writable.InsecureSecrets.MQTT]
-    secretName = "credentials"
+    SecretName = "credentials"
       [Writable.InsecureSecrets.MQTT.SecretData]
       username = ""
       password = ""
