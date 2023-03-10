@@ -49,7 +49,7 @@ type MQTTBrokerInfo struct {
 	ConnRetryWaitTime     int
 
 	AuthMode        string
-	CredentialsPath string
+	CredentialsName string
 
 	IncomingTopic  string
 	ResponseTopic  string
@@ -88,12 +88,12 @@ func fetchCommandTopic(protocols map[string]models.ProtocolProperties) (string, 
 	return commandTopicString, nil
 }
 
-func SetCredentials(uri *url.URL, secretProvider interfaces.SecretProvider, category string, authMode string, secretPath string) error {
+func SetCredentials(uri *url.URL, secretProvider interfaces.SecretProvider, category string, authMode string, secretName string) error {
 	switch authMode {
 	case AuthModeUsernamePassword:
-		credentials, err := GetCredentials(secretProvider, secretPath)
+		credentials, err := GetCredentials(secretProvider, secretName)
 		if err != nil {
-			return fmt.Errorf("Unable to get %s MQTT credentials for secret path '%s': %s", category, secretPath, err.Error())
+			return fmt.Errorf("Unable to get %s MQTT credentials for secret name '%s': %s", category, secretName, err.Error())
 		}
 
 		driver.Logger.Infof("%s MQTT credentials loaded", category)
@@ -108,7 +108,7 @@ func SetCredentials(uri *url.URL, secretProvider interfaces.SecretProvider, cate
 	return nil
 }
 
-func GetCredentials(secretProvider interfaces.SecretProvider, secretPath string) (config.Credentials, error) {
+func GetCredentials(secretProvider interfaces.SecretProvider, secretName string) (config.Credentials, error) {
 	credentials := config.Credentials{}
 
 	timer := startup.NewTimer(driver.serviceConfig.MQTTBrokerInfo.CredentialsRetryTime, driver.serviceConfig.MQTTBrokerInfo.CredentialsRetryWait)
@@ -116,14 +116,14 @@ func GetCredentials(secretProvider interfaces.SecretProvider, secretPath string)
 	var secretData map[string]string
 	var err error
 	for timer.HasNotElapsed() {
-		secretData, err = secretProvider.GetSecret(secretPath, secret.UsernameKey, secret.PasswordKey)
+		secretData, err = secretProvider.GetSecret(secretName, secret.UsernameKey, secret.PasswordKey)
 		if err == nil {
 			break
 		}
 
 		driver.Logger.Warnf(
-			"Unable to retrieve MQTT credentials from SecretProvider at path '%s': %s. Retrying for %s",
-			secretPath,
+			"Unable to retrieve MQTT credentials from SecretProvider at secret name '%s': %s. Retrying for %s",
+			secretName,
 			err.Error(),
 			timer.RemainingAsString())
 		timer.SleepForInterval()

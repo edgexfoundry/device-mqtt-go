@@ -5,8 +5,8 @@ LogLevel = "INFO"
   # InsecureSecrets are required for when Redis is used for message bus
   [Writable.InsecureSecrets]
     [Writable.InsecureSecrets.MQTT]
-    path = "credentials"
-      [Writable.InsecureSecrets.MQTT.Secrets]
+    secretName = "credentials"
+      [Writable.InsecureSecrets.MQTT.SecretData]
       username = ""
       password = ""
 
@@ -34,7 +34,7 @@ ConnRetryWaitTime = 5
 
 # AuthMode is the MQTT broker authentication mechanism. Currently, "none" and "usernamepassword" is the only AuthMode supported by this service, and the secret keys are "username" and "password".
 AuthMode = "none"
-CredentialsPath = "credentials"
+CredentialsName = "credentials"
 
 # Comment out/remove when using multi-level topics
 IncomingTopic = "DataTopic"
