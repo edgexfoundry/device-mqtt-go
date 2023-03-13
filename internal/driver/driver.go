@@ -400,7 +400,7 @@ func (d *Driver) createMqttClient(serviceConfig *ServiceConfig) (mqtt.Client, er
 	var brokerUrl = serviceConfig.MQTTBrokerInfo.Host
 	var brokerPort = serviceConfig.MQTTBrokerInfo.Port
 	var authMode = serviceConfig.MQTTBrokerInfo.AuthMode
-	var secretPath = serviceConfig.MQTTBrokerInfo.CredentialsPath
+	var secretName = serviceConfig.MQTTBrokerInfo.CredentialsName
 	var mqttClientId = serviceConfig.MQTTBrokerInfo.ClientId
 	var keepAlive = serviceConfig.MQTTBrokerInfo.KeepAlive
 
@@ -409,7 +409,7 @@ func (d *Driver) createMqttClient(serviceConfig *ServiceConfig) (mqtt.Client, er
 		Host:   fmt.Sprintf("%s:%d", brokerUrl, brokerPort),
 	}
 
-	err := SetCredentials(uri, d.sdk.SecretProvider(), "init", authMode, secretPath)
+	err := SetCredentials(uri, d.sdk.SecretProvider(), "init", authMode, secretName)
 	if err != nil {
 		return nil, errors.NewCommonEdgeXWrapper(err)
 	}
