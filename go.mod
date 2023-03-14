@@ -1,6 +1,6 @@
 module github.com/edgexfoundry/device-mqtt-go
 
-go 1.18
+go 1.20
 
 require (
 	github.com/eclipse/paho.mqtt.golang v1.4.2
