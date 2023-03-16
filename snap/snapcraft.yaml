@@ -1,7 +1,9 @@
 name: edgex-device-mqtt
 base: core20
 license: Apache-2.0
-adopt-info: metadata
+summary: EdgeX MQTT Device Service
+description: Refer to https://snapcraft.io/edgex-device-mqtt
+adopt-info: device-mqtt
 
 architectures:
   - build-on: amd64
@@ -33,21 +35,18 @@ plugs:
 apps:
   device-mqtt:
     adapter: full
-    command: bin/device-mqtt -configDir $SNAP_DATA/config/device-mqtt -profile res --registry $CONSUL_ADDR
+    command: bin/device-mqtt --configDir $SNAP_DATA/config/device-mqtt/res --configProvider --registry
     command-chain:
       - bin/source-env-file.sh
     environment:
-      CONSUL_ADDR: "consul://localhost:8500"
       DEVICE_PROFILESDIR: $SNAP_DATA/config/device-mqtt/res/profiles
       DEVICE_DEVICESDIR: $SNAP_DATA/config/device-mqtt/res/devices
       SECRETSTORE_TOKENFILE: $SNAP_DATA/device-mqtt/secrets-token.json
-      WRITABLE_LOGLEVEL: 'INFO'
     daemon: simple
     install-mode: disable
     plugs: [network, network-bind]
 
 parts:
-
   helper-go:
     source: snap/local/helper-go
     plugin: make
@@ -59,35 +58,41 @@ parts:
       install -DT ./helper-go $SNAPCRAFT_PART_INSTALL/bin/helper-go
 
   device-mqtt:
-    after: [metadata]
     source: .
     plugin: make
-    build-packages: [git, zip, pkg-config]
+    build-packages: 
+      - git
     build-snaps:
       - go/1.20/stable
     override-build: |
       cd $SNAPCRAFT_PART_SRC
 
-      # the version is needed for the build
-      cat ./VERSION
+      if git describe ; then
+        VERSION=$(git describe --tags --abbrev=0 | sed 's/v//')
+      else
+        VERSION="0.0.0"
+      fi
 
-      go mod tidy
+      # set the version of this snap
+      snapcraftctl set-version $VERSION
+
+      # write version to file for the build
+      echo $VERSION > ./VERSION
+
       make build
-
       install -DT "./cmd/device-mqtt" "$SNAPCRAFT_PART_INSTALL/bin/device-mqtt"
-      install -DT "./cmd/res/configuration.toml" "$SNAPCRAFT_PART_INSTALL/config/device-mqtt/res/configuration.toml"
+      
+      RES=$SNAPCRAFT_PART_INSTALL/config/device-mqtt/res/
+      mkdir -p $RES
+      cp    cmd/res/configuration.toml $RES
+      cp -r cmd/res/devices $RES
+      cp -r cmd/res/profiles $RES
 
-      install -DT "./cmd/res/devices/mqtt.test.device.toml" \
-        "$SNAPCRAFT_PART_INSTALL/config/device-mqtt/res/devices/mqtt.test.device.toml"
-      install -DT "./cmd/res/devices/mqtt.test.device.toml" \
-        "$SNAPCRAFT_PART_INSTALL/config/device-mqtt/res/devices/mqtt.test.device.toml"
-      install -DT "./cmd/res/profiles/mqtt.test.device.profile.yml" \
-        "$SNAPCRAFT_PART_INSTALL/config/device-mqtt/res/profiles/mqtt.test.device.profile.yml"
+      DOC=$SNAPCRAFT_PART_INSTALL/usr/share/doc/device-mqtt
+      mkdir -p $DOC
+      cp Attribution.txt $DOC/Attribution.txt
+      cp LICENSE $DOC/LICENSE
 
-      install -DT "./Attribution.txt" \
-         "$SNAPCRAFT_PART_INSTALL/usr/share/doc/device-mqtt/Attribution.txt"
-      install -DT "./LICENSE" \
-         "$SNAPCRAFT_PART_INSTALL/usr/share/doc/device-mqtt/LICENSE"
 
   local-bin:
     plugin: dump
@@ -95,28 +100,3 @@ parts:
     organize:
       source-env-file.sh: bin/source-env-file.sh
 
-  metadata:
-    plugin: nil
-    source: https://github.com/canonical/edgex-snap-metadata.git
-    source-branch: appstream
-    source-depth: 1
-    override-build: |
-      # install the icon at the default internal path
-      install -DT edgex-snap-icon.png \
-        $SNAPCRAFT_PART_INSTALL/meta/gui/icon.png
-
-      # change to this project's repo to get the version
-      cd $SNAPCRAFT_PROJECT_DIR
-
-      if git describe ; then
-        VERSION=$(git describe --tags --abbrev=0 | sed 's/v//')
-      else
-        VERSION="0.0.0"
-      fi
-      
-      # write version to file for the build
-      echo $VERSION > ./VERSION
-
-      # set the version of this snap
-      snapcraftctl set-version $VERSION
-    parse-info: [edgex-device-mqtt.metainfo.xml]
