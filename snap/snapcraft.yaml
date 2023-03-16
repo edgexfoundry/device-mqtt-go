@@ -35,7 +35,7 @@ plugs:
 apps:
   device-mqtt:
     adapter: full
-    command: bin/device-mqtt --configDir $SNAP_DATA/config/device-mqtt --configProvider --registry -profile res
+    command: bin/device-mqtt --configDir $SNAP_DATA/config/device-mqtt/res --configProvider --registry
     command-chain:
       - bin/source-env-file.sh
     environment:
