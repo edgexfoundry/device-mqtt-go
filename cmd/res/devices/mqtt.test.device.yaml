@@ -1,0 +1,16 @@
+# Pre-define Devices
+deviceList:
+  - name: "MQTT-test-device"
+    profileName: "Test-Device-MQTT-Profile"
+    description: "MQTT device is created for test purpose"
+    labels: [ "MQTT", "test" ]
+    protocols:
+      mqtt:
+       # Comment out/remove below to use multi-level topics
+       CommandTopic: "CommandTopic"
+       # Uncomment below to use multi-level topics
+       # CommandTopic: "command/MQTT-test-device"
+  # autoEvents:
+  #   interval: "20s"
+  #   onChange: false
+  #   sourceName: "testrandfloat32"
