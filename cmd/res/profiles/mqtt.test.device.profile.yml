@@ -13,8 +13,8 @@ deviceResources:
     valueType: "Float32"
     readWrite: "RW"
     defaultValue: "0.00"
-    minimum: "0.00"
-    maximum: "100.00"
+    minimum: 0
+    maximum: 100
 -
   name: randfloat64
   isHidden: true
@@ -23,8 +23,8 @@ deviceResources:
     valueType: "Float64"
     readWrite: "RW"
     defaultValue: "0.00"
-    minimum: "0.00"
-    maximum: "100.00"
+    minimum: 0
+    maximum: 100
 -
   name: ping
   isHidden: true
@@ -40,9 +40,6 @@ deviceResources:
   properties:
     valueType: "String"
     readWrite: "RW"
-    scale: ""
-    offset: ""
-    base: ""
 -
   name: json
   isHidden: false
