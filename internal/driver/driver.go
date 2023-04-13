@@ -474,3 +474,15 @@ func (d *Driver) onConnectHandler(client mqtt.Client) {
 	driver.Logger.Infof("Subscribed to topic '%s' for receiving the request response", responseTopic)
 
 }
+
+func (d *Driver) Discover() error {
+	return fmt.Errorf("driver's Discover function isn't implemented")
+}
+
+func (d *Driver) ValidateDevice(device models.Device) error {
+	_, err := fetchCommandTopic(device.Protocols)
+	if err != nil {
+		return fmt.Errorf("invalid protocol properties, %v", err)
+	}
+	return nil
+}
