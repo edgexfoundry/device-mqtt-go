@@ -17,7 +17,7 @@ Service:
 # uncomment when running from command-line in hybrid mode with -cp -o flags
 # Clients:
 #   core-metadata:
-#     Host: "localhost" 
+#     Host: "localhost"
 # Registry:
 #   Host: "localhost"
 
@@ -57,3 +57,8 @@ MQTTBrokerInfo:
   Writable:
     # ResponseFetchInterval specifies the retry interval(milliseconds) to fetch the command response from the MQTT broker
     ResponseFetchInterval: 500
+
+Device:
+  # These have common values (currently), but must be here for service local env overrides to apply when customized
+  ProfilesDir: "./res/profiles"
+  DevicesDir: "./res/devices"
