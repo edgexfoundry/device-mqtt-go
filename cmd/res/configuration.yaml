@@ -17,7 +17,7 @@ Service:
 # uncomment when running from command-line in hybrid mode with -cp -o flags
 # Clients:
 #   core-metadata:
-#     Host: "localhost" 
+#     Host: "localhost"
 # Registry:
 #   Host: "localhost"
 
@@ -26,6 +26,11 @@ MessageBus:
   Optional:
   # Default MQTT & NATS Specific options that need to be here to enable environment variable overrides of them
     ClientId: "device-mqtt"
+
+Device:
+  # These have common values (currently), but must be here for service local env overrides to apply when customized
+  ProfilesDir: "./res/profiles"
+  DevicesDir: "./res/devices"
 
 MQTTBrokerInfo:
   Schema: "tcp"
