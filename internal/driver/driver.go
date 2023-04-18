@@ -75,6 +75,10 @@ func (d *Driver) Initialize(sdk interfaces.DeviceServiceSDK) error {
 	return nil
 }
 
+func (d *Driver) Start() error {
+	return nil
+}
+
 func (d *Driver) updateWritableConfig(rawWritableConfig interface{}) {
 	updated, ok := rawWritableConfig.(*WritableInfo)
 	if !ok {
