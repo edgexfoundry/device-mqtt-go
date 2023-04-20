@@ -6,10 +6,7 @@ deviceList:
     labels: [ "MQTT", "test" ]
     protocols:
       mqtt:
-       # Comment out/remove below to use multi-level topics
-       CommandTopic: "CommandTopic"
-       # Uncomment below to use multi-level topics
-       # CommandTopic: "command/MQTT-test-device"
+       CommandTopic: "command/MQTT-test-device"
   # autoEvents:
   #   interval: "20s"
   #   onChange: false
