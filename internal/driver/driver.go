@@ -434,7 +434,7 @@ func (d *Driver) createMqttClient(serviceConfig *ServiceConfig) (mqtt.Client, er
 }
 
 func (d *Driver) getMqttClient(clientID string, uri *url.URL, keepAlive int) (mqtt.Client, error) {
-	driver.Logger.Infof("Create MQTT client and connection: uri=%v clientID=%v ", uri.String(), clientID)
+	driver.Logger.Infof("Create MQTT client and connection: hostname=%v clientID=%v ", uri.Hostname(), clientID)
 	opts := mqtt.NewClientOptions()
 	opts.AddBroker(fmt.Sprintf("%s://%s", uri.Scheme, uri.Host))
 	opts.SetClientID(clientID)
