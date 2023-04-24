@@ -27,11 +27,6 @@ plugs:
     interface: content
     target: $SNAP_DATA/config/device-mqtt
 
-  # deprecated
-  device-config:
-    interface: content
-    target: $SNAP_DATA/config/device-mqtt
-
 apps:
   device-mqtt:
     command: bin/device-mqtt --configDir $SNAP_DATA/config/device-mqtt/res --configProvider --registry
