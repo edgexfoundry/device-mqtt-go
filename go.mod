@@ -4,9 +4,9 @@ go 1.20
 
 require (
 	github.com/eclipse/paho.mqtt.golang v1.4.2
-	github.com/edgexfoundry/device-sdk-go/v3 v3.0.0-dev.73
-	github.com/edgexfoundry/go-mod-bootstrap/v3 v3.0.0-dev.70
-	github.com/edgexfoundry/go-mod-core-contracts/v3 v3.0.0-dev.36
+	github.com/edgexfoundry/device-sdk-go/v3 v3.0.0-dev.74
+	github.com/edgexfoundry/go-mod-bootstrap/v3 v3.0.0-dev.71
+	github.com/edgexfoundry/go-mod-core-contracts/v3 v3.0.0-dev.37
 	github.com/google/uuid v1.3.0
 	github.com/spf13/cast v1.5.0
 	github.com/stretchr/testify v1.8.2
