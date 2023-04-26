@@ -49,15 +49,8 @@ MQTTBrokerInfo:
   AuthMode: "none"
   CredentialsName: "credentials"
 
-  # Comment out/remove when using multi-level topics
-  IncomingTopic: "DataTopic"
-  ResponseTopic: "ResponseTopic"
-  UseTopicLevels: false
-
-# Uncomment to use multi-level topics
-#   IncomingTopic: "incoming/data/#"
-#   ResponseTopic: "command/response/#"
-#   UseTopicLevels: true
+  IncomingTopic: "incoming/data/#"
+  ResponseTopic: "command/response/#"
 
   Writable:
     # ResponseFetchInterval specifies the retry interval(milliseconds) to fetch the command response from the MQTT broker

@@ -114,7 +114,7 @@ func (d *Driver) HandleReadCommands(deviceName string, protocols map[string]mode
 }
 
 func (d *Driver) handleReadCommandRequest(req sdkModel.CommandRequest, topic string) (*sdkModel.CommandValue, error) {
-	var result = &sdkModel.CommandValue{}
+	var result *sdkModel.CommandValue
 	var err error
 	var qos = byte(0)
 	var retained = false
@@ -125,20 +125,8 @@ func (d *Driver) handleReadCommandRequest(req sdkModel.CommandRequest, topic str
 	var cmd = req.DeviceResourceName
 	var payload []byte
 
-	if d.serviceConfig.MQTTBrokerInfo.UseTopicLevels {
-		topic = fmt.Sprintf("%s/%s/%s/%s", topic, cmd, method, cmdUuid)
-		// will publish empty payload
-	} else {
-		data := make(map[string]interface{})
-		data["uuid"] = cmdUuid
-		data["method"] = method
-		data["cmd"] = cmd
-
-		payload, err = json.Marshal(data)
-		if err != nil {
-			return result, err
-		}
-	}
+	topic = fmt.Sprintf("%s/%s/%s/%s", topic, cmd, method, cmdUuid)
+	// will publish empty payload
 
 	driver.mqttClient.Publish(topic, qos, retained, payload)
 
@@ -204,15 +192,9 @@ func (d *Driver) handleWriteCommandRequest(req sdkModel.CommandRequest, topic st
 	if err != nil {
 		return errors.NewCommonEdgeXWrapper(err)
 	}
-	if d.serviceConfig.MQTTBrokerInfo.UseTopicLevels {
-		topic = fmt.Sprintf("%s/%s/%s/%s", topic, cmd, method, cmdUuid)
-		data[cmd] = commandValue
-	} else {
-		data["uuid"] = cmdUuid
-		data["method"] = method
-		data["cmd"] = cmd
-		data[cmd] = commandValue
-	}
+
+	topic = fmt.Sprintf("%s/%s/%s/%s", topic, cmd, method, cmdUuid)
+	data[cmd] = commandValue
 
 	payload, err = json.Marshal(data)
 	if err != nil {

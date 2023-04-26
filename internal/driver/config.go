@@ -51,9 +51,8 @@ type MQTTBrokerInfo struct {
 	AuthMode        string
 	CredentialsName string
 
-	IncomingTopic  string
-	ResponseTopic  string
-	UseTopicLevels bool
+	IncomingTopic string
+	ResponseTopic string
 
 	Writable WritableInfo
 }
