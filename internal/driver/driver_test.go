@@ -11,9 +11,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/edgexfoundry/device-sdk-go/v3/pkg/models"
 	"github.com/edgexfoundry/go-mod-core-contracts/v3/clients/logger"
 	"github.com/edgexfoundry/go-mod-core-contracts/v3/common"
+	"github.com/edgexfoundry/go-mod-core-contracts/v3/models"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -26,12 +26,12 @@ func init() {
 
 func TestNewResult_bool(t *testing.T) {
 	var reading interface{} = true
-	req := models.CommandRequest{
-		DeviceResourceName: "light",
-		Type:               common.ValueTypeBool,
+	resource := models.DeviceResource{
+		Name:       "light",
+		Properties: models.ResourceProperties{ValueType: common.ValueTypeBool},
 	}
 
-	cmdVal, err := newResult(req, reading)
+	cmdVal, err := newResult(resource, reading)
 	if err != nil {
 		t.Fatalf("Fail to create new ReadCommand result, %v", err)
 	}
@@ -43,12 +43,12 @@ func TestNewResult_bool(t *testing.T) {
 
 func TestNewResult_uint8(t *testing.T) {
 	var reading interface{} = uint8(123)
-	req := models.CommandRequest{
-		DeviceResourceName: "temperature",
-		Type:               common.ValueTypeUint8,
+	resource := models.DeviceResource{
+		Name:       "temperature",
+		Properties: models.ResourceProperties{ValueType: common.ValueTypeUint8},
 	}
 
-	cmdVal, err := newResult(req, reading)
+	cmdVal, err := newResult(resource, reading)
 	if err != nil {
 		t.Fatalf("Fail to create new ReadCommand result, %v", err)
 	}
@@ -60,12 +60,12 @@ func TestNewResult_uint8(t *testing.T) {
 
 func TestNewResult_int8(t *testing.T) {
 	var reading interface{} = int8(123)
-	req := models.CommandRequest{
-		DeviceResourceName: "temperature",
-		Type:               common.ValueTypeInt8,
+	resource := models.DeviceResource{
+		Name:       "temperature",
+		Properties: models.ResourceProperties{ValueType: common.ValueTypeInt8},
 	}
 
-	cmdVal, err := newResult(req, reading)
+	cmdVal, err := newResult(resource, reading)
 	if err != nil {
 		t.Fatalf("Fail to create new ReadCommand result, %v", err)
 	}
@@ -77,12 +77,12 @@ func TestNewResult_int8(t *testing.T) {
 
 func TestNewResultFailed_int8(t *testing.T) {
 	var reading interface{} = int16(256)
-	req := models.CommandRequest{
-		DeviceResourceName: "temperature",
-		Type:               common.ValueTypeInt8,
+	resource := models.DeviceResource{
+		Name:       "temperature",
+		Properties: models.ResourceProperties{ValueType: common.ValueTypeInt8},
 	}
 
-	_, err := newResult(req, reading)
+	_, err := newResult(resource, reading)
 	fmt.Println(err)
 	if err == nil || !strings.Contains(err.Error(), "Reading 256 is out of the value type(Int8)'s range") {
 		t.Errorf("Convert new result should be failed")
@@ -91,12 +91,12 @@ func TestNewResultFailed_int8(t *testing.T) {
 
 func TestNewResult_uint16(t *testing.T) {
 	var reading interface{} = uint16(123)
-	req := models.CommandRequest{
-		DeviceResourceName: "temperature",
-		Type:               common.ValueTypeUint16,
+	resource := models.DeviceResource{
+		Name:       "temperature",
+		Properties: models.ResourceProperties{ValueType: common.ValueTypeUint16},
 	}
 
-	cmdVal, err := newResult(req, reading)
+	cmdVal, err := newResult(resource, reading)
 	if err != nil {
 		t.Fatalf("Fail to create new ReadCommand result, %v", err)
 	}
@@ -108,12 +108,12 @@ func TestNewResult_uint16(t *testing.T) {
 
 func TestNewResult_int16(t *testing.T) {
 	var reading interface{} = int16(123)
-	req := models.CommandRequest{
-		DeviceResourceName: "temperature",
-		Type:               common.ValueTypeInt16,
+	resource := models.DeviceResource{
+		Name:       "temperature",
+		Properties: models.ResourceProperties{ValueType: common.ValueTypeInt16},
 	}
 
-	cmdVal, err := newResult(req, reading)
+	cmdVal, err := newResult(resource, reading)
 	if err != nil {
 		t.Fatalf("Fail to create new ReadCommand result, %v", err)
 	}
@@ -125,12 +125,12 @@ func TestNewResult_int16(t *testing.T) {
 
 func TestNewResult_uint32(t *testing.T) {
 	var reading interface{} = uint32(123)
-	req := models.CommandRequest{
-		DeviceResourceName: "temperature",
-		Type:               common.ValueTypeUint32,
+	resource := models.DeviceResource{
+		Name:       "temperature",
+		Properties: models.ResourceProperties{ValueType: common.ValueTypeUint32},
 	}
 
-	cmdVal, err := newResult(req, reading)
+	cmdVal, err := newResult(resource, reading)
 	if err != nil {
 		t.Fatalf("Fail to create new ReadCommand result, %v", err)
 	}
@@ -142,12 +142,12 @@ func TestNewResult_uint32(t *testing.T) {
 
 func TestNewResult_int32(t *testing.T) {
 	var reading interface{} = int32(123)
-	req := models.CommandRequest{
-		DeviceResourceName: "temperature",
-		Type:               common.ValueTypeInt32,
+	resource := models.DeviceResource{
+		Name:       "temperature",
+		Properties: models.ResourceProperties{ValueType: common.ValueTypeInt32},
 	}
 
-	cmdVal, err := newResult(req, reading)
+	cmdVal, err := newResult(resource, reading)
 	if err != nil {
 		t.Fatalf("Fail to create new ReadCommand result, %v", err)
 	}
@@ -159,12 +159,12 @@ func TestNewResult_int32(t *testing.T) {
 
 func TestNewResult_uint64(t *testing.T) {
 	var reading interface{} = uint64(123)
-	req := models.CommandRequest{
-		DeviceResourceName: "temperature",
-		Type:               common.ValueTypeUint64,
+	resource := models.DeviceResource{
+		Name:       "temperature",
+		Properties: models.ResourceProperties{ValueType: common.ValueTypeUint64},
 	}
 
-	cmdVal, err := newResult(req, reading)
+	cmdVal, err := newResult(resource, reading)
 	if err != nil {
 		t.Fatalf("Fail to create new ReadCommand result, %v", err)
 	}
@@ -176,12 +176,12 @@ func TestNewResult_uint64(t *testing.T) {
 
 func TestNewResult_int64(t *testing.T) {
 	var reading interface{} = int64(123)
-	req := models.CommandRequest{
-		DeviceResourceName: "temperature",
-		Type:               common.ValueTypeInt64,
+	resource := models.DeviceResource{
+		Name:       "temperature",
+		Properties: models.ResourceProperties{ValueType: common.ValueTypeInt64},
 	}
 
-	cmdVal, err := newResult(req, reading)
+	cmdVal, err := newResult(resource, reading)
 	if err != nil {
 		t.Fatalf("Fail to create new ReadCommand result, %v", err)
 	}
@@ -192,25 +192,25 @@ func TestNewResult_int64(t *testing.T) {
 }
 
 func TestNewResult_float32(t *testing.T) {
-	req := models.CommandRequest{
-		DeviceResourceName: "temperature",
-		Type:               common.ValueTypeFloat32,
+	resource := models.DeviceResource{
+		Name:       "temperature",
+		Properties: models.ResourceProperties{ValueType: common.ValueTypeFloat32},
 	}
 
 	tests := []struct {
 		name     string
-		req      models.CommandRequest
+		resource models.DeviceResource
 		reading  interface{}
 		expected interface{}
 	}{
-		{"Valid string 0", req, "0", float32(0)},
-		{"Valid string 123.32", req, "123.32", float32(123.32)},
-		{"Valid float32 0", req, 0, float32(0)},
-		{"Valid float32 123.32", req, 123.32, float32(123.32)},
+		{"Valid string 0", resource, "0", float32(0)},
+		{"Valid string 123.32", resource, "123.32", float32(123.32)},
+		{"Valid float32 0", resource, 0, float32(0)},
+		{"Valid float32 123.32", resource, 123.32, float32(123.32)},
 	}
 	for _, testCase := range tests {
 		t.Run(testCase.name, func(t *testing.T) {
-			cmdVal, err := newResult(req, testCase.reading)
+			cmdVal, err := newResult(resource, testCase.reading)
 			require.NoError(t, err)
 			result, err := cmdVal.Float32Value()
 			require.NoError(t, err)
@@ -221,25 +221,25 @@ func TestNewResult_float32(t *testing.T) {
 }
 
 func TestNewResult_float64(t *testing.T) {
-	req := models.CommandRequest{
-		DeviceResourceName: "temperature",
-		Type:               common.ValueTypeFloat64,
+	resource := models.DeviceResource{
+		Name:       "temperature",
+		Properties: models.ResourceProperties{ValueType: common.ValueTypeFloat64},
 	}
 
 	tests := []struct {
 		name     string
-		req      models.CommandRequest
+		resource models.DeviceResource
 		reading  interface{}
 		expected interface{}
 	}{
-		{"Valid string 0", req, "0", float64(0)},
-		{"Valid string 0.123", req, "0.123", 0.123},
-		{"Valid float64 0", req, 0, float64(0)},
-		{"Valid float64 0.123", req, 0.123, 0.123},
+		{"Valid string 0", resource, "0", float64(0)},
+		{"Valid string 0.123", resource, "0.123", 0.123},
+		{"Valid float64 0", resource, 0, float64(0)},
+		{"Valid float64 0.123", resource, 0.123, 0.123},
 	}
 	for _, testCase := range tests {
 		t.Run(testCase.name, func(t *testing.T) {
-			cmdVal, err := newResult(req, testCase.reading)
+			cmdVal, err := newResult(resource, testCase.reading)
 			require.NoError(t, err)
 			result, err := cmdVal.Float64Value()
 			require.NoError(t, err)
@@ -250,13 +250,13 @@ func TestNewResult_float64(t *testing.T) {
 }
 
 func TestNewResult_float64ToInt8(t *testing.T) {
-	var reading interface{} = float64(123.11)
-	req := models.CommandRequest{
-		DeviceResourceName: "temperature",
-		Type:               common.ValueTypeInt8,
+	var reading interface{} = 123.11
+	resource := models.DeviceResource{
+		Name:       "temperature",
+		Properties: models.ResourceProperties{ValueType: common.ValueTypeInt8},
 	}
 
-	cmdVal, err := newResult(req, reading)
+	cmdVal, err := newResult(resource, reading)
 	if err != nil {
 		t.Fatalf("Fail to create new ReadCommand result, %v", err)
 	}
@@ -267,13 +267,13 @@ func TestNewResult_float64ToInt8(t *testing.T) {
 }
 
 func TestNewResult_float64ToInt16(t *testing.T) {
-	var reading interface{} = float64(123.11)
-	req := models.CommandRequest{
-		DeviceResourceName: "temperature",
-		Type:               common.ValueTypeInt16,
+	var reading interface{} = 123.11
+	resource := models.DeviceResource{
+		Name:       "temperature",
+		Properties: models.ResourceProperties{ValueType: common.ValueTypeInt16},
 	}
 
-	cmdVal, err := newResult(req, reading)
+	cmdVal, err := newResult(resource, reading)
 	if err != nil {
 		t.Fatalf("Fail to create new ReadCommand result, %v", err)
 	}
@@ -284,13 +284,13 @@ func TestNewResult_float64ToInt16(t *testing.T) {
 }
 
 func TestNewResult_float64ToInt32(t *testing.T) {
-	var reading interface{} = float64(123.11)
-	req := models.CommandRequest{
-		DeviceResourceName: "temperature",
-		Type:               common.ValueTypeInt32,
+	var reading interface{} = 123.11
+	resource := models.DeviceResource{
+		Name:       "temperature",
+		Properties: models.ResourceProperties{ValueType: common.ValueTypeInt32},
 	}
 
-	cmdVal, err := newResult(req, reading)
+	cmdVal, err := newResult(resource, reading)
 	if err != nil {
 		t.Fatalf("Fail to create new ReadCommand result, %v", err)
 	}
@@ -301,13 +301,13 @@ func TestNewResult_float64ToInt32(t *testing.T) {
 }
 
 func TestNewResult_float64ToInt64(t *testing.T) {
-	var reading interface{} = float64(123.11)
-	req := models.CommandRequest{
-		DeviceResourceName: "temperature",
-		Type:               common.ValueTypeInt64,
+	var reading interface{} = 123.11
+	resource := models.DeviceResource{
+		Name:       "temperature",
+		Properties: models.ResourceProperties{ValueType: common.ValueTypeInt64},
 	}
 
-	cmdVal, err := newResult(req, reading)
+	cmdVal, err := newResult(resource, reading)
 	if err != nil {
 		t.Fatalf("Fail to create new ReadCommand result, %v", err)
 	}
@@ -318,13 +318,13 @@ func TestNewResult_float64ToInt64(t *testing.T) {
 }
 
 func TestNewResult_float64ToUint8(t *testing.T) {
-	var reading interface{} = float64(123.11)
-	req := models.CommandRequest{
-		DeviceResourceName: "temperature",
-		Type:               common.ValueTypeUint8,
+	var reading interface{} = 123.11
+	resource := models.DeviceResource{
+		Name:       "temperature",
+		Properties: models.ResourceProperties{ValueType: common.ValueTypeUint8},
 	}
 
-	cmdVal, err := newResult(req, reading)
+	cmdVal, err := newResult(resource, reading)
 	if err != nil {
 		t.Fatalf("Fail to create new ReadCommand result, %v", err)
 	}
@@ -335,13 +335,13 @@ func TestNewResult_float64ToUint8(t *testing.T) {
 }
 
 func TestNewResult_float64ToUint16(t *testing.T) {
-	var reading interface{} = float64(123.11)
-	req := models.CommandRequest{
-		DeviceResourceName: "temperature",
-		Type:               common.ValueTypeUint16,
+	var reading interface{} = 123.11
+	resource := models.DeviceResource{
+		Name:       "temperature",
+		Properties: models.ResourceProperties{ValueType: common.ValueTypeUint16},
 	}
 
-	cmdVal, err := newResult(req, reading)
+	cmdVal, err := newResult(resource, reading)
 	if err != nil {
 		t.Fatalf("Fail to create new ReadCommand result, %v", err)
 	}
@@ -352,13 +352,13 @@ func TestNewResult_float64ToUint16(t *testing.T) {
 }
 
 func TestNewResult_float64ToUint32(t *testing.T) {
-	var reading interface{} = float64(123.11)
-	req := models.CommandRequest{
-		DeviceResourceName: "temperature",
-		Type:               common.ValueTypeUint32,
+	var reading interface{} = 123.11
+	resource := models.DeviceResource{
+		Name:       "temperature",
+		Properties: models.ResourceProperties{ValueType: common.ValueTypeUint32},
 	}
 
-	cmdVal, err := newResult(req, reading)
+	cmdVal, err := newResult(resource, reading)
 	if err != nil {
 		t.Fatalf("Fail to create new ReadCommand result, %v", err)
 	}
@@ -369,13 +369,13 @@ func TestNewResult_float64ToUint32(t *testing.T) {
 }
 
 func TestNewResult_float64ToUint64(t *testing.T) {
-	var reading interface{} = float64(123.11)
-	req := models.CommandRequest{
-		DeviceResourceName: "temperature",
-		Type:               common.ValueTypeUint64,
+	var reading interface{} = 123.11
+	resource := models.DeviceResource{
+		Name:       "temperature",
+		Properties: models.ResourceProperties{ValueType: common.ValueTypeUint64},
 	}
 
-	cmdVal, err := newResult(req, reading)
+	cmdVal, err := newResult(resource, reading)
 	if err != nil {
 		t.Fatalf("Fail to create new ReadCommand result, %v", err)
 	}
@@ -386,13 +386,13 @@ func TestNewResult_float64ToUint64(t *testing.T) {
 }
 
 func TestNewResult_float64ToFloat32(t *testing.T) {
-	var reading interface{} = float64(123.11)
-	req := models.CommandRequest{
-		DeviceResourceName: "temperature",
-		Type:               common.ValueTypeFloat32,
+	var reading interface{} = 123.11
+	resource := models.DeviceResource{
+		Name:       "temperature",
+		Properties: models.ResourceProperties{ValueType: common.ValueTypeFloat32},
 	}
 
-	cmdVal, err := newResult(req, reading)
+	cmdVal, err := newResult(resource, reading)
 	if err != nil {
 		t.Fatalf("Fail to create new ReadCommand result, %v", err)
 	}
@@ -403,13 +403,13 @@ func TestNewResult_float64ToFloat32(t *testing.T) {
 }
 
 func TestNewResult_float64ToString(t *testing.T) {
-	var reading interface{} = float64(123.11)
-	req := models.CommandRequest{
-		DeviceResourceName: "temperature",
-		Type:               common.ValueTypeString,
+	var reading interface{} = 123.11
+	resource := models.DeviceResource{
+		Name:       "temperature",
+		Properties: models.ResourceProperties{ValueType: common.ValueTypeString},
 	}
 
-	cmdVal, err := newResult(req, reading)
+	cmdVal, err := newResult(resource, reading)
 	if err != nil {
 		t.Fatalf("Fail to create new ReadCommand result, %v", err)
 	}
@@ -421,12 +421,12 @@ func TestNewResult_float64ToString(t *testing.T) {
 
 func TestNewResult_string(t *testing.T) {
 	var reading interface{} = "test string"
-	req := models.CommandRequest{
-		DeviceResourceName: "temperature",
-		Type:               common.ValueTypeString,
+	resource := models.DeviceResource{
+		Name:       "temperature",
+		Properties: models.ResourceProperties{ValueType: common.ValueTypeString},
 	}
 
-	cmdVal, err := newResult(req, reading)
+	cmdVal, err := newResult(resource, reading)
 	if err != nil {
 		t.Fatalf("Fail to create new ReadCommand result, %v", err)
 	}
@@ -438,12 +438,12 @@ func TestNewResult_string(t *testing.T) {
 
 func TestNewResult_stringToInt64(t *testing.T) {
 	var reading interface{} = "123"
-	req := models.CommandRequest{
-		DeviceResourceName: "temperature",
-		Type:               common.ValueTypeInt64,
+	resource := models.DeviceResource{
+		Name:       "temperature",
+		Properties: models.ResourceProperties{ValueType: common.ValueTypeInt64},
 	}
 
-	cmdVal, err := newResult(req, reading)
+	cmdVal, err := newResult(resource, reading)
 	if err != nil {
 		t.Fatalf("Fail to create new ReadCommand result, %v", err)
 	}
@@ -455,12 +455,12 @@ func TestNewResult_stringToInt64(t *testing.T) {
 
 func TestNewResult_stringToInt8(t *testing.T) {
 	var reading interface{} = "123"
-	req := models.CommandRequest{
-		DeviceResourceName: "temperature",
-		Type:               common.ValueTypeInt8,
+	resource := models.DeviceResource{
+		Name:       "temperature",
+		Properties: models.ResourceProperties{ValueType: common.ValueTypeInt8},
 	}
 
-	cmdVal, err := newResult(req, reading)
+	cmdVal, err := newResult(resource, reading)
 	if err != nil {
 		t.Fatalf("Fail to create new ReadCommand result, %v", err)
 	}
@@ -472,12 +472,12 @@ func TestNewResult_stringToInt8(t *testing.T) {
 
 func TestNewResult_stringToUint8(t *testing.T) {
 	var reading interface{} = "123"
-	req := models.CommandRequest{
-		DeviceResourceName: "temperature",
-		Type:               common.ValueTypeUint8,
+	resource := models.DeviceResource{
+		Name:       "temperature",
+		Properties: models.ResourceProperties{ValueType: common.ValueTypeUint8},
 	}
 
-	cmdVal, err := newResult(req, reading)
+	cmdVal, err := newResult(resource, reading)
 	if err != nil {
 		t.Fatalf("Fail to create new ReadCommand result, %v", err)
 	}
@@ -489,12 +489,12 @@ func TestNewResult_stringToUint8(t *testing.T) {
 
 func TestNewResult_stringToUint32(t *testing.T) {
 	var reading interface{} = "123"
-	req := models.CommandRequest{
-		DeviceResourceName: "temperature",
-		Type:               common.ValueTypeUint32,
+	resource := models.DeviceResource{
+		Name:       "temperature",
+		Properties: models.ResourceProperties{ValueType: common.ValueTypeUint32},
 	}
 
-	cmdVal, err := newResult(req, reading)
+	cmdVal, err := newResult(resource, reading)
 	if err != nil {
 		t.Fatalf("Fail to create new ReadCommand result, %v", err)
 	}
@@ -506,12 +506,12 @@ func TestNewResult_stringToUint32(t *testing.T) {
 
 func TestNewResult_stringToUint64(t *testing.T) {
 	var reading interface{} = "123"
-	req := models.CommandRequest{
-		DeviceResourceName: "temperature",
-		Type:               common.ValueTypeUint64,
+	resource := models.DeviceResource{
+		Name:       "temperature",
+		Properties: models.ResourceProperties{ValueType: common.ValueTypeUint64},
 	}
 
-	cmdVal, err := newResult(req, reading)
+	cmdVal, err := newResult(resource, reading)
 	if err != nil {
 		t.Fatalf("Fail to create new ReadCommand result, %v", err)
 	}
@@ -523,12 +523,12 @@ func TestNewResult_stringToUint64(t *testing.T) {
 
 func TestNewResult_stringToBool(t *testing.T) {
 	var reading interface{} = "true"
-	req := models.CommandRequest{
-		DeviceResourceName: "temperature",
-		Type:               common.ValueTypeBool,
+	resource := models.DeviceResource{
+		Name:       "temperature",
+		Properties: models.ResourceProperties{ValueType: common.ValueTypeBool},
 	}
 
-	cmdVal, err := newResult(req, reading)
+	cmdVal, err := newResult(resource, reading)
 	if err != nil {
 		t.Fatalf("Fail to create new ReadCommand result, %v", err)
 	}
@@ -540,12 +540,12 @@ func TestNewResult_stringToBool(t *testing.T) {
 
 func TestNewResult_numberToUint64(t *testing.T) {
 	var reading interface{} = 123
-	req := models.CommandRequest{
-		DeviceResourceName: "temperature",
-		Type:               common.ValueTypeUint64,
+	resource := models.DeviceResource{
+		Name:       "temperature",
+		Properties: models.ResourceProperties{ValueType: common.ValueTypeUint64},
 	}
 
-	cmdVal, err := newResult(req, reading)
+	cmdVal, err := newResult(resource, reading)
 	if err != nil {
 		t.Fatalf("Fail to create new ReadCommand result, %v", err)
 	}
@@ -557,12 +557,12 @@ func TestNewResult_numberToUint64(t *testing.T) {
 
 func TestNewResult_floatNumberToFloat32(t *testing.T) {
 	var reading interface{} = 123.0
-	req := models.CommandRequest{
-		DeviceResourceName: "temperature",
-		Type:               common.ValueTypeFloat32,
+	resource := models.DeviceResource{
+		Name:       "temperature",
+		Properties: models.ResourceProperties{ValueType: common.ValueTypeFloat32},
 	}
 
-	cmdVal, err := newResult(req, reading)
+	cmdVal, err := newResult(resource, reading)
 	if err != nil {
 		t.Fatalf("Fail to create new ReadCommand result, %v", err)
 	}
@@ -574,12 +574,12 @@ func TestNewResult_floatNumberToFloat32(t *testing.T) {
 
 func TestNewResult_numberToString(t *testing.T) {
 	var reading interface{} = 123
-	req := models.CommandRequest{
-		DeviceResourceName: "temperature",
-		Type:               common.ValueTypeString,
+	resource := models.DeviceResource{
+		Name:       "temperature",
+		Properties: models.ResourceProperties{ValueType: common.ValueTypeString},
 	}
 
-	cmdVal, err := newResult(req, reading)
+	cmdVal, err := newResult(resource, reading)
 	if err != nil {
 		t.Fatalf("Fail to create new ReadCommand result, %v", err)
 	}
@@ -590,13 +590,13 @@ func TestNewResult_numberToString(t *testing.T) {
 }
 
 func TestNewResult_object(t *testing.T) {
-	var reading interface{} = map[string]string{name: "My JSON"}
-	req := models.CommandRequest{
-		DeviceResourceName: "json",
-		Type:               common.ValueTypeObject,
+	var reading interface{} = map[string]string{"json": "My JSON"}
+	resource := models.DeviceResource{
+		Name:       "json",
+		Properties: models.ResourceProperties{ValueType: common.ValueTypeObject},
 	}
 
-	cmdVal, err := newResult(req, reading)
+	cmdVal, err := newResult(resource, reading)
 	require.NoError(t, err)
 	val, err := cmdVal.ObjectValue()
 	require.NoError(t, err)

@@ -7,7 +7,7 @@ description: "Test device profile"
 deviceResources:
 -
   name: randfloat32
-  isHidden: true
+  isHidden: false
   description: "random 32 bit float"
   properties:
     valueType: "Float32"
@@ -17,7 +17,7 @@ deviceResources:
     maximum: 100
 -
   name: randfloat64
-  isHidden: true
+  isHidden: false
   description: "random 64 bit float"
   properties:
     valueType: "Float64"
@@ -27,7 +27,7 @@ deviceResources:
     maximum: 100
 -
   name: ping
-  isHidden: true
+  isHidden: false
   description: "device awake"
   properties:
     valueType: "String"
@@ -35,7 +35,7 @@ deviceResources:
     defaultValue: "oops"
 -
   name: message
-  isHidden: true
+  isHidden: false
   description: "device notification message"
   properties:
     valueType: "String"
@@ -50,32 +50,7 @@ deviceResources:
     mediaType: "application/json"
 
 deviceCommands:
--
-  name: testrandfloat32
-  readWrite: "R"
-  isHidden: false
-  resourceOperations:
-    - { deviceResource: "randfloat32" }
--
-  name: testrandfloat64
-  readWrite: "R"
-  isHidden: false
-  resourceOperations:
-    - { deviceResource: "randfloat64" }
--
-  name: testping
-  readWrite: "R"
-  isHidden: false
-  resourceOperations:
-    - { deviceResource: "ping" }
--
-  name: testmessage
-  readWrite: "RW"
-  isHidden: false
-  resourceOperations:
-    - { deviceResource: "message" }
--
-  name: allValues
+- name: allValues
   readWrite: "RW"
   isHidden: false
   resourceOperations:

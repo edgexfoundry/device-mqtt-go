@@ -101,9 +101,14 @@ func (d *Driver) HandleReadCommands(deviceName string, protocols map[string]mode
 	}
 
 	for i, req := range reqs {
-		res, err := d.handleReadCommandRequest(req, commandTopic)
+		resource, ok := d.sdk.DeviceResource(deviceName, req.DeviceResourceName)
+		if !ok {
+			return responses, fmt.Errorf("handle read commands failed: Device Resource %s not found", req.DeviceResourceName)
+		}
+
+		res, err := d.handleReadCommandRequest(resource, commandTopic)
 		if err != nil {
-			driver.Logger.Infof("Handle read commands failed: %v", err)
+			driver.Logger.Errorf("Handle read commands failed: %v", err)
 			return responses, err
 		}
 
@@ -113,7 +118,7 @@ func (d *Driver) HandleReadCommands(deviceName string, protocols map[string]mode
 	return responses, err
 }
 
-func (d *Driver) handleReadCommandRequest(req sdkModel.CommandRequest, topic string) (*sdkModel.CommandValue, error) {
+func (d *Driver) handleReadCommandRequest(resource models.DeviceResource, topic string) (*sdkModel.CommandValue, error) {
 	var result *sdkModel.CommandValue
 	var err error
 	var qos = byte(0)
@@ -122,10 +127,9 @@ func (d *Driver) handleReadCommandRequest(req sdkModel.CommandRequest, topic str
 	var method = "get"
 	var cmdUuid = uuid.NewString()
 
-	var cmd = req.DeviceResourceName
 	var payload []byte
 
-	topic = fmt.Sprintf("%s/%s/%s/%s", topic, cmd, method, cmdUuid)
+	topic = fmt.Sprintf("%s/%s/%s/%s", topic, resource.Name, method, cmdUuid)
 	// will publish empty payload
 
 	driver.mqttClient.Publish(topic, qos, retained, payload)
@@ -135,7 +139,7 @@ func (d *Driver) handleReadCommandRequest(req sdkModel.CommandRequest, topic str
 	// fetch response from MQTT broker after publish command successful
 	cmdResponse, ok := d.fetchCommandResponse(cmdUuid)
 	if !ok {
-		return nil, errors.NewCommonEdgeX(errors.KindServerError, fmt.Sprintf("can not fetch command response: method=%v cmd=%v", method, cmd), nil)
+		return nil, errors.NewCommonEdgeX(errors.KindServerError, fmt.Sprintf("can not fetch command response: method=%v source=%v", method, resource.Name), nil)
 	}
 
 	driver.Logger.Debugf("Parse command response: %v", cmdResponse)
@@ -147,12 +151,12 @@ func (d *Driver) handleReadCommandRequest(req sdkModel.CommandRequest, topic str
 		return nil, errors.NewCommonEdgeX(errors.KindIOError, "Error umarshaling the response", err)
 	}
 
-	reading, ok := response[cmd]
+	reading, ok := response[resource.Name]
 	if !ok {
-		return nil, errors.NewCommonEdgeX(errors.KindContractInvalid, fmt.Sprintf("'%s' field not found in the response %s", cmd, cmdResponse), nil)
+		return nil, errors.NewCommonEdgeX(errors.KindContractInvalid, fmt.Sprintf("'%s' field not found in the response %s", resource.Name, cmdResponse), nil)
 	}
 
-	result, err = newResult(req, reading)
+	result, err = newResult(resource, reading)
 	if err != nil {
 		return nil, errors.NewCommonEdgeXWrapper(err)
 	}
@@ -223,87 +227,89 @@ func (d *Driver) Stop(force bool) error {
 	return nil
 }
 
-func newResult(req sdkModel.CommandRequest, reading interface{}) (*sdkModel.CommandValue, error) {
+func newResult(resource models.DeviceResource, reading interface{}) (*sdkModel.CommandValue, error) {
 	var err error
 	var result = &sdkModel.CommandValue{}
 	castError := "fail to parse %v reading, %v"
 
-	if !checkValueInRange(req.Type, reading) {
-		err = fmt.Errorf("parse reading fail. Reading %v is out of the value type(%v)'s range", reading, req.Type)
+	valueType := resource.Properties.ValueType
+
+	if !checkValueInRange(valueType, reading) {
+		err = fmt.Errorf("parse reading fail. Reading %v is out of the value type(%v)'s range", reading, valueType)
 		driver.Logger.Error(err.Error())
 		return result, err
 	}
 
 	var val interface{}
-	switch req.Type {
+	switch valueType {
 	case common.ValueTypeBool:
 		val, err = cast.ToBoolE(reading)
 		if err != nil {
-			return nil, fmt.Errorf(castError, req.DeviceResourceName, err)
+			return nil, fmt.Errorf(castError, resource.Name, err)
 		}
 	case common.ValueTypeString:
 		val, err = cast.ToStringE(reading)
 		if err != nil {
-			return nil, fmt.Errorf(castError, req.DeviceResourceName, err)
+			return nil, fmt.Errorf(castError, resource.Name, err)
 		}
 	case common.ValueTypeUint8:
 		val, err = cast.ToUint8E(reading)
 		if err != nil {
-			return nil, fmt.Errorf(castError, req.DeviceResourceName, err)
+			return nil, fmt.Errorf(castError, resource.Name, err)
 		}
 	case common.ValueTypeUint16:
 		val, err = cast.ToUint16E(reading)
 		if err != nil {
-			return nil, fmt.Errorf(castError, req.DeviceResourceName, err)
+			return nil, fmt.Errorf(castError, resource.Name, err)
 		}
 	case common.ValueTypeUint32:
 		val, err = cast.ToUint32E(reading)
 		if err != nil {
-			return nil, fmt.Errorf(castError, req.DeviceResourceName, err)
+			return nil, fmt.Errorf(castError, resource.Name, err)
 		}
 	case common.ValueTypeUint64:
 		val, err = cast.ToUint64E(reading)
 		if err != nil {
-			return nil, fmt.Errorf(castError, req.DeviceResourceName, err)
+			return nil, fmt.Errorf(castError, resource.Name, err)
 		}
 	case common.ValueTypeInt8:
 		val, err = cast.ToInt8E(reading)
 		if err != nil {
-			return nil, fmt.Errorf(castError, req.DeviceResourceName, err)
+			return nil, fmt.Errorf(castError, resource.Name, err)
 		}
 	case common.ValueTypeInt16:
 		val, err = cast.ToInt16E(reading)
 		if err != nil {
-			return nil, fmt.Errorf(castError, req.DeviceResourceName, err)
+			return nil, fmt.Errorf(castError, resource.Name, err)
 		}
 	case common.ValueTypeInt32:
 		val, err = cast.ToInt32E(reading)
 		if err != nil {
-			return nil, fmt.Errorf(castError, req.DeviceResourceName, err)
+			return nil, fmt.Errorf(castError, resource.Name, err)
 		}
 	case common.ValueTypeInt64:
 		val, err = cast.ToInt64E(reading)
 		if err != nil {
-			return nil, fmt.Errorf(castError, req.DeviceResourceName, err)
+			return nil, fmt.Errorf(castError, resource.Name, err)
 		}
 	case common.ValueTypeFloat32:
 		val, err = cast.ToFloat32E(reading)
 		if err != nil {
-			return nil, fmt.Errorf(castError, req.DeviceResourceName, err)
+			return nil, fmt.Errorf(castError, resource.Name, err)
 		}
 	case common.ValueTypeFloat64:
 		val, err = cast.ToFloat64E(reading)
 		if err != nil {
-			return nil, fmt.Errorf(castError, req.DeviceResourceName, err)
+			return nil, fmt.Errorf(castError, resource.Name, err)
 		}
 	case common.ValueTypeObject:
 		val = reading
 	default:
-		return nil, fmt.Errorf("return result fail, none supported value type: %v", req.Type)
+		return nil, fmt.Errorf("return result fail, none supported value type: %v", valueType)
 
 	}
 
-	result, err = sdkModel.NewCommandValue(req.DeviceResourceName, req.Type, val)
+	result, err = sdkModel.NewCommandValue(resource.Name, valueType, val)
 	if err != nil {
 		return nil, err
 	}
