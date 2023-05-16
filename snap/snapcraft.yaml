@@ -13,8 +13,9 @@ grade: stable
 confinement: strict
 
 # 1: edinburgh, geneva, hanoi
-# 2: ireland, jakarta
-epoch: 2
+# 2: ireland, jakarta, kamakura, levski
+# 3: minnesota
+epoch: 3
 
 slots:
   edgex-secretstore-token:
