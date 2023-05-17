@@ -63,11 +63,16 @@ func (d *Driver) onIncomingDataReceived(_ mqtt.Client, message mqtt.Message) {
 		}
 	}
 
-	var asyncData map[string]interface{}
+	asyncData := make(map[string]interface{})
 	err := json.Unmarshal(message.Payload(), &asyncData)
 	if err != nil {
-		driver.Logger.Errorf("[Incoming listener] Error un-marshaling incoming data : %v", err)
-		return
+		// If the data received is for a single Device Resource is may just be the value, not JSON containing the name and value.
+		if len(deviceResources) == 1 {
+			asyncData[deviceResources[0].Name] = string(message.Payload())
+		} else {
+			driver.Logger.Errorf("[Incoming listener] Error un-marshaling incoming data : %v", err)
+			return
+		}
 	}
 
 	var commandValues []*sdkModels.CommandValue
@@ -75,8 +80,13 @@ func (d *Driver) onIncomingDataReceived(_ mqtt.Client, message mqtt.Message) {
 	for _, resource := range deviceResources {
 		asyncValue, ok := asyncData[resource.Name]
 		if !ok {
-			driver.Logger.Errorf("[Incoming listener] Incoming data ignored: Resource Name %s not found in payload (%s)", resource.Name, string(message.Payload()))
-			return
+			// If the data received is for a single Device Resource is may just be a JSON value, not JSON containing the name and value.
+			if len(deviceResources) == 1 {
+				asyncValue = string(message.Payload())
+			} else {
+				driver.Logger.Errorf("[Incoming listener] Incoming data ignored: Resource Name %s not found in payload (%s)", resource.Name, string(message.Payload()))
+				return
+			}
 		}
 
 		commandValue, err := newResult(resource, asyncValue)
