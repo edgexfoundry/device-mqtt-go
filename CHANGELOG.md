@@ -12,6 +12,78 @@
 - [go-mod-secrets](https://github.com/edgexfoundry/go-mod-secrets/blob/main/CHANGELOG.md) (indirect dependency)
 - [go-mod-configuration](https://github.com/edgexfoundry/go-mod-configuration/blob/main/CHANGELOG.md) (indirect dependency)
 
+## [v3.0.0] Minnesota - 2023-05-31 (Only compatible with the 3.x releases)
+
+### Features ✨
+
+- Handle receiving multiple readings in the async payload ([#]())
+  ```text
+  BREAKING CHANGE: The published async payload must now be json containing the resource names and values, even when a single resource is sent. 
+                   - Redundant single resource Device Commands (`testrandfloat32`, `testrandfloat64`, `testping` and `testmessage`) in `mqtt.test.device.profile.yml` have be removed.
+                     Use the corresponding resource name (`randfloat32`, `randfloat64`, `ping` or `message`) instead.
+  ```
+- Make multi-level topics the only implementation ([#15e121](https://github.com/edgexfoundry/device-mqtt-go/commit/15e121638b61dd5d2b05931572372c8312ebd12f))
+  ```text
+  BREAKING CHANGE: Removed single level topics so that only multi level is used 
+  ```
+- Consume SDK interface changes ([#24b4e6c8](https://github.com/edgexfoundry/device-mqtt-go/commit/24b4e6c8c5dfa1689a2429f2d6b13ded7328be9a))
+  ```text
+  BREAKING CHANGE: Consume SDK interface changes by adding Discover and ValidateDevice func on driver
+  ```
+- Update profile Minimum and Maximum to numeric data ([#5b00e40](https://github.com/edgexfoundry/device-mqtt-go/commit/5b00e406319c2ed6c9a36a296f26911c42639135))
+  ```text
+  BREAKING CHANGE: Update profile Minimum and Maximum to numeric data according to the latest core-contracts changes.
+  ```
+- Change configuration and device TOML files to YAML format ([#3944987](https://github.com/edgexfoundry/device-mqtt-go/commit/39449871d1528794bb93d06fd28712f06c9b0a27))
+  ```text
+  BREAKING CHANGE: Configuration and device files now in YAML format
+  ```
+- Updates for common config ([#ec4bdb7](https://github.com/edgexfoundry/device-mqtt-go/commit/ec4bdb71d113baf8f62d105c9dc125da7e597352))
+  ```text
+  BREAKING CHANGE: Configuration file changed to remove common config settings
+  ```
+- Remove ZeroMQ MessageBus capability ([#]())
+  ```text
+  BREAKING CHANGE: ZeroMQ no longer option for the EdgeX MessageBus
+  ```
+
+### Bug Fixes 🐛
+
+- Update logging to avoid leaking messageBus credentials ([#51ee6b6](https://github.com/edgexfoundry/device-mqtt-go/commits/51ee6b6))
+- **snap:** Refactor to avoid conflicts with readonly config provider directory ([#535](https://github.com/edgexfoundry/device-mqtt-go/issues/535)) ([#c80097c](https://github.com/edgexfoundry/device-mqtt-go/commits/c80097c))
+
+### Code Refactoring ♻
+
+- Updated secret path to secretName ([#dc80312a](https://github.com/edgexfoundry/device-mqtt-go/commit/dc80312a46813471bd7ca781724042db8dc8e361))
+  ```text
+  BREAKING CHANGE: `path` in Secret DTO renamed to `secretName`
+  ```
+- Consume device-sdk-go breaking changes ([#f6d0510](https://github.com/edgexfoundry/device-mqtt-go/commit/f6d05106c5497cf4be6abc7fa7efd102b354d07f))
+  ```text
+  BREAKING CHANGE: update ProtocolDriver implementation for the new ProtocolDriver interface changes
+  ```
+- Replace internal topics from config with new constants ([#90bb521](https://github.com/edgexfoundry/device-mqtt-go/commit/90bb521e5152a28ee665954924b952139261dddb))
+  ```text
+  BREAKING CHANGE: Internal topics no longer configurable, except the base topic.
+  ```
+- Rework code for refactored MessageBus Configuration ([#5c1f2ce](https://github.com/edgexfoundry/device-mqtt-go/commit/5c1f2ce46133253723bb2df5ba99f3b69c76a38a))
+  ```text
+  BREAKING CHANGE: MessageQueue renamed to MessageBus and fields changed. See v3 Migration guide.
+  ```
+- Use latest SDK for flattened config stem ([#6bdfaee](https://github.com/edgexfoundry/device-mqtt-go/commit/6bdfaee9ae606a4f8b392396fcc4c15889d23cee))
+  ```text
+  BREAKING CHANGE: Location of service configuration in Consul changed to edgex/v3/device-mqtt
+  ```
+- **snap:** Drop the support for legacy snap env options ([#bc7652b](https://github.com/edgexfoundry/device-mqtt-go/commit/bc7652beee9a90296fe0b57947c4589a421f5e02))
+  ```text
+  BREAKING CHANGE: Drop the support for deprecated snap options starting with `env.`
+  ```
+- **snap:** Update command and metadata sourcing ([#529](https://github.com/edgexfoundry/device-mqtt-go/issues/529)) ([#1f5b405](https://github.com/edgexfoundry/device-mqtt-go/commits/1f5b405))
+
+### Build 👷
+
+- Update to Go 1.20, Alpine 3.17 and linter v1.51.2 ([#acf7416](https://github.com/edgexfoundry/device-mqtt-go/commits/acf7416))
+
 ## [v2.3.0] Levski - 2022-11-09 (Only compatible with the 2.x releases)
 
 ### Features ✨
