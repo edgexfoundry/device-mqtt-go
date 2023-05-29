@@ -29,7 +29,7 @@ For the snap, refer to the [snap](snap) directory.
 Users can refer to [this document](https://docs.edgexfoundry.org/2.1/examples/Ch-ExamplesAddingMQTTDevice) to learn how to use this device service.
 
 ## Community
-- Chat: https://edgexfoundry.slack.com
+- Discussion: https://github.com/orgs/edgexfoundry/discussions
 - Mailing lists: https://lists.edgexfoundry.org/mailman/listinfo
 
 ## License
