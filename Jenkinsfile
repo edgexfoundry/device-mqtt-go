@@ -15,6 +15,5 @@
 //
 
 edgeXBuildGoApp (
-    project: 'device-mqtt-go',
-    buildSnap: false
+    project: 'device-mqtt-go'
 ) 
