@@ -19,11 +19,4 @@ cmd/device-mqtt
 glide.lock
 VERSION
 
-# snap files
-*.snap
-*.assert
-prime/
-stage/
-parts/
-squashfs-root/
 coverage.out
