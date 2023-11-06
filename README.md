@@ -10,6 +10,10 @@
 ## Overview
 MQTT Micro Service - device service for connecting a MQTT topic to EdgeX acting like a device/sensor feed.
 
+## Documentation
+
+For latest documentation please visit https://docs.edgexfoundry.org/latest/microservices/device/services/device-mqtt/Purpose
+
 ## Build with NATS Messaging
 Currently, the NATS Messaging capability (NATS MessageBus) is opt-in at build time.
 This means that the published Docker images do not include the NATS messaging capability.
@@ -27,9 +31,6 @@ See [Compose Builder](https://github.com/edgexfoundry/edgex-compose/tree/main/co
 ## Packaging
 This component is packaged as docker images.
 Please refer to the [Dockerfile](Dockerfile) and [Docker Compose Builder](https://github.com/edgexfoundry/edgex-compose/tree/main/compose-builder) scripts.
-
-## Usage
-Users can refer to [this document](https://docs.edgexfoundry.org/2.1/examples/Ch-ExamplesAddingMQTTDevice) to learn how to use this device service.
 
 ## Community
 - Discussion: https://github.com/orgs/edgexfoundry/discussions
