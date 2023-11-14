@@ -12,6 +12,35 @@
 - [go-mod-secrets](https://github.com/edgexfoundry/go-mod-secrets/blob/main/CHANGELOG.md) (indirect dependency)
 - [go-mod-configuration](https://github.com/edgexfoundry/go-mod-configuration/blob/main/CHANGELOG.md) (indirect dependency)
 
+
+## [v3.1.0] Napa - 2023-11-15 (Only compatible with the 3.x releases)
+
+
+### ✨  Features
+
+- Remove snap packaging ([#635](https://github.com/edgexfoundry/device-mqtt-go/issues/635)) ([aecec81…](https://github.com/edgexfoundry/device-mqtt-go/commit/aecec81b0df1ccac07961d4c177179e1cb746efd))
+```text
+
+BREAKING CHANGE: Remove snap packaging ([#635](https://github.com/edgexfoundry/device-mqtt-go/issues/635))
+
+```
+
+
+### ♻ Code Refactoring
+
+- Remove github.com/pkg/errors from Attribution.txt ([a383cfd…](https://github.com/edgexfoundry/device-mqtt-go/commit/a383cfdc3a434418355ebd57346991eaea66a3fb))
+
+
+### 👷 Build
+
+- Upgrade to go-1.21, Linter1.54.2 and Alpine 3.18 ([#624](https://github.com/edgexfoundry/device-mqtt-go/issues/624)) ([9edf56c…](https://github.com/edgexfoundry/device-mqtt-go/commit/9edf56c898603a6da7d069e5015abb4f1d1f30d1))
+
+
+### 🤖 Continuous Integration
+
+- Add automated release workflow on tag creation ([7b36b08…](https://github.com/edgexfoundry/device-mqtt-go/commit/7b36b08afcb678adb2f3795fb5abdedf4fd6d0d9))
+
+
 ## [v3.0.0] Minnesota - 2023-05-31 (Only compatible with the 3.x releases)
 
 ### Features ✨
