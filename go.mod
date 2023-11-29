@@ -8,7 +8,7 @@ require (
 	github.com/edgexfoundry/go-mod-bootstrap/v3 v3.2.0-dev.3
 	github.com/edgexfoundry/go-mod-core-contracts/v3 v3.2.0-dev.1
 	github.com/google/uuid v1.4.0
-	github.com/spf13/cast v1.5.1
+	github.com/spf13/cast v1.6.0
 	github.com/stretchr/testify v1.8.4
 )
 
