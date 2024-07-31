@@ -4,7 +4,7 @@ go 1.21
 
 require (
 	github.com/eclipse/paho.mqtt.golang v1.5.0
-	github.com/edgexfoundry/device-sdk-go/v3 v3.2.0-dev.27
+	github.com/edgexfoundry/device-sdk-go/v3 v3.2.0-dev.29
 	github.com/edgexfoundry/go-mod-bootstrap/v3 v3.2.0-dev.49
 	github.com/edgexfoundry/go-mod-core-contracts/v3 v3.2.0-dev.30
 	github.com/google/uuid v1.6.0
