@@ -4,9 +4,9 @@ go 1.21
 
 require (
 	github.com/eclipse/paho.mqtt.golang v1.5.0
-	github.com/edgexfoundry/device-sdk-go/v3 v3.2.0-dev.29
-	github.com/edgexfoundry/go-mod-bootstrap/v3 v3.2.0-dev.49
-	github.com/edgexfoundry/go-mod-core-contracts/v3 v3.2.0-dev.30
+	github.com/edgexfoundry/device-sdk-go/v3 v3.2.0-dev.32
+	github.com/edgexfoundry/go-mod-bootstrap/v3 v3.2.0-dev.51
+	github.com/edgexfoundry/go-mod-core-contracts/v3 v3.2.0-dev.32
 	github.com/google/uuid v1.6.0
 	github.com/spf13/cast v1.7.0
 	github.com/stretchr/testify v1.9.0
@@ -20,8 +20,8 @@ require (
 	github.com/cenkalti/backoff v2.2.1+incompatible // indirect
 	github.com/cenkalti/backoff/v4 v4.3.0 // indirect
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc // indirect
-	github.com/edgexfoundry/go-mod-configuration/v3 v3.2.0-dev.11 // indirect
-	github.com/edgexfoundry/go-mod-messaging/v3 v3.2.0-dev.29 // indirect
+	github.com/edgexfoundry/go-mod-configuration/v3 v3.2.0-dev.12 // indirect
+	github.com/edgexfoundry/go-mod-messaging/v3 v3.2.0-dev.31 // indirect
 	github.com/edgexfoundry/go-mod-registry/v3 v3.2.0-dev.13 // indirect
 	github.com/edgexfoundry/go-mod-secrets/v3 v3.2.0-dev.9 // indirect
 	github.com/fatih/color v1.16.0 // indirect
