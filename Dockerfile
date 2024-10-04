@@ -1,4 +1,4 @@
-# Copyright (c) 2020-2022 IOTech Ltd
+# Copyright (c) 2020-2024 IOTech Ltd
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-ARG BASE=golang:1.21-alpine3.18
+ARG BASE=golang:1.23-alpine3.20
 FROM ${BASE} AS builder
 
 ARG ADD_BUILD_TAGS=""
@@ -34,10 +34,10 @@ COPY . .
 # This is handy of you do your Docker business on a Mac
 RUN $MAKE
 
-FROM alpine:3.18
+FROM alpine:3.20
 
 LABEL license='VSPDX-License-Identifier: Apache-2.0' \
-      copyright='Copyright (c) 2020-2021: IoTech Ltd'
+      copyright='Copyright (c) 2020-2024: IoTech Ltd'
 
 # dumb-init needed for injected secure bootstrapping entrypoint script when run in secure mode.
 RUN apk add --update --no-cache dumb-init
