@@ -6,13 +6,13 @@ https://github.com/cenkalti/backoff/blob/master/LICENSE
 eclipse/paho.mqtt.golang (Eclipse Public License 2.0) https://github.com/eclipse/paho.mqtt.golang
 https://github.com/eclipse/paho.mqtt.golang/blob/master/LICENSE
 
-edgexfoundry/go-mod-core-contracts (Apache 2.0) https://github.com/edgexfoundry/go-mod-core-contracts/v3
+edgexfoundry/go-mod-core-contracts (Apache 2.0) https://github.com/edgexfoundry/go-mod-core-contracts/v4
 https://github.com/edgexfoundry/go-mod-core-contracts/blob/master/LICENSE
 
-edgexfoundry/go-mod-registry (Apache 2.0) https://github.com/edgexfoundry/go-mod-registry/v3
+edgexfoundry/go-mod-registry (Apache 2.0) https://github.com/edgexfoundry/go-mod-registry/v4
 https://github.com/edgexfoundry/go-mod-registry/blob/master/LICENSE
 
-edgexfoundry/device-sdk-go (Apache 2.0) https://github.com/edgexfoundry/device-sdk-go/v3
+edgexfoundry/device-sdk-go (Apache 2.0) https://github.com/edgexfoundry/device-sdk-go/v4
 https://github.com/edgexfoundry/device-sdk-go/blob/master/LICENSE
 
 gorilla/websocket (BSD-2) https://github.com/gorilla/websocket
@@ -87,13 +87,13 @@ https://github.com/hashicorp/errwrap/blob/master/LICENSE
 hashicorp/go-multierror (Mozilla Public License 2.0) https://github.com/hashicorp/go-multierror
 https://github.com/hashicorp/go-multierror/blob/master/LICENSE
 
-edgexfoundry/go-mod-bootstrap (Apache 2.0) https://github.com/edgexfoundry/go-mod-bootstrap/v3
+edgexfoundry/go-mod-bootstrap (Apache 2.0) https://github.com/edgexfoundry/go-mod-bootstrap/v4
 https://github.com/edgexfoundry/go-mod-bootstrap/blob/master/LICENSE
 
-edgexfoundry/go-mod-secrets (Apache 2.0) https://github.com/edgexfoundry/go-mod-secrets/v3
+edgexfoundry/go-mod-secrets (Apache 2.0) https://github.com/edgexfoundry/go-mod-secrets/v4
 https://github.com/edgexfoundry/go-mod-secrets/blob/master/LICENSE
 
-edgexfoundry/go-mod-configuration (Apache 2.0) https://github.com/edgexfoundry/go-mod-configuration/v3
+edgexfoundry/go-mod-configuration (Apache 2.0) https://github.com/edgexfoundry/go-mod-configuration/v4
 https://github.com/edgexfoundry/go-mod-configuration/blob/master/LICENSE
 
 fxamacker/cbor (MIT) https://github.com/fxamacker/cbor/v2
@@ -126,7 +126,7 @@ https://github.com/go-playground/validator/blob/master/LICENSE
 leodido/go-urn (MIT) https://github.com/leodido/go-urn
 https://github.com/leodido/go-urn
 
-edgexfoundry/go-mod-messaging (Apache 2.0) https://github.com/edgexfoundry/go-mod-messaging/v3
+edgexfoundry/go-mod-messaging (Apache 2.0) https://github.com/edgexfoundry/go-mod-messaging/v4
 https://github.com/edgexfoundry/go-mod-messaging/blob/master/LICENSE
 
 golang.org/x/net (Unspecified) https://github.com/golang/net

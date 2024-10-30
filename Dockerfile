@@ -51,4 +51,4 @@ COPY --from=builder /device-mqtt-go/Attribution.txt /
 EXPOSE 59982
 
 ENTRYPOINT ["/device-mqtt"]
-CMD ["--cp=consul://edgex-core-consul:8500", "--registry"]
+CMD ["-cp=keeper.http://edgex-core-keeper:59890", "--registry"]
