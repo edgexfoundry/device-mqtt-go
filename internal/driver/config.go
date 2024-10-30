@@ -10,12 +10,12 @@ import (
 	"fmt"
 	"net/url"
 
-	"github.com/edgexfoundry/go-mod-bootstrap/v3/bootstrap/interfaces"
-	"github.com/edgexfoundry/go-mod-bootstrap/v3/bootstrap/secret"
-	"github.com/edgexfoundry/go-mod-bootstrap/v3/bootstrap/startup"
-	"github.com/edgexfoundry/go-mod-bootstrap/v3/config"
-	"github.com/edgexfoundry/go-mod-core-contracts/v3/errors"
-	"github.com/edgexfoundry/go-mod-core-contracts/v3/models"
+	"github.com/edgexfoundry/go-mod-bootstrap/v4/bootstrap/interfaces"
+	"github.com/edgexfoundry/go-mod-bootstrap/v4/bootstrap/secret"
+	"github.com/edgexfoundry/go-mod-bootstrap/v4/bootstrap/startup"
+	"github.com/edgexfoundry/go-mod-bootstrap/v4/config"
+	"github.com/edgexfoundry/go-mod-core-contracts/v4/errors"
+	"github.com/edgexfoundry/go-mod-core-contracts/v4/models"
 )
 
 type ServiceConfig struct {
