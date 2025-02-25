@@ -12,6 +12,30 @@
 - [go-mod-secrets](https://github.com/edgexfoundry/go-mod-secrets/blob/main/CHANGELOG.md) (indirect dependency)
 - [go-mod-configuration](https://github.com/edgexfoundry/go-mod-configuration/blob/main/CHANGELOG.md) (indirect dependency)
 
+## [4.0.0] Odessa - 2025-03-12 (Only compatible with the 4.x releases)
+
+### ✨  Features
+
+- Enable PIE support for ASLR and full RELRO ([e0a7d63…](https://github.com/edgexfoundry/device-mqtt-go/commit/e0a7d6305e2fc591ccde04a15c4d9c78573e62c9))
+
+
+### ♻ Code Refactoring
+
+- Update module to v4 ([b35bedd…](https://github.com/edgexfoundry/device-mqtt-go/commit/b35bedd1f3478e6ee9832909a33ee3e010ee194a))
+```text
+
+BREAKING CHANGE: update go module to v4
+
+```
+
+### 🐛 Bug Fixes
+
+- Only one ldflags flag is allowed ([cc886f0…](https://github.com/edgexfoundry/device-mqtt-go/commit/cc886f0163229c0230891ab3c0de8aec2f7a231b))
+
+### 👷 Build
+
+- Upgrade to go-1.23, Linter1.61.0 and Alpine 3.20 ([43f794b…](https://github.com/edgexfoundry/device-mqtt-go/commit/43f794b456aa3735bbca56bd2373d27e91a7aa37))
+
 
 ## [v3.1.0] Napa - 2023-11-15 (Only compatible with the 3.x releases)
 
