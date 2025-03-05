@@ -18,7 +18,6 @@
 
 - Enable PIE support for ASLR and full RELRO ([e0a7d63…](https://github.com/edgexfoundry/device-mqtt-go/commit/e0a7d6305e2fc591ccde04a15c4d9c78573e62c9))
 
-
 ### ♻ Code Refactoring
 
 - Update module to v4 ([b35bedd…](https://github.com/edgexfoundry/device-mqtt-go/commit/b35bedd1f3478e6ee9832909a33ee3e010ee194a))
