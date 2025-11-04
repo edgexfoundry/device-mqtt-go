@@ -16,5 +16,5 @@
 
 edgeXBuildGoApp (
     project: 'device-mqtt-go',
-    goVersion: '1.23'
+    goVersion: '1.25'
 ) 

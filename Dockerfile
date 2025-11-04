@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-ARG BASE=golang:1.23-alpine3.22
+ARG BASE=golang:1.25-alpine3.22
 FROM ${BASE} AS builder
 
 ARG ADD_BUILD_TAGS=""
