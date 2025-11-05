@@ -92,7 +92,7 @@ func SetCredentials(uri *url.URL, secretProvider interfaces.SecretProvider, cate
 	case AuthModeUsernamePassword:
 		credentials, err := GetCredentials(secretProvider, secretName)
 		if err != nil {
-			return fmt.Errorf("Unable to get %s MQTT credentials for secret name '%s': %s", category, secretName, err.Error())
+			return fmt.Errorf("unable to get %s MQTT credentials for secret name '%s': %s", category, secretName, err.Error())
 		}
 
 		driver.Logger.Infof("%s MQTT credentials loaded", category)

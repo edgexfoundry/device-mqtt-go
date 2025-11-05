@@ -22,8 +22,8 @@ func (d *Driver) onIncomingDataReceived(_ mqtt.Client, message mqtt.Message) {
 	var deviceResources []models.DeviceResource
 	incomingTopic := message.Topic()
 	subscribedTopic := d.serviceConfig.MQTTBrokerInfo.IncomingTopic
-	subscribedTopic = strings.Replace(subscribedTopic, "#", "", -1)
-	incomingTopic = strings.Replace(incomingTopic, subscribedTopic, "", -1)
+	subscribedTopic = strings.ReplaceAll(subscribedTopic, "#", "")
+	incomingTopic = strings.ReplaceAll(incomingTopic, subscribedTopic, "")
 	metaData := strings.Split(incomingTopic, "/")
 	if len(metaData) != 2 {
 		driver.Logger.Errorf("[Incoming listener] Incoming data ignored, incoming topic data should have format .../<device_name>/<source_name>: `%s`", incomingTopic)
