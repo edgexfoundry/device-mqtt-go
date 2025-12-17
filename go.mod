@@ -4,8 +4,8 @@ go 1.25.0
 
 require (
 	github.com/eclipse/paho.mqtt.golang v1.5.1
-	github.com/edgexfoundry/device-sdk-go/v4 v4.1.0-dev.47
-	github.com/edgexfoundry/go-mod-bootstrap/v4 v4.1.0-dev.45
+	github.com/edgexfoundry/device-sdk-go/v4 v4.1.0-dev.48
+	github.com/edgexfoundry/go-mod-bootstrap/v4 v4.1.0-dev.46
 	github.com/edgexfoundry/go-mod-core-contracts/v4 v4.1.0-dev.21
 	github.com/google/uuid v1.6.0
 	github.com/spf13/cast v1.10.0
