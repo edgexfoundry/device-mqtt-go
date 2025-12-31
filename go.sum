@@ -72,8 +72,8 @@ github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc h1:U9qPSI2PIWSS1
 github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/eclipse/paho.mqtt.golang v1.5.1 h1:/VSOv3oDLlpqR2Epjn1Q7b2bSTplJIeV2ISgCl2W7nE=
 github.com/eclipse/paho.mqtt.golang v1.5.1/go.mod h1:1/yJCneuyOoCOzKSsOTUc0AJfpsItBGWvYpBLimhArU=
-github.com/edgexfoundry/device-sdk-go/v4 v4.1.0-dev.50 h1:BiWosvRdi15LqjKVtfrv4ABoloWuz0G4bVkI4OwDFm8=
-github.com/edgexfoundry/device-sdk-go/v4 v4.1.0-dev.50/go.mod h1:q4hGeEgy+cnzBcUQW35y159tKGubNG73IG8Yof4oVts=
+github.com/edgexfoundry/device-sdk-go/v4 v4.1.0-dev.51 h1:yD/nLTlWi7seDAXNg66RP/lz4QSt+/UvtqHL6jWJPqg=
+github.com/edgexfoundry/device-sdk-go/v4 v4.1.0-dev.51/go.mod h1:HFdmEukL2xehEHcXVr2QzwcZsfsO9Krp4b8P53ZJHqg=
 github.com/edgexfoundry/go-mod-bootstrap/v4 v4.1.0-dev.48 h1:9oxFx05zNqBmEA3gwn80Khbb9LIlil8pkXIxdQ9xFZg=
 github.com/edgexfoundry/go-mod-bootstrap/v4 v4.1.0-dev.48/go.mod h1:soY30CSmQncjwHY6aN/e/Cla5RUlkVTOJ2FuRUAJrgI=
 github.com/edgexfoundry/go-mod-configuration/v4 v4.1.0-dev.17 h1:TttwsEqLppEQQz4scPbEdzMtsHC8vj1djd2sgZLfny8=
@@ -402,8 +402,8 @@ github.com/openziti/transport/v2 v2.0.198 h1:zOr7wAm4s6Icu+BTR5+2ubfKHSu7PRLfZiD
 github.com/openziti/transport/v2 v2.0.198/go.mod h1:ayUzOV5EMVFCchjeB4euw2/UpkRt+Kr/V7wFjenIzAg=
 github.com/orcaman/concurrent-map/v2 v2.0.1 h1:jOJ5Pg2w1oeB6PeDurIYf6k9PQ+aTITr/6lP/L/zp6c=
 github.com/orcaman/concurrent-map/v2 v2.0.1/go.mod h1:9Eq3TG2oBe5FirmYWQfYO5iH1q0Jv47PLaNK++uCdOM=
-github.com/panjf2000/ants/v2 v2.11.3 h1:AfI0ngBoXJmYOpDh9m516vjqoUu2sLrIVgppI9TZVpg=
-github.com/panjf2000/ants/v2 v2.11.3/go.mod h1:8u92CYMUc6gyvTIw8Ru7Mt7+/ESnJahz5EVtqfrilek=
+github.com/panjf2000/ants/v2 v2.11.4 h1:UJQbtN1jIcI5CYNocTj0fuAUYvsLjPoYi0YuhqV/Y48=
+github.com/panjf2000/ants/v2 v2.11.4/go.mod h1:8u92CYMUc6gyvTIw8Ru7Mt7+/ESnJahz5EVtqfrilek=
 github.com/parallaxsecond/parsec-client-go v0.0.0-20221025095442-f0a77d263cf9 h1:mOvehYivJ4Aqu2CPe3D3lv8jhqOI9/1o0THxJHBE0qw=
 github.com/parallaxsecond/parsec-client-go v0.0.0-20221025095442-f0a77d263cf9/go.mod h1:gLH27qo/dvMhLTVVyMELpe3Tut7sOfkiDg7ZpeqKwsw=
 github.com/pascaldekloe/goe v0.0.0-20180627143212-57f6aae5913c/go.mod h1:lzWF7FIEvWOWxwDKqyGYQf6ZUaNfKdP144TG7ZOy1lc=
