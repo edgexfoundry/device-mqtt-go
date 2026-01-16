@@ -31,7 +31,7 @@ MQTTBrokerInfo:
   Port: 1883
   Qos: 0
   KeepAlive: 3600
-  ClientId: "device-mqtt"
+  ClientId: "edgex-mqtt-client"
 
   CredentialsRetryTime: 120 # Seconds
   CredentialsRetryWait: 1 # Seconds
