@@ -4,8 +4,8 @@ go 1.25.0
 
 require (
 	github.com/eclipse/paho.mqtt.golang v1.5.1
-	github.com/edgexfoundry/device-sdk-go/v4 v4.1.0-dev.57
-	github.com/edgexfoundry/go-mod-bootstrap/v4 v4.1.0-dev.56
+	github.com/edgexfoundry/device-sdk-go/v4 v4.1.0-dev.58
+	github.com/edgexfoundry/go-mod-bootstrap/v4 v4.1.0-dev.58
 	github.com/edgexfoundry/go-mod-core-contracts/v4 v4.1.0-dev.28
 	github.com/google/uuid v1.6.0
 	github.com/spf13/cast v1.10.0
@@ -21,13 +21,13 @@ require (
 	github.com/edgexfoundry/go-mod-configuration/v4 v4.1.0-dev.17 // indirect
 	github.com/edgexfoundry/go-mod-messaging/v4 v4.1.0-dev.18 // indirect
 	github.com/edgexfoundry/go-mod-registry/v4 v4.1.0-dev.8 // indirect
-	github.com/edgexfoundry/go-mod-secrets/v4 v4.1.0-dev.9 // indirect
+	github.com/edgexfoundry/go-mod-secrets/v4 v4.1.0-dev.10 // indirect
 	github.com/emirpasic/gods v1.18.1 // indirect
 	github.com/fsnotify/fsnotify v1.9.0 // indirect
 	github.com/fullsailor/pkcs7 v0.0.0-20190404230743-d7302db945fa // indirect
 	github.com/fxamacker/cbor/v2 v2.9.0 // indirect
 	github.com/gabriel-vasile/mimetype v1.4.12 // indirect
-	github.com/go-jose/go-jose/v4 v4.1.2 // indirect
+	github.com/go-jose/go-jose/v4 v4.1.3 // indirect
 	github.com/go-kit/log v0.2.1 // indirect
 	github.com/go-logfmt/logfmt v0.5.1 // indirect
 	github.com/go-logr/logr v1.4.3 // indirect
@@ -129,8 +129,8 @@ require (
 	golang.org/x/term v0.40.0 // indirect
 	golang.org/x/text v0.34.0 // indirect
 	golang.org/x/time v0.14.0 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20250707201910-8d1bb00bc6a7 // indirect
-	google.golang.org/grpc v1.75.0 // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20251202230838-ff82c1b0f217 // indirect
+	google.golang.org/grpc v1.79.3 // indirect
 	google.golang.org/protobuf v1.36.11 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	nhooyr.io/websocket v1.8.17 // indirect
