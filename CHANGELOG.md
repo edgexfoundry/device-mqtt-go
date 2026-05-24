@@ -12,6 +12,16 @@
 - [go-mod-secrets](https://github.com/edgexfoundry/go-mod-secrets/blob/main/CHANGELOG.md) (indirect dependency)
 - [go-mod-configuration](https://github.com/edgexfoundry/go-mod-configuration/blob/main/CHANGELOG.md) (indirect dependency)
 
+## [4.0.2] - 2026-05-31 
+
+### 🐛 Bug Fixes 
+- Update the default `MQTTBrokerInfo` ClientID ([#352fa3c](https://github.com/edgexfoundry/device-mqtt-go/commits/352fa3c))
+
+### 👷 Build 
+- Update goVersion to 1.25 and golangci-lint to 2.5.0 ([#7ae3a17](https://github.com/edgexfoundry/device-mqtt-go/commits/7ae3a17))
+
+
+
 ## [4.0.0] Odessa - 2025-03-12 (Only compatible with the 4.x releases)
 
 ### ✨  Features
