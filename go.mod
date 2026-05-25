@@ -4,9 +4,9 @@ go 1.25.0
 
 require (
 	github.com/eclipse/paho.mqtt.golang v1.5.1
-	github.com/edgexfoundry/device-sdk-go/v4 v4.1.0-dev.64
-	github.com/edgexfoundry/go-mod-bootstrap/v4 v4.1.0-dev.67
-	github.com/edgexfoundry/go-mod-core-contracts/v4 v4.1.0-dev.35
+	github.com/edgexfoundry/device-sdk-go/v4 v4.1.0-dev.66
+	github.com/edgexfoundry/go-mod-bootstrap/v4 v4.1.0-dev.68
+	github.com/edgexfoundry/go-mod-core-contracts/v4 v4.1.0-dev.36
 	github.com/google/uuid v1.6.0
 	github.com/spf13/cast v1.10.0
 	github.com/stretchr/testify v1.11.1
@@ -18,8 +18,8 @@ require (
 	github.com/cenkalti/backoff/v4 v4.3.0 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc // indirect
-	github.com/edgexfoundry/go-mod-configuration/v4 v4.1.0-dev.18 // indirect
-	github.com/edgexfoundry/go-mod-messaging/v4 v4.1.0-dev.23 // indirect
+	github.com/edgexfoundry/go-mod-configuration/v4 v4.1.0-dev.19 // indirect
+	github.com/edgexfoundry/go-mod-messaging/v4 v4.1.0-dev.26 // indirect
 	github.com/edgexfoundry/go-mod-registry/v4 v4.1.0-dev.10 // indirect
 	github.com/edgexfoundry/go-mod-secrets/v4 v4.1.0-dev.15 // indirect
 	github.com/emirpasic/gods v1.18.1 // indirect
