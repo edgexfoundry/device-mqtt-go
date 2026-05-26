@@ -34,7 +34,7 @@ COPY . .
 # This is handy of you do your Docker business on a Mac
 RUN $MAKE
 
-FROM alpine:3.22
+FROM alpine:3.23.2
 
 LABEL license='VSPDX-License-Identifier: Apache-2.0' \
       copyright='Copyright (c) 2020-2024: IoTech Ltd'
